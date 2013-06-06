@@ -6,7 +6,6 @@ python:
 env:
   - DJANGO=1.5.1
 install:
-  - pip install -q Django==$DJANGO --use-mirrors
   - pip install -e . --use-mirrors
 script:
   - python src/runtests.py

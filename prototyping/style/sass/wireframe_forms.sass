@@ -1,0 +1,61 @@
+::-webkit-input-placeholder
+	color: $color-text-placeholder
+::-moz-placeholder
+	color: $color-text-placeholder
+::-ms-input-placeholder
+	color: $color-text-placeholder
+
+form.form-base
+	width: 90%
+	max-width: 560px
+	margin-left: 1em
+
+input.input-base, input.input-subtle, input.input-warning, input.input-caution, input.input-confirmation, input.input-information, input.input-disabled, textarea.textarea-base
+	width: 98%
+	display: block
+	padding: 0 0 0 2%
+	margin: 0
+	@include adjust-font-size-to(16px)
+	@include adjust-leading-to(1.5)
+	@include margin-trailer()
+	color: $color-text-base
+	border: 1px solid $border-color-base
+	background: transparent
+	outline: none
+	&:active, &:focus
+		width: 100%
+		border-width: 2px
+		background-color: rgba(70,100,130,0.2)
+
+input.input-subtle
+	border-color: $color-text-subtle
+
+input.input-warning
+	border-color: $color-text-warning
+
+input.input-caution
+	border-color: $color-text-caution
+
+input.input-confirmation
+	border-color: $color-text-confirmation
+
+input.input-information
+	border-color: $color-text-information
+
+input.input-disabled
+	border-color: $color-text-placeholder
+
+textarea.textarea-base
+	min-height: $base-line-height * 4
+
+button.button-base
+	width: 100%
+	padding: 0
+	margin: 0
+	display: block
+	@include adjust-font-size-to(20px)
+	@include adjust-leading-to(2)
+	@include margin-trailer()
+	color: $color-text-base
+	border: 2px solid $border-color-base
+	background-color: rgba(70,100,130,0.5)

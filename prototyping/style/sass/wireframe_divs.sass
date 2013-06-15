@@ -1,0 +1,23 @@
+div.padding-top
+	@include leader($property: padding)
+
+div.padding-bottom
+	@include trailer($property: padding)
+
+div.padding-sides
+	padding-left: 1em
+	padding-right: 1em
+
+div.solid-border
+	@include rhythm-borders()
+	border-color: $border-color-base
+
+div.dashed-border
+	@include rhythm-borders($border-style: dashed)
+	border-color: $border-color-base
+
+.light-background
+	background-color: rgba(70,156,223,0.2)
+
+.dark-background
+	background-color: rgba(0,0,0,0.2)

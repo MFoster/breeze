@@ -1,0 +1,133 @@
+//
+// Base styles: opinionated defaults
+//
+
+html, button, input, select, textarea
+	color: #222
+
+// Selection Highlighting
+
+::-moz-selection
+	background: #4a7191
+	text-shadow: none
+
+::selection
+	background: #4a7191
+	text-shadow: none
+
+// default horizontal rule
+
+hr
+	display: block
+	height: 1px
+	border: 0
+	border-top: 1px solid #ccc
+	margin: 1em 0
+	padding: 0
+
+// Remove the gap between images and the bottom of their containers
+
+img
+	vertical-align: middle
+
+
+// Remove default fieldset styles
+
+fieldset
+	border: 0
+	margin: 0
+	padding: 0
+
+
+// Allow only vertical resizing of textareas
+
+textarea
+	resize: vertical
+
+// **************************
+// ** Site Specific Styles **
+// **************************
+
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900)
+@import url(http://fonts.googleapis.com/css?family=Orbitron:400,500,700,900)
+
+@import 'wireframe_theme_variables.sass'
+@import 'helpers_vertical_rhythm.sass'
+
+@include establish-baseline
+
+body
+	font-family: $font-family-base
+	font-weight: 400
+	color: $color-text-base
+
+div#primary-container
+	position: absolute
+	top: 0
+	left: 0
+	min-width: 100%
+	min-height: 100%
+	max-width: 100%
+	padding: 0 2em 0 2em
+	background: url('../imgs/blueprint_pattern.png')
+	background-size: 255px 255px
+	-webkit-box-shadow: inset 0px 0px 160px 0px rgba(0, 0, 0, 1)
+	box-shadow: inset 0px 0px 160px 0px rgba(0, 0, 0, 1)
+
+// Includes GO here
+@import 'wireframe_text.sass'
+@import 'wireframe_divs.sass'
+@import 'wireframe_forms.sass'
+
+// **************************
+// *** Additional Helpers ***
+// **************************
+
+.ir
+	background-color: transparent
+	border: 0
+	overflow: hidden
+	// IE 6/7 fallback
+	*text-indent: -9999px
+
+.ir:before
+	content: ""
+	display: block
+	width: 0
+	height: 150%
+
+.hidden
+	display: none !important
+	visibility: hidden
+
+.visuallyhidden
+	border: 0
+	clip: rect(0 0 0 0)
+	height: 1px
+	margin: -1px
+	overflow: hidden
+	padding: 0
+	position: absolute
+	width: 1px
+
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus
+	clip: auto
+	height: auto
+	margin: 0
+	overflow: visible
+	position: static
+	width: auto
+
+.invisible
+	visibility: hidden
+
+.clearfix:before, .clearfix:after
+	content: " "
+
+.clearfix:after
+	clear: both
+
+// For IE 6/7 only
+
+.clearfix
+	*zoom: 1

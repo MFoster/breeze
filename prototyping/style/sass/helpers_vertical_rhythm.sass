@@ -137,11 +137,11 @@
 	@if not $relative-font-sizing and $font-size != $base-font-size
 		@warn "$relative-font-sizing is false but a relative font size was passed to apply-side-rhythm-border"
 
-	border-#$side:
+	border-#{$side}:
 		style: $border-style
 		width: $font-unit * $width / $font-size
 
-	padding-#$side: rhythm($lines, $font-size, $offset: $width)
+	padding-#{$side}: rhythm($lines, $font-size, $offset: $width)
 
 
 // Apply borders and whitespace equally to all sides.

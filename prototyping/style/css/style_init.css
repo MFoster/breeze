@@ -216,6 +216,119 @@ button.button-base {
   border: 2px solid #a3bacc;
   background-color: rgba(70, 100, 130, 0.5); }
 
+div#activity-center {
+  position: fixed;
+  top: 120px;
+  left: 40px;
+  width: 320px; }
+  div#activity-center div#activity-status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: block; }
+    div#activity-center div#activity-status-bar div#activity-completed-month {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      text-align: left; }
+    div#activity-center div#activity-status-bar div#activity-minutes-remaining {
+      position: absolute;
+      top: 0;
+      left: 100px;
+      width: 120px;
+      text-align: center; }
+    div#activity-center div#activity-status-bar div#activity-completed-today {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100px;
+      text-align: right; }
+  div#activity-center div#activity-controls {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 320px;
+    height: 320px;
+    display: block; }
+    div#activity-center div#activity-controls div#activity-time-ring {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 300px;
+      height: 300px;
+      border: 1px dashed white;
+      -webkit-border-radius: 300px;
+      border-radius: 300px; }
+    div#activity-center div#activity-controls div#activity-control-left {
+      position: absolute;
+      top: 150px;
+      left: 20px;
+      width: 80px;
+      text-align: left; }
+    div#activity-center div#activity-controls div#activity-control-center {
+      position: absolute;
+      top: 150px;
+      left: 120px;
+      width: 80px;
+      text-align: center; }
+    div#activity-center div#activity-controls div#activity-control-right {
+      position: absolute;
+      top: 150px;
+      right: 20px;
+      width: 80px;
+      text-align: right; }
+  div#activity-center div#activity-management {
+    position: absolute;
+    top: 340px;
+    left: 0;
+    width: 320px; }
+    div#activity-center div#activity-management div#activity-manager-open {
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-align: left; }
+    div#activity-center div#activity-management div#activity-add-edit-open {
+      position: absolute;
+      top: 0;
+      right: 0;
+      text-align: right; }
+  div#activity-center ul#activity-list {
+    position: absolute;
+    top: 390px;
+    left: 0;
+    width: 320px;
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none; }
+    div#activity-center ul#activity-list li.activity-list-item {
+      position: relative;
+      height: 50px; }
+      div#activity-center ul#activity-list li.activity-list-item div.activity-duration-small, div#activity-center ul#activity-list li.activity-list-item div.activity-duration-medium, div#activity-center ul#activity-list li.activity-list-item div.activity-duration-large, div#activity-center ul#activity-list li.activity-list-item div.activity-duration-custom {
+        float: left;
+        height: 50px; }
+      div#activity-center ul#activity-list li.activity-list-item div.activity-duration-small {
+        width: 10px;
+        background-color: #b23c1c; }
+      div#activity-center ul#activity-list li.activity-list-item div.activity-duration-medium {
+        width: 20px;
+        background-color: #b7912a; }
+      div#activity-center ul#activity-list li.activity-list-item div.activity-duration-large {
+        width: 40px;
+        background-color: #229044; }
+      div#activity-center ul#activity-list li.activity-list-item div.activity-duration-custom {
+        width: 50px;
+        background-color: #99b5cc; }
+      div#activity-center ul#activity-list li.activity-list-item span.activity-title {
+        position: absolute;
+        left: 60px;
+        padding-top: 12px; }
+      div#activity-center ul#activity-list li.activity-list-item div.activity-reorder {
+        float: right;
+        padding-top: 12px; }
+
 .ir {
   background-color: transparent;
   border: 0;

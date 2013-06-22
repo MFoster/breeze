@@ -12,18 +12,17 @@
 
 		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-		<link rel="stylesheet" href="vendor/css/normalize.css">
-		<link rel="stylesheet" href="style/css/style_init.css">
-		<script type="vendor/js/jquery.js"></script>
-		<script src="vendor/js/modernizr.js"></script>
-		<script src="logic/js/app_init.js"></script>
+		<link rel="stylesheet" href="/static/static_pages/vendor/css/normalize.css">
+		<link rel="stylesheet" href="/static/static_pages/style/css/style_init.css">
+		<script type="/static/static_pages/vendor/js/jquery.js"></script>
+		<script src="/static/static_pages/vendor/js/modernizr.js"></script>
+		<script src="/static/static_pages/logic/js/app_init.js"></script>
 	</head>
 	<body>
+{%verbatim%}
 		<!-- Add site or application content here -->
 		<div id="primary-container">
-			<h1>Welcome to Breeze</h1>
-			<a href="task_play_proto.html">Play Up Task Prototype</a><br>
-			<a href="task_form_proto.html">Add Edit Task Prototype</a>
+			<h1>Add/Edit Task</h1>
 		</div>
 
 		<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -33,5 +32,7 @@
 			g.src='//www.google-analytics.com/ga.js';
 			s.parentNode.insertBefore(g,s)}(document,'script'));
 		</script>
+
+{%endverbatim%}
 	</body>
 </html>

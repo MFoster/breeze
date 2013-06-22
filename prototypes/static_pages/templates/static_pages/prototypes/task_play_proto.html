@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Breeze - UX - Prototyping</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+		<link rel="stylesheet" href="/static/static_pages/vendor/css/normalize.css">
+		<link rel="stylesheet" href="/static/static_pages/style/css/style_init.css">
+		<script src="/static/static_pages/vendor/js/jquery.js"></script>
+		<script src="/static/static_pages/vendor/js/modernizr.js"></script>
+		<script src="/static/static_pages/vendor/js/angular.js"></script>
+		<script src="/static/static_pages/logic/js/app_init.js"></script>
+		<script src="/static/static_pages/logic/js/Activities.js"></script>
+		<script src="/static/static_pages/logic/js/Timers.js"></script>
+	</head>
+	<body>
+{%verbatim%}
+		<!-- Add site or application content here -->
+		<div id="primary-container" ng-controller="App.Activities.controller">
+			<h1>Play Up Tasks</h1>
+			<div id="activity-center">
+				<div id="activity-status-bar">
+					<div id="activity-completed-month">{{chuncksCompletedMonth}} Mo</div>
+					<div id="activity-minutes-remaining">7min</div>
+					<div id="activity-completed-today">Day {{chuncksCompletedDay}}</div>
+				</div>
+				<div id="activity-controls">
+					<div id="activity-time-ring"></div>
+					<div id="activity-control-left" onclick="App.Timers.stopTimer('id1');">Rewind</div>
+					<div id="activity-control-center" onclick="App.Timers.startTimer('id1', 10);">Play</div>
+					<div id="activity-control-right"><a href="" ng-click="completeActivity()">Complete</a></div>
+				</div>
+				<div id="activity-management">
+					<div id="activity-manager-open">Menu</div>
+					<div id="activity-add-edit-open">Add</div>
+				</div>
+				<ul id="activity-list">
+					<li id="{{activity.id}}" class="activity-list-item" ng-repeat="activity in activities">
+						<div class="activity-duration-{{activity.duration}}">&nbsp;</div>
+						<span class="activity-title">{{activity.text}}</span>
+						<div class="activity-reorder">&Ecirc;</div>
+					</li>
+				</ul>
+			</div>
+			<div style="position: fixed; right: 20px;">
+			<p>Time Test One - <a href="" onclick="App.Timers.startTimer('id1', 300);">START</a> - <a href="" onclick="App.Timers.stopTimer('id1');">STOP</a> - Remaining: <span id="id1-time">0</span>sec</p>
+			<p>Time Test Two - <a href="" onclick="App.Timers.startTimer('id2', 300);">START</a> - <a href="" onclick="App.Timers.stopTimer('id2');">STOP</a> - Remaining: <span id="id2-time">0</span>sec</p>
+			<p>Time Test Three - <a href="" onclick="App.Timers.startTimer('id3', 300);">START</a> - <a href="" onclick="App.Timers.stopTimer('id3');">STOP</a> - Remaining: <span id="id3-time">0</span>sec</p>
+			<p>Time Test Four - <a href="" onclick="App.Timers.startTimer('id4', 300);">START</a> - <a href="" onclick="App.Timers.stopTimer('id4');">STOP</a> - Remaining: <span id="id4-time">0</span>sec</p>
+			</div>
+		</div>
+{%endverbatim%}
+	</body>
+</html>

@@ -2,10 +2,10 @@
 (function() {
 
   describe('Initialize App', function() {
-    it('App Start shoud be defined', function() {
+    it('App Start should be defined', function() {
       return expect(App.Start).toBeDefined();
     });
-    return it('App Start constructor shoul return true', function() {
+    return it('App Start constructor should return true', function() {
       return expect(App.Start()).toBeTruthy();
     });
   });

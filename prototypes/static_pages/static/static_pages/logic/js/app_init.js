@@ -7,6 +7,7 @@
 
     function Start(attributes) {
       this.attributes = attributes;
+      console.log('App Starting...');
       if (typeof jQuery !== 'undefined') {
         $('html').removeClass('no-js');
         $(document).ready(function() {
@@ -19,5 +20,7 @@
     return Start;
 
   })();
+
+  App.Start();
 
 }).call(this);

@@ -1,47 +1,79 @@
 class Breeze.Activities
 	# Establish internal variables
-	chuncksCompletedMonth = 32
-	chuncksCompletedDay = 0
-	activityList = [
-		{
-			id: 'an_id_001'
-			text: 'Task Item One'
-			duration: 'large'
-		},
-		{
-			id: 'an_id_002'
-			text: 'Task Item Two'
-			duration: 'custom'
-		},
-		{
-			id: 'an_id_003'
-			text: 'Task Item Three'
-			duration: 'medium'
-		},
-		{
-			id: 'an_id_004'
-			text: 'Task Item Four'
-			duration: 'small'
-		},
-		{
-			id: 'an_id_005'
-			text: 'Task Item Five'
-			duration: 'small'
-		},
-		{
-			id: 'an_id_006'
-			text: 'Task Item Six'
-			duration: 'large'
-		}
-	]
+	# USER Data, will need to be moved to User logic
+	userName = 'Some Nameor'
+	userAvailablePlaylists = ['default']
+	userChuncksCompletedMonth = 32
+	userChuncksCompletedDay = 0
+	userActionLog = []
+
+	# Activities Status Variables
+	activitiesInitialized = false
+	availableActivities = []
+	currentPlaylist = ''
+	currentActivity = ''
+	nextActivity = ''
+	currentPlaylistTimerRunning = false
+	currentActivityTimerRunning = false
+	chunckTimeSmall = 5
+	chunckTimeMedium = 25
+	chunckTimeLarge = 50
 
 	constructor: (@attributes) ->
+		activitiesInitialized = true
+		availableActivities = []
 		return true
 
-	@controller: ($scope) ->
-		$scope.chuncksCompletedMonth = chuncksCompletedMonth
-		$scope.chuncksCompletedDay = chuncksCompletedDay
-		$scope.activities = activityList
-		$scope.completeActivity = ->
-			$scope.chuncksCompletedMonth++
-			$scope.chuncksCompletedDay++
+	@statusReport: () ->
+		reportData = {
+			activitiesInitialized: activitiesInitialized
+			availableActivities: availableActivities
+			currentPlaylist: currentPlaylist
+			currentActivity: currentActivity
+			nextActivity: nextActivity
+			currentPlaylistTimerRunning: currentPlaylistTimerRunning
+			currentActivityTimerRunning: currentActivityTimerRunning
+			chunckTimeSmall: chunckTimeSmall
+			chunckTimeMedium: chunckTimeMedium
+			chunckTimeLarge: chunckTimeSmall
+		}
+		return reportData
+
+	@selectPlaylist: (selectedPlaylist) ->
+		currentPlaylist = userAvailablePlaylists[0]
+		return currentPlaylist
+
+	@updateActivitiesList: () ->
+		Breeze.ActivitiesModel.getActivities(currentPlaylist)
+
+	@startPlaylist: () ->
+		Breeze.Timers.startUpTimer(currentPlaylist)
+		currentPlaylistTimerRunning = true
+		return true
+
+	@pausePlaylist: () ->
+		return true
+
+	@stopPlaylist: () ->
+		return true
+
+	@serveNextActivity: () ->
+		return true
+
+	@startActivity: (activityIndex) ->
+		return true
+
+	@snoozeActivity: (activityIndex, amountOfSnooze) ->
+		return true
+
+	@completeActivity: (activityIndex) ->
+		return true
+
+	@rewindActivity: (activityIndex, amountOfRewind) ->
+		return true
+
+	@addTimeToActivity: (activityIndex, amountOfAdd) ->
+		return true
+
+	@logToActivity: (activityIndex, logType, logMessage) ->
+		return true

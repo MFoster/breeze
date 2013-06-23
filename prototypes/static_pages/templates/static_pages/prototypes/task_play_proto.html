@@ -20,6 +20,7 @@
 		<script src="/static/static_pages/vendor/js/angular.js"></script>
 		{% compress js %}
 		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/app_init.coffee"></script>
+		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Activities_model.coffee"></script>
 		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Activities.coffee"></script>
 		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Timers.coffee"></script>
 		{% endcompress %}
@@ -28,7 +29,7 @@
 	<body>
 {%verbatim%}
 		<!-- Add site or application content here -->
-		<div id="primary-container" ng-controller="Breeze.Activities.controller">
+		<div id="primary-container" ng-controller="Breeze.ActivitiesModel.controller">
 			<h1>Play Up Tasks</h1>
 			<div id="activity-center">
 				<div id="activity-status-bar">
@@ -47,7 +48,7 @@
 					<div id="activity-add-edit-open">Add</div>
 				</div>
 				<ul id="activity-list">
-					<li id="{{activity.id}}" class="activity-list-item" ng-repeat="activity in activities">
+					<li id="{{activity.id}}" class="activity-list-item" ng-repeat="activity in activities" data-activity_index="{{ $index }}">
 						<div class="activity-duration-{{activity.duration}}">&nbsp;</div>
 						<span class="activity-title">{{activity.text}}</span>
 						<div class="activity-reorder">&Ecirc;</div>
@@ -55,10 +56,11 @@
 				</ul>
 			</div>
 			<div style="position: fixed; right: 20px;">
-			<p>Time Test One - <a href="" onclick="Breeze.Timers.startTimer('id1', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopTimer('id1');">STOP</a> - Remaining: <span id="id1-time">0</span>sec</p>
-			<p>Time Test Two - <a href="" onclick="Breeze.Timers.startTimer('id2', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopTimer('id2');">STOP</a> - Remaining: <span id="id2-time">0</span>sec</p>
-			<p>Time Test Three - <a href="" onclick="Breeze.Timers.startTimer('id3', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopTimer('id3');">STOP</a> - Remaining: <span id="id3-time">0</span>sec</p>
-			<p>Time Test Four - <a href="" onclick="Breeze.Timers.startTimer('id4', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopTimer('id4');">STOP</a> - Remaining: <span id="id4-time">0</span>sec</p>
+			<a href="" onclick="Breeze.ActivitiesModel.updateActivity(0, {text: 'CHANGED'})">Change it</a>
+			<p>Time Test One - <a href="" onclick="Breeze.Timers.startDownTimer('id1', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopDownTimer('id1');">STOP</a> - Remaining: <span id="id1-time">0</span>sec</p>
+			<p>Time Test Two - <a href="" onclick="Breeze.Timers.startDownTimer('id2', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopDownTimer('id2');">STOP</a> - Remaining: <span id="id2-time">0</span>sec</p>
+			<p>Time Test Three - <a href="" onclick="Breeze.Timers.startDownTimer('id3', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopDownTimer('id3');">STOP</a> - Remaining: <span id="id3-time">0</span>sec</p>
+			<p>Time Test Four - <a href="" onclick="Breeze.Timers.startDownTimer('id4', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopDownTimer('id4');">STOP</a> - Remaining: <span id="id4-time">0</span>sec</p>
 			</div>
 		</div>
 {%endverbatim%}

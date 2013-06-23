@@ -6,6 +6,7 @@ class Breeze.Initializer
 		if (typeof jQuery != 'undefined')
 			$('html').removeClass('no-js')
 			$(document).ready( ->
+				Breeze.Activities()
 				console.log('Breeze is ready!')
 			)
 		return true

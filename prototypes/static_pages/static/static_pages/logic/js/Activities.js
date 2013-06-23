@@ -2,11 +2,17 @@
 (function() {
 
   Breeze.Activities = (function() {
-    var activityList, chuncksCompletedDay, chuncksCompletedMonth;
+    var activitiesInitialized, activityList, availableActivities, chunckTimeLarge, chunckTimeMedium, chunckTimeSmall, currentActivity, currentActivityTimerRunning, currentPlaylist, currentPlaylistTimerRunning, nextActivity, userActionLog, userAvailablePlaylists, userChuncksCompletedDay, userChuncksCompletedMonth, userName;
 
-    chuncksCompletedMonth = 32;
+    userName = 'Some Nameor';
 
-    chuncksCompletedDay = 0;
+    userAvailablePlaylists = ['default'];
+
+    userChuncksCompletedMonth = 32;
+
+    userChuncksCompletedDay = 0;
+
+    userActionLog = [];
 
     activityList = [
       {
@@ -36,10 +42,49 @@
       }
     ];
 
+    activitiesInitialized = false;
+
+    availableActivities = [];
+
+    currentPlaylist = '';
+
+    currentActivity = '';
+
+    nextActivity = '';
+
+    currentPlaylistTimerRunning = false;
+
+    currentActivityTimerRunning = false;
+
+    chunckTimeSmall = 5;
+
+    chunckTimeMedium = 25;
+
+    chunckTimeLarge = 50;
+
     function Activities(attributes) {
       this.attributes = attributes;
+      activitiesInitialized = true;
+      availableActivities = activityList;
       return true;
     }
+
+    Activities.statusReport = function() {
+      var reportData;
+      reportData = {
+        activitiesInitialized: activitiesInitialized,
+        availableActivities: availableActivities,
+        currentPlaylist: currentPlaylist,
+        currentActivity: currentActivity,
+        nextActivity: nextActivity,
+        currentPlaylistTimerRunning: currentPlaylistTimerRunning,
+        currentActivityTimerRunning: currentActivityTimerRunning,
+        chunckTimeSmall: chunckTimeSmall,
+        chunckTimeMedium: chunckTimeMedium,
+        chunckTimeLarge: chunckTimeSmall
+      };
+      return reportData;
+    };
 
     Activities.controller = function($scope) {
       $scope.chuncksCompletedMonth = chuncksCompletedMonth;

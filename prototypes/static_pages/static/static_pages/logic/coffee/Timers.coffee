@@ -16,7 +16,7 @@ class Breeze.Timers
 		}
 
 	@startUpTimer: (timerID) ->
-		nowSecondsStart = Math.round(new Date().getTime() / 1000)
+		nowSecondsStart = convertToSeconds(new Date().getTime(), 'milliseconds')
 		runningTimers[timerID] = {
 			startTime: nowSecondsStart
 			currentTime: remainingTime
@@ -26,7 +26,7 @@ class Breeze.Timers
 		}
 
 	@startDownTimer: (timerID, remainingTime) ->
-		nowSecondsStart = Math.round(new Date().getTime() / 1000)
+		nowSecondsStart = convertToSeconds(new Date().getTime(), 'milliseconds')
 		runningTimers[timerID] = {
 			startTime: nowSecondsStart
 			expectedStopTime: nowSecondsStart + remainingTime
@@ -43,8 +43,20 @@ class Breeze.Timers
 
 	@stopDownTimer: (timerID) ->
 		clearInterval(runningTimers[timerID].timer)
-		nowSecondsStop = Math.round(new Date().getTime() / 1000)
+		nowSecondsStop = convertToSeconds(new Date().getTime(), 'milliseconds')
 		timeElapsedTimer = runningTimers[timerID].totalTime - runningTimers[timerID].currentTime
 		timeElapsedReal = runningTimers[timerID].expectedStopTime - nowSecondsStop
-		timeDifference = timeElapsedReal - timeElapsedTimer
-		console.log('Time drift: ' + timeDifference + ' on ' + timerID + ' in ' + timeElapsedTimer + 'seconds.')
+		timeRemaining = timeElapsedReal - timeElapsedTimer
+		console.log('Remaining Time: ' + timeRemaining + ' on ' + timerID + ' after ' + timeElapsedTimer + 'seconds.')
+
+	convertToSeconds = (quantity, type) ->
+		switch type
+			when 'milliseconds' then return Math.round(quantity / 1000)
+			when 'minutes' then return quantity * 60
+			else return false
+
+	convertToMinutes = (quantity, type) ->
+		switch type
+			when 'milliseconds' then return Math.round((quantity / 1000) / 60)
+			when 'seconds' then return Math.round(quantity / 60)
+			else return false

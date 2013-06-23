@@ -22,6 +22,7 @@ class Breeze.Activities
 	constructor: (@attributes) ->
 		activitiesInitialized = true
 		availableActivities = []
+		Breeze.Activities.selectPlaylist()
 		return true
 
 	@statusReport: () ->
@@ -47,15 +48,24 @@ class Breeze.Activities
 		Breeze.ActivitiesModel.getActivities(currentPlaylist)
 
 	@startPlaylist: () ->
-		Breeze.Timers.startUpTimer(currentPlaylist)
+		Breeze.Timers.startPlaylistTimer(currentPlaylist)
+		Breeze.Timers.startActivityTimer('test', [5, 'minutes'])
+		Breeze.Views.showPauseControlls()
 		currentPlaylistTimerRunning = true
-		return true
+		currentActivityTimerRunning = true
 
 	@pausePlaylist: () ->
-		return true
+		Breeze.Timers.pausePlaylistTimer(currentPlaylist)
+		Breeze.Timers.pauseActivityTimer('test')
+		Breeze.Views.showPlayControlls()
+		currentPlaylistTimerRunning = false
+		currentActivityTimerRunning = false
 
 	@stopPlaylist: () ->
-		return true
+		Breeze.Timers.stopPlaylistTimer(currentPlaylist)
+		Breeze.Timers.stopActivityTimer('test')
+		currentPlaylistTimerRunning = false
+		currentActivityTimerRunning = false
 
 	@serveNextActivity: () ->
 		return true

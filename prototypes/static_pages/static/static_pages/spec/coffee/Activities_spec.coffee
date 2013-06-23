@@ -34,6 +34,7 @@ describe 'Activities Controller', ->
 				expect(Breeze.Activities.startPlaylist()).toBeDefined()
 			it 'should start playlist timer', ->
 				expect(statusReport.currentPlaylistTimerRunning).toBe(true)
+			it 'should change the view to show the playing controlls', ->
 		it 'should serve up the next activity', ->
 			expect(Breeze.Activities.serveNextActivity()).toBeDefined()
 		it 'should start served up activity', ->

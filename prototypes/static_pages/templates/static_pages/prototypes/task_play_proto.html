@@ -20,8 +20,9 @@
 		<script src="/static/static_pages/vendor/js/angular.js"></script>
 		{% compress js %}
 		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/app_init.coffee"></script>
-		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Activities_model.coffee"></script>
 		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Activities.coffee"></script>
+		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Activities_model.coffee"></script>
+		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Views.coffee"></script>
 		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Timers.coffee"></script>
 		{% endcompress %}
 
@@ -39,9 +40,10 @@
 				</div>
 				<div id="activity-controls">
 					<div id="activity-time-ring"></div>
-					<div id="activity-control-left" onclick="Breeze.Timers.stopTimer('id1');">Rewind</div>
-					<div id="activity-control-center" onclick="Breeze.Timers.startTimer('id1', 10);">Play</div>
-					<div id="activity-control-right"><a href="" ng-click="completeActivity()">Complete</a></div>
+					<div id="activity-progress-marker" style="position: absolute; top: 0px; left: 155px; margin-top: -2px;">0</div>
+					<div id="activity-control-left"></div>
+					<div id="activity-control-center"></div>
+					<div id="activity-control-right"></div>
 				</div>
 				<div id="activity-management">
 					<div id="activity-manager-open">Menu</div>
@@ -56,11 +58,8 @@
 				</ul>
 			</div>
 			<div style="position: fixed; right: 20px;">
-			<a href="" onclick="Breeze.ActivitiesModel.updateActivity(0, {text: 'CHANGED'})">Change it</a>
-			<p>Time Test One - <a href="" onclick="Breeze.Timers.startDownTimer('id1', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopDownTimer('id1');">STOP</a> - Remaining: <span id="id1-time">0</span>sec</p>
-			<p>Time Test Two - <a href="" onclick="Breeze.Timers.startDownTimer('id2', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopDownTimer('id2');">STOP</a> - Remaining: <span id="id2-time">0</span>sec</p>
-			<p>Time Test Three - <a href="" onclick="Breeze.Timers.startDownTimer('id3', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopDownTimer('id3');">STOP</a> - Remaining: <span id="id3-time">0</span>sec</p>
-			<p>Time Test Four - <a href="" onclick="Breeze.Timers.startDownTimer('id4', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopDownTimer('id4');">STOP</a> - Remaining: <span id="id4-time">0</span>sec</p>
+			<p>Playlist Timer - <span id="playlist-time">0</span> sec</p>
+			<p>Activity Timer - <span id="activity-time">0</span></p>
 			</div>
 		</div>
 {%endverbatim%}

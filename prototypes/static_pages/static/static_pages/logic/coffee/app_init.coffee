@@ -7,6 +7,8 @@ class Breeze.Initializer
 			$('html').removeClass('no-js')
 			$(document).ready( ->
 				Breeze.Activities()
+				Breeze.Views()
+				Breeze.Timers()
 				console.log('Breeze is ready!')
 			)
 		return true

@@ -1,4 +1,4 @@
-class App.Activities
+class Breeze.Activities
 	# Establish internal variables
 	chuncksCompletedMonth = 32
 	chuncksCompletedDay = 0

@@ -1,5 +1,5 @@
-describe 'Initialize App', ->
-	it 'App Start should be defined', ->
-		expect(App.Start).toBeDefined()
-	it 'App Start constructor should return true', ->
-		expect(App.Start()).toBeTruthy()
+describe 'Initialize the Breeze App', ->
+	it 'Breeze Start should be defined', ->
+		expect(Breeze.Initializer).toBeDefined()
+	it 'Breeze Start constructor should return true', ->
+		expect(Breeze.Initializer()).toBeTruthy()

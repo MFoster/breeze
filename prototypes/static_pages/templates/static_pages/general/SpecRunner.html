@@ -6,12 +6,22 @@
 	<link rel="stylesheet" type="text/css" href="/static/static_pages/spec/jasmine-1.3.1/jasmine.css">
 	<script type="text/javascript" src="/static/static_pages/spec/jasmine-1.3.1/jasmine.js"></script>
 	<script type="text/javascript" src="/static/static_pages/spec/jasmine-1.3.1/jasmine-html.js"></script>
+	<script src="/static/static_pages/vendor/js/jquery.js"></script>
+	<script src="/static/static_pages/vendor/js/modernizr.js"></script>
 
 	<!-- include source files here... -->
-	<script type="text/javascript" src="/static/static_pages/logic/js/app_init.js"></script>
+	{% load compress %}
+	{% compress js %}
+	<script type="text/coffeescript" src="/static/static_pages/logic/coffee/app_init.coffee"></script>
+	<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Activities.coffee"></script>
+	<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Timers.coffee"></script>
+	{% endcompress %}
 
 	<!-- include spec files here... -->
-	<script type="text/javascript" src="/static/static_pages/spec/js/spec_init.js"></script>
+	{% compress js %}
+	<script type="text/coffeescript" src="/static/static_pages/spec/coffee/spec_init.coffee"></script>
+	<script type="text/coffeescript" src="/static/static_pages/spec/coffee/Activities_spec.coffee"></script>
+	{% endcompress %}
 
 	<script type="text/javascript">
 		(function() {

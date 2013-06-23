@@ -1,13 +1,13 @@
-window.App = {}
+window.Breeze = {}
 
-class App.Start
+class Breeze.Initializer
 	constructor: (@attributes) ->
-		console.log('App Starting...')
+		console.log('Breeze Starting...')
 		if (typeof jQuery != 'undefined')
 			$('html').removeClass('no-js')
 			$(document).ready( ->
-				console.log('Document is ready!')
+				console.log('Breeze is ready!')
 			)
 		return true
 
-App.Start()
+Breeze.Initializer()

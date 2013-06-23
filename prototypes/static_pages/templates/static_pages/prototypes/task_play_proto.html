@@ -12,19 +12,23 @@
 
 		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
+		{% load compress %}
 		<link rel="stylesheet" href="/static/static_pages/vendor/css/normalize.css">
 		<link rel="stylesheet" href="/static/static_pages/style/css/style_init.css">
 		<script src="/static/static_pages/vendor/js/jquery.js"></script>
 		<script src="/static/static_pages/vendor/js/modernizr.js"></script>
 		<script src="/static/static_pages/vendor/js/angular.js"></script>
-		<script src="/static/static_pages/logic/js/app_init.js"></script>
-		<script src="/static/static_pages/logic/js/Activities.js"></script>
-		<script src="/static/static_pages/logic/js/Timers.js"></script>
+		{% compress js %}
+		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/app_init.coffee"></script>
+		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Activities.coffee"></script>
+		<script type="text/coffeescript" src="/static/static_pages/logic/coffee/Timers.coffee"></script>
+		{% endcompress %}
+
 	</head>
 	<body>
 {%verbatim%}
 		<!-- Add site or application content here -->
-		<div id="primary-container" ng-controller="App.Activities.controller">
+		<div id="primary-container" ng-controller="Breeze.Activities.controller">
 			<h1>Play Up Tasks</h1>
 			<div id="activity-center">
 				<div id="activity-status-bar">
@@ -34,8 +38,8 @@
 				</div>
 				<div id="activity-controls">
 					<div id="activity-time-ring"></div>
-					<div id="activity-control-left" onclick="App.Timers.stopTimer('id1');">Rewind</div>
-					<div id="activity-control-center" onclick="App.Timers.startTimer('id1', 10);">Play</div>
+					<div id="activity-control-left" onclick="Breeze.Timers.stopTimer('id1');">Rewind</div>
+					<div id="activity-control-center" onclick="Breeze.Timers.startTimer('id1', 10);">Play</div>
 					<div id="activity-control-right"><a href="" ng-click="completeActivity()">Complete</a></div>
 				</div>
 				<div id="activity-management">
@@ -51,10 +55,10 @@
 				</ul>
 			</div>
 			<div style="position: fixed; right: 20px;">
-			<p>Time Test One - <a href="" onclick="App.Timers.startTimer('id1', 300);">START</a> - <a href="" onclick="App.Timers.stopTimer('id1');">STOP</a> - Remaining: <span id="id1-time">0</span>sec</p>
-			<p>Time Test Two - <a href="" onclick="App.Timers.startTimer('id2', 300);">START</a> - <a href="" onclick="App.Timers.stopTimer('id2');">STOP</a> - Remaining: <span id="id2-time">0</span>sec</p>
-			<p>Time Test Three - <a href="" onclick="App.Timers.startTimer('id3', 300);">START</a> - <a href="" onclick="App.Timers.stopTimer('id3');">STOP</a> - Remaining: <span id="id3-time">0</span>sec</p>
-			<p>Time Test Four - <a href="" onclick="App.Timers.startTimer('id4', 300);">START</a> - <a href="" onclick="App.Timers.stopTimer('id4');">STOP</a> - Remaining: <span id="id4-time">0</span>sec</p>
+			<p>Time Test One - <a href="" onclick="Breeze.Timers.startTimer('id1', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopTimer('id1');">STOP</a> - Remaining: <span id="id1-time">0</span>sec</p>
+			<p>Time Test Two - <a href="" onclick="Breeze.Timers.startTimer('id2', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopTimer('id2');">STOP</a> - Remaining: <span id="id2-time">0</span>sec</p>
+			<p>Time Test Three - <a href="" onclick="Breeze.Timers.startTimer('id3', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopTimer('id3');">STOP</a> - Remaining: <span id="id3-time">0</span>sec</p>
+			<p>Time Test Four - <a href="" onclick="Breeze.Timers.startTimer('id4', 300);">START</a> - <a href="" onclick="Breeze.Timers.stopTimer('id4');">STOP</a> - Remaining: <span id="id4-time">0</span>sec</p>
 			</div>
 		</div>
 {%endverbatim%}

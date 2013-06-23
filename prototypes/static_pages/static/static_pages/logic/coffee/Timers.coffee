@@ -1,4 +1,4 @@
-class App.Timers
+class Breeze.Timers
 
 	runningTimers = {}
 
@@ -20,7 +20,7 @@ class App.Timers
 				if runningTimers[timerID].currentCountdownTime > 0
 					runningTimers[timerID].currentCountdownTime--
 				else
-					App.Timers.stopTimer(timerID)
+					Breeze.Timers.stopTimer(timerID)
 				$('#' + timerID + '-time').html(runningTimers[timerID].currentCountdownTime)
 			, 1000)
 		}

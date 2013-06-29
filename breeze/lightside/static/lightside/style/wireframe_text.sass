@@ -1,0 +1,60 @@
+.alternate-text
+	font-family: $font-family-alternate
+
+h1, h2, h3, h4, h5, h6
+	font-family: $font-family-header
+	font-weight: 600
+	color: $color-header-base
+
+h1.alternate-color, h2.alternate-color, h3.alternate-color, h4.alternate-color, h5.alternate-color, h6.alternate-color
+	color: $color-header-alternate
+
+h1.alternate-font, h2.alternate-font, h3.alternate-font, h4.alternate-font, h5.alternate-font, h6.alternate-font
+	font-family: $font-family-header-alternate
+	font-weight: 600
+
+h1
+	@include adjust-font-size-to(32px)
+
+h2
+	@include adjust-font-size-to(24px)
+
+h3
+	@include adjust-font-size-to(20px)
+
+h4
+	@include adjust-font-size-to(18px)
+
+h5
+	@include adjust-font-size-to(16px)
+
+h6
+	@include adjust-font-size-to(13px)
+
+p, span
+	&.emphasis
+		font-weight: 200
+	&.text-subtle
+		color: $color-text-subtle
+	&.text-warning
+		color: $color-text-warning
+	&.text-caution
+		color: $color-text-caution
+	&.text-confirmation
+		color: $color-text-confirmation
+	&.text-information
+		color: $color-text-information
+
+small
+	@include adjust-font-size-to(12px)
+
+strong
+	font-weight: 600
+
+em
+	font-style: italic
+
+a
+	text-decoration: none
+	color: $color-text-link
+	font-weight: 600

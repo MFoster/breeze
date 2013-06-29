@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>Jasmine Spec Runner</title>
+	<link rel="stylesheet" type="text/css" href="/static/lightside/spec/jasmine-1.3.1/jasmine.css">
+	<script type="text/javascript" src="/static/lightside/spec/jasmine-1.3.1/jasmine.js"></script>
+	<script type="text/javascript" src="/static/lightside/spec/jasmine-1.3.1/jasmine-html.js"></script>
+	<script src="/static/lightside/vendor/js/jquery.js"></script>
+	<script src="/static/lightside/vendor/js/angular.js"></script>
+	<script src="/static/lightside/vendor/js/modernizr.js"></script>
+
+	<!-- include source files here... -->
+	{% load compress %}
+	{% compress js %}
+	<script type="text/coffeescript" src="/static/lightside/logic/app_init.coffee"></script>
+	<script type="text/coffeescript" src="/static/lightside/logic/Activities.coffee"></script>
+	<script type="text/coffeescript" src="/static/lightside/logic/Activities_model.coffee"></script>
+	<script type="text/coffeescript" src="/static/lightside/logic/Views.coffee"></script>
+	<script type="text/coffeescript" src="/static/lightside/logic/Timers.coffee"></script>
+	{% endcompress %}
+
+	<!-- include spec files here... -->
+	{% compress js %}
+	<script type="text/coffeescript" src="/static/lightside/spec/spec_init.coffee"></script>
+	<script type="text/coffeescript" src="/static/lightside/spec/Activities_spec.coffee"></script>
+	<script type="text/coffeescript" src="/static/lightside/spec/Views_spec.coffee"></script>
+	<script type="text/coffeescript" src="/static/lightside/spec/Timers_spec.coffee"></script>
+	{% endcompress %}
+
+	<script type="text/javascript">
+		(function() {
+			var jasmineEnv = jasmine.getEnv();
+			jasmineEnv.updateInterval = 1000;
+
+			var htmlReporter = new jasmine.HtmlReporter();
+
+			jasmineEnv.addReporter(htmlReporter);
+
+			jasmineEnv.specFilter = function(spec) {
+				return htmlReporter.specFilter(spec);
+			};
+
+			var currentWindowOnload = window.onload;
+
+			window.onload = function() {
+				if (currentWindowOnload) {
+					currentWindowOnload();
+				}
+				execJasmine();
+			};
+
+			function execJasmine() {
+				jasmineEnv.execute();
+			}
+
+		})();
+	</script>
+
+</head>
+
+<body>
+</body>
+</html>

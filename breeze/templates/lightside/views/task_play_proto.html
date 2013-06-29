@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Breeze - UX - Prototyping</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+		{% load compress %}
+		{% compress css %}
+		<link rel="stylesheet" href="/static/lightside/vendor/css/normalize.css" type="text/css">
+		<link rel="stylesheet" href="/static/lightside/style/style_init.sass" type="text/x-sass">
+		{% endcompress %}
+		<script src="/static/lightside/vendor/js/jquery.js"></script>
+		<script src="/static/lightside/vendor/js/modernizr.js"></script>
+		<script src="/static/lightside/vendor/js/angular.js"></script>
+		{% compress js %}
+		<script type="text/coffeescript" src="/static/lightside/logic/app_init.coffee"></script>
+		<script type="text/coffeescript" src="/static/lightside/logic/Activities.coffee"></script>
+		<script type="text/coffeescript" src="/static/lightside/logic/Activities_model.coffee"></script>
+		<script type="text/coffeescript" src="/static/lightside/logic/Views.coffee"></script>
+		<script type="text/coffeescript" src="/static/lightside/logic/Timers.coffee"></script>
+		{% endcompress %}
+
+	</head>
+	<body>
+{%verbatim%}
+		<!-- Add site or application content here -->
+		<div id="primary-container" ng-controller="Breeze.ActivitiesModel.controller">
+			<h1>Breeze Prototype</h1>
+			<div id="activity-center">
+				<div id="activity-status-bar">
+					<div id="activity-completed-month">59 Mo</div>
+					<div id="activity-minutes-remaining">0min</div>
+					<div id="activity-completed-today">Day 3</div>
+				</div>
+				<div id="activity-controls">
+					<div id="activity-time-ring"></div>
+					<div id="activity-progress-marker" style="position: absolute; top: 0px; left: 155px; margin-top: -2px;">0</div>
+					<div id="activity-control-left"></div>
+					<div id="activity-control-center"></div>
+					<div id="activity-control-right"></div>
+				</div>
+				<div id="activity-management">
+					<div id="activity-manager-open">Menu</div>
+					<div id="activity-add-edit-open">Add</div>
+				</div>
+				<ul id="activity-list">
+					<li id="{{activity.id}}" class="activity-list-item" ng-repeat="activity in activities" data-activity_index="{{ $index }}">
+						<div class="activity-duration-{{activity.duration}}">&nbsp;</div>
+						<span class="activity-title">{{activity.text}}</span>
+						<div class="activity-reorder">&Ecirc;</div>
+					</li>
+				</ul>
+			</div>
+			<div style="position: fixed; right: 20px; display: none;">
+			<p>Playlist Timer - <span id="playlist-time">0</span> sec</p>
+			<p>Activity Timer - <span id="activity-time">0</span></p>
+			</div>
+		</div>
+{%endverbatim%}
+	</body>
+</html>

@@ -14,6 +14,9 @@ urlpatterns = patterns('',
     url(r'^task/update/(?P<slug>[-_\w]+)/$', TaskUpdate.as_view(), name='task_update'),
 	url(r'^task/(?P<slug>[-_\w]+)/$', TaskDetailView.as_view(), name='task_detail'),
 
+    # URLs for the main person viewable pages
+    url(r'^lightside/', include('lightside.urls')),
+
     #url(r'task/delete/(?P<slug>[-_\w]+)/$$', TaskDelete.as_view(), name='task_delete'),
 
     # Uncomment the admin/doc line below to enable admin documentation:

@@ -3,6 +3,9 @@ class Breeze.Views
 	pauseControllsVisible = false
 
 	constructor: (@attributes) ->
+		$('#activity-list-debug-info').hide()
+		$('#activity-prompt').hide()
+		$(document).on('click', '#activity-list-debug-toggle', -> $('#activity-list-debug-info').toggle())
 		$(document).on('click', '#activity-control-rewind', -> Breeze.Activities.rewindActivity())
 		$(document).on('click', '#activity-control-pause', -> Breeze.Activities.pausePlaylist())
 		$(document).on('click', '#activity-control-complete', -> Breeze.Activities.completeActivity())
@@ -36,6 +39,19 @@ class Breeze.Views
 		else
 			Breeze.Views.showPauseControlls()
 		pauseControllsVisible != pauseControllsVisible
+
+	@showPrompt: (message = 'Message Missing', controls = [['No Control', "console.log('Missing Function')"]]) ->
+		$('#activity-prompt-message').html(message)
+		$('#activity-prompt-controlls').html( ->
+			returnHtml = ''
+			for control in controls
+				returnHtml += '<button onclick="' + control[1] + '">' + control[0] + '</button>'
+			return returnHtml
+		)
+		$('#activity-prompt').show()
+
+	@hidePrompt: () ->
+		$('#activity-prompt').hide()
 
 	@placeProgressMarker: (percentage) ->
 		# Angle negative for clockwise rotation

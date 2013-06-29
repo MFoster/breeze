@@ -8,32 +8,27 @@ class Breeze.Activities
 	userActionLog = []
 
 	# Activities Status Variables
-	activitiesInitialized = false
-	availableActivities = []
+	_init = false
+	availableActivities = ['test']
 	currentPlaylist = ''
 	currentActivity = ''
 	nextActivity = ''
-	currentPlaylistTimerRunning = false
-	currentActivityTimerRunning = false
 	chunckTimeSmall = 5
 	chunckTimeMedium = 25
 	chunckTimeLarge = 50
 
 	constructor: (@attributes) ->
-		activitiesInitialized = true
-		availableActivities = []
+		_init = true
 		Breeze.Activities.selectPlaylist()
 		return true
 
 	@statusReport: () ->
 		reportData = {
-			activitiesInitialized: activitiesInitialized
+			_init: activitiesInitialized
 			availableActivities: availableActivities
 			currentPlaylist: currentPlaylist
 			currentActivity: currentActivity
 			nextActivity: nextActivity
-			currentPlaylistTimerRunning: currentPlaylistTimerRunning
-			currentActivityTimerRunning: currentActivityTimerRunning
 			chunckTimeSmall: chunckTimeSmall
 			chunckTimeMedium: chunckTimeMedium
 			chunckTimeLarge: chunckTimeSmall
@@ -49,32 +44,45 @@ class Breeze.Activities
 
 	@startPlaylist: () ->
 		Breeze.Timers.startPlaylistTimer(currentPlaylist)
-		Breeze.Timers.startActivityTimer('test', [5, 'minutes'])
 		Breeze.Views.showPauseControlls()
-		currentPlaylistTimerRunning = true
-		currentActivityTimerRunning = true
+		if currentActivity is ''
+			Breeze.Activities.serveNextActivity()
+		else
+			Breeze.Activities.startActivity(currentActivity)
 
 	@pausePlaylist: () ->
 		Breeze.Timers.pausePlaylistTimer(currentPlaylist)
 		Breeze.Timers.pauseActivityTimer('test')
 		Breeze.Views.showPlayControlls()
-		currentPlaylistTimerRunning = false
-		currentActivityTimerRunning = false
 
 	@stopPlaylist: () ->
 		Breeze.Timers.stopPlaylistTimer(currentPlaylist)
 		Breeze.Timers.stopActivityTimer('test')
-		currentPlaylistTimerRunning = false
-		currentActivityTimerRunning = false
 
 	@serveNextActivity: () ->
-		return true
+		Breeze.Views.showPrompt('Want to start test activity?', [
+			['Accept', "Breeze.Activities.startActivity('test');"]
+			['Snooze', "Breeze.Activities.snoozeActivity('test');"]
+		])
 
 	@startActivity: (activityIndex) ->
-		return true
+		if currentActivity is activityIndex
+			Breeze.Timers.startActivityTimer(activityIndex)
+		else
+			currentActivity = activityIndex
+			Breeze.Timers.startActivityTimer(activityIndex, [5, 'minutes'])
+			Breeze.Views.hidePrompt()
 
-	@snoozeActivity: (activityIndex, amountOfSnooze) ->
-		return true
+	@snoozeActivity: (activityIndex) ->
+		Breeze.Views.showPrompt('How Long Would you like to snooze for?', [
+			['1 Hour', "Breeze.Activities.setSnoozeOnActivity('" + activityIndex + "', [1, 'hour']);"]
+			['1 Day', "Breeze.Activities.setSnoozeOnActivity('" + activityIndex + "', [1, 'day']);"]
+			['1 Week', "Breeze.Activities.setSnoozeOnActivity('" + activityIndex + "', [1, 'week']);"]
+		])
+
+	@setSnoozeOnActivity: (activityIndex, amountOfSnooze) ->
+		console.log('Snoozed for ' + amountOfSnooze[0] + ' ' + amountOfSnooze[1])
+		Breeze.Views.hidePrompt()
 
 	@completeActivity: (activityIndex) ->
 		return true

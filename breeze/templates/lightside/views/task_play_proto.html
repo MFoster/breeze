@@ -51,6 +51,10 @@
 					<div id="activity-manager-open">Menu</div>
 					<div id="activity-add-edit-open">Add</div>
 				</div>
+				<div id="activity-prompt">
+					<div id="activity-prompt-message"></div>
+					<div id="activity-prompt-controlls"></div>
+				</div>
 				<ul id="activity-list">
 					<li id="{{activity.id}}" class="activity-list-item" ng-repeat="activity in activities" data-activity_index="{{ $index }}">
 						<div class="activity-duration-{{activity.duration}}">&nbsp;</div>
@@ -59,9 +63,12 @@
 					</li>
 				</ul>
 			</div>
-			<div style="position: fixed; right: 20px; display: none;">
-			<p>Playlist Timer - <span id="playlist-time">0</span> sec</p>
-			<p>Activity Timer - <span id="activity-time">0</span></p>
+			<div id="activity-list-debug-view">
+				<div id="activity-list-debug-toggle">=</div>
+				<div id="activity-list-debug-info">
+					<p>Playlist Timer - <span id="playlist-time">0</span> sec</p>
+					<p>Activity Timer - <span id="activity-time">0</span></p>
+				</div>
 			</div>
 		</div>
 {%endverbatim%}

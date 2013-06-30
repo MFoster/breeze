@@ -1,10 +1,12 @@
 class Breeze.Timers
 	# Internal Status Variables
+	_init = false
 	playlistTimers = {}
 	activityTimers = {}
 	expectedEvents = {}
+	eventLoopInterval = 5
 
-	# Internal Constanst
+	# Internal Constants
 	seconds = 1000
 	minutes = 60
 	hours = 60
@@ -13,19 +15,27 @@ class Breeze.Timers
 	months = 30
 	years = 365
 
-	# REMOVE
-	runningTimers = {}
-
 	constructor: (@attributes) ->
+		_init = true
 		registeredEventLoop = setInterval( ->
 			loopingTimerTasks()
-		, 5 * seconds)
+		, eventLoopInterval * seconds)
 
 	@statusReport: () ->
 		reportObject = {
 			playlistTimers: playlistTimers
 			activityTimers: activityTimers
 			expectedEvents: expectedEvents
+			eventLoopInterval: eventLoopInterval
+			CONSTANTS: {
+				seconds: seconds
+				minutes: minutes
+				hours: hours
+				days: days
+				weeks: weeks
+				months: months
+				years: years
+			}
 		}
 		return reportObject
 
@@ -36,14 +46,11 @@ class Breeze.Timers
 
 	activityTimerTasks = (activity) ->
 		if activity
-			if activityTimers[activity].remainingTimeSeconds > 0
-				activityTimers[activity].elapsedTimeSeconds++
-				activityTimers[activity].remainingTimeSeconds--
-				$('#activity-time').html('Total: ' + activityTimers[activity].totalTime + ' sec - Elapsed: ' + activityTimers[activity].elapsedTimeSeconds + ' sec - Remaining: ' + activityTimers[activity].remainingTimeSeconds + ' sec')
-				Breeze.Views.placeProgressMarker(activityTimers[activity].elapsedTimeSeconds/activityTimers[activity].totalTime)
-				$('#activity-minutes-remaining').html(convertToMinutes(activityTimers[activity].remainingTimeSeconds, 'seconds') + 'min')
-			else
-				Breeze.Timers.pauseActivityTimer(activity)
+			activityTimers[activity].elapsedTimeSeconds++
+			activityTimers[activity].remainingTimeSeconds--
+			$('#activity-time').html('Total: ' + activityTimers[activity].totalTime + ' sec - Elapsed: ' + activityTimers[activity].elapsedTimeSeconds + ' sec - Remaining: ' + activityTimers[activity].remainingTimeSeconds + ' sec')
+			Breeze.Views.placeProgressMarker(activityTimers[activity].elapsedTimeSeconds/activityTimers[activity].totalTime)
+			$('#activity-minutes-remaining').html(convertToMinutes(activityTimers[activity].remainingTimeSeconds, 'seconds') + 'min')
 
 	loopingTimerTasks = () ->
 		nowTime = getCurrentTime()
@@ -105,17 +112,18 @@ class Breeze.Timers
 
 	@startActivityTimer: (activity, rawTimeLength = ['5', 'minutes']) ->
 		nowTime = getCurrentTime()
-		convertedTimeLength = convertToSeconds(rawTimeLength[0], rawTimeLength[1])
-		Breeze.Timers.registerEvent({
-			fireAt: rawTimeLength
-			fireCall: ->
-				console.log(activity + ' has run out of time')
-		})
 		if not activityTimers.hasOwnProperty(activity)
+			convertedTimeLength = convertToSeconds(rawTimeLength[0], rawTimeLength[1])
+			registerEvent = Breeze.Timers.registerEvent({
+				fireAt: rawTimeLength
+				fireCall: ->
+					Breeze.Timers.pauseActivityTimer(activity)
+			})
 			activityTimers[activity] = {
 				startTime: nowTime
 				totalTime: convertedTimeLength
-				expectedStopTime: nowTime + convertToMilliseconds(convertedTimeLength)
+				registeredEvent: registerEvent
+				expectedStopTime: nowTime + convertToMilliseconds(convertedTimeLength, 'seconds')
 				elapsedTimeSeconds: 0
 				remainingTimeSeconds: convertedTimeLength
 				timer: setInterval( ->
@@ -123,15 +131,25 @@ class Breeze.Timers
 				, seconds)
 			}
 		else
+			remainingSecondsAtRestart = activityTimers[activity].remainingTimeSeconds
+			registerEvent = Breeze.Timers.registerEvent({
+				fireAt: [remainingSecondsAtRestart, 'seconds']
+				fireCall: ->
+					Breeze.Timers.pauseActivityTimer(activity)
+			})
+			activityTimers[activity].registeredEvent = registerEvent
+			activityTimers[activity].expectedStopTime = nowTime + convertToMilliseconds(remainingSecondsAtRestart, 'seconds')
 			activityTimers[activity].timer = setInterval( ->
 				activityTimerTasks(activity)
 			, seconds)
 
 	@pauseActivityTimer: (activity) ->
+		delete expectedEvents[activityTimers[activity].registeredEvent]
 		clearInterval(activityTimers[activity].timer)
 		return activityTimers[activity]
 
 	@stopActivityTimer: (activity) ->
+		delete expectedEvents[activityTimers[activity].registeredEvent]
 		clearInterval(activityTimers[activity].timer)
 		$('#activity-time').html(0)
 		delete activityTimers[activity]
@@ -151,6 +169,7 @@ class Breeze.Timers
 
 	convertToMilliseconds = (quantity, type) ->
 		switch type
+			when 'milliseconds' then return quantity
 			when 'seconds' then return quantity * seconds
 			when 'minutes' then return quantity * seconds * minutes
 			when 'hours' then return quantity * seconds * minutes * hours
@@ -166,6 +185,8 @@ class Breeze.Timers
 
 	convertToMinutes = (quantity, type) ->
 		switch type
-			when 'milliseconds' then return Math.round((quantity / 1000) / 60)
-			when 'seconds' then return Math.round(quantity / 60)
+			when 'milliseconds' then return Math.round((quantity / seconds) / minutes)
+			when 'seconds' then return Math.round(quantity / minutes)
+			when 'minutes' then return quantity
+			when 'hours' then return quantity * hours
 			else return false

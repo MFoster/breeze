@@ -1,12 +1,4 @@
 class Breeze.Activities
-	# Establish internal variables
-	# USER Data, will need to be moved to User logic
-	userName = 'Some Nameor'
-	userAvailablePlaylists = ['default']
-	userChuncksCompletedMonth = 32
-	userChuncksCompletedDay = 0
-	userActionLog = []
-
 	# Activities Status Variables
 	_init = false
 	availableActivities = ['test']
@@ -18,13 +10,15 @@ class Breeze.Activities
 	chunckTimeLarge = 50
 
 	constructor: (@attributes) ->
-		_init = true
-		Breeze.Activities.selectPlaylist()
-		return true
+		if !_init
+			_init = true
+			return Breeze.Activities.statusReport()
+		else
+			Breeze.DebugCenter.message('Activities class was already initialized.', 'caution')
 
 	@statusReport: () ->
 		reportData = {
-			_init: activitiesInitialized
+			_init: _init
 			availableActivities: availableActivities
 			currentPlaylist: currentPlaylist
 			currentActivity: currentActivity
@@ -36,7 +30,8 @@ class Breeze.Activities
 		return reportData
 
 	@selectPlaylist: (selectedPlaylist) ->
-		currentPlaylist = userAvailablePlaylists[0]
+		currentPlaylist = selectedPlaylist
+		Breeze.DebugCenter.message('Playlist Selected: ' + selectedPlaylist)
 		return currentPlaylist
 
 	@updateActivitiesList: () ->
@@ -81,7 +76,7 @@ class Breeze.Activities
 		])
 
 	@setSnoozeOnActivity: (activityIndex, amountOfSnooze) ->
-		console.log('Snoozed for ' + amountOfSnooze[0] + ' ' + amountOfSnooze[1])
+		Breeze.DebugCenter.message('Snoozed for ' + amountOfSnooze[0] + ' ' + amountOfSnooze[1])
 		Breeze.Views.hidePrompt()
 
 	@completeActivity: (activityIndex) ->

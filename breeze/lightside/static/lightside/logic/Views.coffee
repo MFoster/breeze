@@ -1,10 +1,21 @@
 class Breeze.Views
 	# View Status Variables
+	_init = false
 	pauseControllsVisible = false
+	bindingsActive = false
 
 	constructor: (@attributes) ->
-		$('#activity-list-debug-info').hide()
-		$('#activity-prompt').hide()
+		if !_init
+			$('#activity-list-debug-info').hide()
+			$('#activity-prompt').hide()
+			bindingsActive = activateBindings()
+			Breeze.Views.showPlayControlls()
+			_init = true
+			return Breeze.Views.statusReport()
+		else
+			Breeze.DebugCenter.message('Views class was already initialized.', 'caution')
+
+	activateBindings = () ->
 		$(document).on('click', '#activity-list-debug-toggle', -> $('#activity-list-debug-info').toggle())
 		$(document).on('click', '#activity-control-rewind', -> Breeze.Activities.rewindActivity())
 		$(document).on('click', '#activity-control-pause', -> Breeze.Activities.pausePlaylist())
@@ -12,12 +23,13 @@ class Breeze.Views
 		$(document).on('click', '#activity-control-playlists', -> Breeze.Activities.selectPlaylist())
 		$(document).on('click', '#activity-control-play', -> Breeze.Activities.startPlaylist())
 		$(document).on('click', '#activity-control-stop', -> Breeze.Activities.stopPlaylist())
-		Breeze.Views.showPlayControlls()
 		return true
 
 	@statusReport: () ->
 		reportData = {
+			_init: _init
 			pauseControllsVisible: pauseControllsVisible
+			bindingsActive: bindingsActive
 		}
 		return reportData
 
@@ -63,3 +75,8 @@ class Breeze.Views
 			top: xPos
 			left: yPos
 		}, 1000, 'linear')
+
+	@showPersonalInfo: (personObject) ->
+		$('#person-name').html(personObject.personsName)
+		$('#activity-completed-month').html(personObject.personsStats.chuncksCompletedMonth + ' Mo')
+		$('#activity-completed-today').html('Day ' + personObject.personsStats.chuncksCompletedDay)

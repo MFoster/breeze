@@ -22,6 +22,8 @@
 		<script src="/static/lightside/vendor/js/angular.js"></script>
 		{% compress js %}
 		<script type="text/coffeescript" src="/static/lightside/logic/app_init.coffee"></script>
+		<script type="text/coffeescript" src="/static/lightside/logic/debug_center.coffee"></script>
+		<script type="text/coffeescript" src="/static/lightside/logic/People.coffee"></script>
 		<script type="text/coffeescript" src="/static/lightside/logic/Activities.coffee"></script>
 		<script type="text/coffeescript" src="/static/lightside/logic/Activities_model.coffee"></script>
 		<script type="text/coffeescript" src="/static/lightside/logic/Views.coffee"></script>
@@ -34,11 +36,12 @@
 		<!-- Add site or application content here -->
 		<div id="primary-container" ng-controller="Breeze.ActivitiesModel.controller">
 			<h1>Breeze Prototype</h1>
+			<h3 id="person-name"></h3>
 			<div id="activity-center">
 				<div id="activity-status-bar">
-					<div id="activity-completed-month">59 Mo</div>
+					<div id="activity-completed-month"></div>
 					<div id="activity-minutes-remaining">0min</div>
-					<div id="activity-completed-today">Day 3</div>
+					<div id="activity-completed-today"></div>
 				</div>
 				<div id="activity-controls">
 					<div id="activity-time-ring"></div>

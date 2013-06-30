@@ -14,7 +14,7 @@ describe 'Views Controller', ->
 	describe 'Playlist change controllers', ->
 		it 'should respond to showing the pause controlls', ->
 			expect(Breeze.Views.showPauseControlls()).toBeDefined()
-			expect(statusReport.pauseControllsVisible).toBe(false)
+			expect(statusReport.pauseControllsVisible).toBe(true)
 		it 'should respond to showing the play controlls', ->
 			expect(Breeze.Views.showPlayControlls()).toBeDefined()
 			expect(statusReport.pauseControllsVisible).toBe(true)

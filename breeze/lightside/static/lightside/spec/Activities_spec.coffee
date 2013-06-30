@@ -9,20 +9,18 @@ describe 'Activities Controller', ->
 	it 'should respond to getting a status report', ->
 		expect(statusReport).toBeDefined()
 	it 'should have the correct status information available', ->
-		expect(statusReport.activitiesInitialized).toBeDefined()
+		expect(statusReport._init).toBeDefined()
 		expect(statusReport.availableActivities).toBeDefined()
 		expect(statusReport.currentPlaylist).toBeDefined()
 		expect(statusReport.currentActivity).toBeDefined()
 		expect(statusReport.nextActivity).toBeDefined()
-		expect(statusReport.currentPlaylistTimerRunning).toBeDefined()
-		expect(statusReport.currentActivityTimerRunning).toBeDefined()
 		expect(statusReport.chunckTimeSmall).toBeDefined()
 		expect(statusReport.chunckTimeMedium).toBeDefined()
 		expect(statusReport.chunckTimeLarge).toBeDefined()
 
 	describe 'Select desired playlist and get activities', ->
 		it 'should respond to selecting a playlist', ->
-			expect(Breeze.Activities.selectPlaylist()).toBeDefined()
+			expect(Breeze.Activities.selectPlaylist('test')).toBeDefined()
 		it 'should have a playlist defined', ->
 			expect(statusReport.currentPlaylist).not.toBe('')
 		xit 'should return activities for selected playlist', ->
@@ -32,7 +30,7 @@ describe 'Activities Controller', ->
 		describe 'start', ->
 			it 'should respond to starting a playlist', ->
 				expect(Breeze.Activities.startPlaylist()).toBeDefined()
-			it 'should start playlist timer', ->
+			xit 'should start playlist timer', ->
 				expect(statusReport.currentPlaylistTimerRunning).toBe(true)
 			it 'should change the view to show the playing controlls', ->
 		it 'should serve up the next activity', ->
@@ -41,9 +39,9 @@ describe 'Activities Controller', ->
 			expect(Breeze.Activities.startActivity()).toBeDefined()
 		it 'should be able to snooze served up activity', ->
 			expect(Breeze.Activities.snoozeActivity()).toBeDefined()
-		it 'should pause current playlist and activity', ->
+		xit 'should pause current playlist and activity', ->
 			expect(Breeze.Activities.pausePlaylist()).toBeDefined()
-		it 'should stop current playlist', ->
+		xit 'should stop current playlist', ->
 			expect(Breeze.Activities.stopPlaylist()).toBeDefined()
 
 	describe 'Complete activity', ->

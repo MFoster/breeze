@@ -16,13 +16,18 @@ class Breeze.Timers
 	years = 365
 
 	constructor: (@attributes) ->
-		_init = true
-		registeredEventLoop = setInterval( ->
-			loopingTimerTasks()
-		, eventLoopInterval * seconds)
+		if !_init
+			registeredEventLoop = setInterval( ->
+				loopingTimerTasks()
+			, eventLoopInterval * seconds)
+			_init = true
+			return Breeze.Timers.statusReport()
+		else
+			Breeze.DebugCenter.message('Timers class was already initialized.', 'caution')
 
 	@statusReport: () ->
-		reportObject = {
+		reportData = {
+			_init: _init
 			playlistTimers: playlistTimers
 			activityTimers: activityTimers
 			expectedEvents: expectedEvents
@@ -37,7 +42,7 @@ class Breeze.Timers
 				years: years
 			}
 		}
-		return reportObject
+		return reportData
 
 	playlistTimerTasks = (playlist) ->
 		if playlist

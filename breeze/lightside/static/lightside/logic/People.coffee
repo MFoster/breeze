@@ -46,3 +46,8 @@ class Breeze.People
 		personObject = testData
 		Breeze.Activities.selectPlaylist(personObject.personsPlaylists[0])
 		Breeze.Views.showPersonalInfo(personObject)
+
+	@addOneToPersonsChunckStats: () ->
+		personObject.personsStats.chuncksCompletedDay++
+		personObject.personsStats.chuncksCompletedMonth++
+		Breeze.Views.showPersonalInfo(personObject)

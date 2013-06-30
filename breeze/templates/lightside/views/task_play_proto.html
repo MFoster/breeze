@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" ng-app> <!--<![endif]-->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -19,7 +19,6 @@
 		{% endcompress %}
 		<script src="/static/lightside/vendor/js/jquery.js"></script>
 		<script src="/static/lightside/vendor/js/modernizr.js"></script>
-		<script src="/static/lightside/vendor/js/angular.js"></script>
 		{% compress js %}
 		<script type="text/coffeescript" src="/static/lightside/logic/app_init.coffee"></script>
 		<script type="text/coffeescript" src="/static/lightside/logic/debug_center.coffee"></script>
@@ -32,9 +31,8 @@
 
 	</head>
 	<body>
-{%verbatim%}
 		<!-- Add site or application content here -->
-		<div id="primary-container" ng-controller="Breeze.ActivitiesModel.controller">
+		<div id="primary-container">
 			<h1>Breeze Prototype</h1>
 			<h3 id="person-name"></h3>
 			<div id="activity-center">
@@ -59,11 +57,7 @@
 					<div id="activity-prompt-controlls"></div>
 				</div>
 				<ul id="activity-list">
-					<li id="{{activity.id}}" class="activity-list-item" ng-repeat="activity in activities" data-activity_index="{{ $index }}">
-						<div class="activity-duration-{{activity.duration}}">&nbsp;</div>
-						<span class="activity-title">{{activity.text}}</span>
-						<div class="activity-reorder">&Ecirc;</div>
-					</li>
+					<li>Data Loading</li>
 				</ul>
 			</div>
 			<div id="activity-list-debug-view">
@@ -74,6 +68,5 @@
 				</div>
 			</div>
 		</div>
-{%endverbatim%}
 	</body>
 </html>

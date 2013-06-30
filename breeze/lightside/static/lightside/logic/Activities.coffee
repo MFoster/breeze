@@ -1,9 +1,8 @@
 class Breeze.Activities
 	# Activities Status Variables
 	_init = false
-	availableActivities = ['test']
 	currentPlaylist = ''
-	currentActivity = ''
+	currentActivityId = ''
 	nextActivity = ''
 	chunckTimeSmall = 5
 	chunckTimeMedium = 25
@@ -19,9 +18,8 @@ class Breeze.Activities
 	@statusReport: () ->
 		reportData = {
 			_init: _init
-			availableActivities: availableActivities
 			currentPlaylist: currentPlaylist
-			currentActivity: currentActivity
+			currentActivityId: currentActivityId
 			nextActivity: nextActivity
 			chunckTimeSmall: chunckTimeSmall
 			chunckTimeMedium: chunckTimeMedium
@@ -31,6 +29,7 @@ class Breeze.Activities
 
 	@selectPlaylist: (selectedPlaylist) ->
 		currentPlaylist = selectedPlaylist
+		Breeze.Activities.Model.getActivities(currentPlaylist)
 		Breeze.DebugCenter.message('Playlist Selected: ' + selectedPlaylist)
 		return currentPlaylist
 
@@ -40,53 +39,67 @@ class Breeze.Activities
 	@startPlaylist: () ->
 		Breeze.Timers.startPlaylistTimer(currentPlaylist)
 		Breeze.Views.showPauseControlls()
-		if currentActivity is ''
+		if currentActivityId is ''
 			Breeze.Activities.serveNextActivity()
 		else
-			Breeze.Activities.startActivity(currentActivity)
+			Breeze.Activities.startActivity(currentActivityId)
 
 	@pausePlaylist: () ->
 		Breeze.Timers.pausePlaylistTimer(currentPlaylist)
-		Breeze.Timers.pauseActivityTimer('test')
+		Breeze.Timers.pauseActivityTimer(currentActivityId)
 		Breeze.Views.showPlayControlls()
 
 	@stopPlaylist: () ->
 		Breeze.Timers.stopPlaylistTimer(currentPlaylist)
-		Breeze.Timers.stopActivityTimer('test')
+		Breeze.Timers.stopActivityTimer(currentActivityId)
 
 	@serveNextActivity: () ->
-		Breeze.Views.showPrompt('Want to start test activity?', [
-			['Accept', "Breeze.Activities.startActivity('test');"]
-			['Snooze', "Breeze.Activities.snoozeActivity('test');"]
+		nextActivity = Breeze.Activities.Model.getNextActivity()
+		Breeze.Views.showPrompt('Want to start: ' + nextActivity.text + '?', [
+			['Accept', "Breeze.Activities.startActivity('" + nextActivity.id + "');"]
+			['Snooze', "Breeze.Activities.snoozeActivity('" + nextActivity.id + "');"]
 		])
 
-	@startActivity: (activityIndex) ->
-		if currentActivity is activityIndex
-			Breeze.Timers.startActivityTimer(activityIndex)
+	@startActivity: (activityId) ->
+		Breeze.Views.makeActivityActive(activityId)
+		if currentActivityId is activityId
+			Breeze.Timers.startActivityTimer(activityId)
 		else
-			currentActivity = activityIndex
-			Breeze.Timers.startActivityTimer(activityIndex, [5, 'minutes'])
+			activityDuration = 0
+			switch nextActivity.duration
+				when 'large' then activityDuration = chunckTimeLarge
+				when 'medium' then activityDuration = chunckTimeMedium
+				when 'small' then activityDuration = chunckTimeSmall
+				else activityDuration = nextActivity.duration
+			currentActivityId = activityId
+			Breeze.Timers.startActivityTimer(activityId, [activityDuration, 'minutes'])
 			Breeze.Views.hidePrompt()
 
-	@snoozeActivity: (activityIndex) ->
+	@snoozeActivity: (activityId) ->
 		Breeze.Views.showPrompt('How Long Would you like to snooze for?', [
-			['1 Hour', "Breeze.Activities.setSnoozeOnActivity('" + activityIndex + "', [1, 'hour']);"]
-			['1 Day', "Breeze.Activities.setSnoozeOnActivity('" + activityIndex + "', [1, 'day']);"]
-			['1 Week', "Breeze.Activities.setSnoozeOnActivity('" + activityIndex + "', [1, 'week']);"]
+			['1 Hour', "Breeze.Activities.setSnoozeOnActivity('" + activityId + "', [1, 'hour']);"]
+			['1 Day', "Breeze.Activities.setSnoozeOnActivity('" + activityId + "', [1, 'day']);"]
+			['1 Week', "Breeze.Activities.setSnoozeOnActivity('" + activityId + "', [1, 'week']);"]
 		])
 
-	@setSnoozeOnActivity: (activityIndex, amountOfSnooze) ->
+	@setSnoozeOnActivity: (activityId, amountOfSnooze) ->
 		Breeze.DebugCenter.message('Snoozed for ' + amountOfSnooze[0] + ' ' + amountOfSnooze[1])
 		Breeze.Views.hidePrompt()
 
-	@completeActivity: (activityIndex) ->
+	@completeActivity: () ->
+		if currentActivityId != ''
+			Breeze.Timers.stopActivityTimer(currentActivityId)
+			Breeze.Activities.Model.archiveActivityById(currentActivityId)
+			Breeze.Views.removeActivity(currentActivityId)
+			Breeze.People.addOneToPersonsChunckStats()
+			currentActivityId = ''
+			Breeze.Activities.serveNextActivity()
+
+	@rewindActivity: (activityId, amountOfRewind) ->
 		return true
 
-	@rewindActivity: (activityIndex, amountOfRewind) ->
+	@addTimeToActivity: (activityId, amountOfAdd) ->
 		return true
 
-	@addTimeToActivity: (activityIndex, amountOfAdd) ->
-		return true
-
-	@logToActivity: (activityIndex, logType, logMessage) ->
+	@logToActivity: (activityId, logType, logMessage) ->
 		return true

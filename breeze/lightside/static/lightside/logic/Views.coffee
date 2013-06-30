@@ -1,6 +1,7 @@
 class Breeze.Views
 	# View Status Variables
 	pauseControllsVisible = false
+	addEditForm = "form not loaded"
 
 	constructor: (@attributes) ->
 		$(document).on('click', '#activity-control-rewind', -> Breeze.Activities.rewindActivity())
@@ -9,12 +10,14 @@ class Breeze.Views
 		$(document).on('click', '#activity-control-playlists', -> Breeze.Activities.selectPlaylist())
 		$(document).on('click', '#activity-control-play', -> Breeze.Activities.startPlaylist())
 		$(document).on('click', '#activity-control-stop', -> Breeze.Activities.stopPlaylist())
+		$(document).on('click', '#activity-add-edit-open', -> Breeze.Views.showAddEditForm())
 		Breeze.Views.showPlayControlls()
 		return true
 
 	@statusReport: () ->
 		reportData = {
 			pauseControllsVisible: pauseControllsVisible
+			addEditForm: addEditForm
 		}
 		return reportData
 
@@ -36,6 +39,12 @@ class Breeze.Views
 		else
 			Breeze.Views.showPauseControlls()
 		pauseControllsVisible != pauseControllsVisible
+
+	@showAddEditForm: () ->
+		$.get "task_form_proto", (data) ->
+			addEditForm = data
+			$('#add-edit-form-container').html(addEditForm).show()
+			addEditFormVisible = true
 
 	@placeProgressMarker: (percentage) ->
 		# Angle negative for clockwise rotation

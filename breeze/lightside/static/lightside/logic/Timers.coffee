@@ -47,13 +47,11 @@ class Breeze.Timers
 	playlistTimerTasks = (playlist) ->
 		if playlist
 			playlistTimers[playlist].elapsedTimeSeconds++
-			$('#playlist-time').html(playlistTimers[playlist].elapsedTimeSeconds)
 
 	activityTimerTasks = (activity) ->
 		if activity
 			activityTimers[activity].elapsedTimeSeconds++
 			activityTimers[activity].remainingTimeSeconds--
-			$('#activity-time').html('Total: ' + activityTimers[activity].totalTime + ' sec - Elapsed: ' + activityTimers[activity].elapsedTimeSeconds + ' sec - Remaining: ' + activityTimers[activity].remainingTimeSeconds + ' sec')
 			Breeze.Views.placeProgressMarker(activityTimers[activity].elapsedTimeSeconds/activityTimers[activity].totalTime)
 			$('#activity-minutes-remaining').html(convertToMinutes(activityTimers[activity].remainingTimeSeconds, 'seconds') + 'min')
 
@@ -67,6 +65,7 @@ class Breeze.Timers
 
 	loopingTimerTasks = () ->
 		nowTime = getCurrentTime()
+		Breeze.Views.updateDebugView()
 		# TODO: Check Timer accuracy
 		# TODO: activate/deactivate looper based on number of events
 		for eventId, eventData of expectedEvents
@@ -124,6 +123,7 @@ class Breeze.Timers
 		return playlistTimers
 
 	@startActivityTimer: (activity, rawTimeLength = ['5', 'minutes']) ->
+		# TODO: Use convert to Milliseconds time in expected Stop Time
 		nowTime = getCurrentTime()
 		if not activityTimers.hasOwnProperty(activity)
 			convertedTimeLength = convertToSeconds(rawTimeLength[0], rawTimeLength[1])

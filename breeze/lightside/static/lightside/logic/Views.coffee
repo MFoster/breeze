@@ -1,7 +1,8 @@
 class Breeze.Views
 	# View Status Variables
 	_init = false
-	pauseControllsVisible = false
+	pauseControllsVisible = true
+	debugVisible = false
 	bindingsActive = false
 
 	constructor: (@attributes) ->
@@ -16,7 +17,7 @@ class Breeze.Views
 			Breeze.DebugCenter.message('Views class was already initialized.', 'caution')
 
 	activateBindings = () ->
-		$(document).on('click', '#activity-list-debug-toggle', -> $('#activity-list-debug-info').toggle())
+		$(document).on('click', '#activity-list-debug-toggle', -> Breeze.Views.toggleDebugView())
 		$(document).on('click', '#activity-control-rewind', -> Breeze.Activities.rewindActivity())
 		$(document).on('click', '#activity-control-pause', -> Breeze.Activities.pausePlaylist())
 		$(document).on('click', '#activity-control-complete', -> Breeze.Activities.completeActivity())
@@ -29,28 +30,80 @@ class Breeze.Views
 		reportData = {
 			_init: _init
 			pauseControllsVisible: pauseControllsVisible
+			debugVisible: debugVisible
 			bindingsActive: bindingsActive
 		}
 		return reportData
 
+	@updateDebugView: () ->
+		if debugVisible
+			currentTime = new Date().getTime()
+			timersStatus = Breeze.Timers.statusReport()
+			activityStatus = Breeze.Activities.statusReport()
+			$('#debug-current-time').html(currentTime)
+			$('#debug-activities-presented').html(activityStatus.activitiesServed)
+			$('#debug-large-chunck').html(activityStatus.chunckTimeLarge)
+			$('#debug-medium-chunck').html(activityStatus.chunckTimeMedium)
+			$('#debug-small-chunck').html(activityStatus.chunckTimeSmall)
+			debugEventsList = $('#debug-events-list')
+			debugEventsList.empty().prepend('<li><span class="debug-stat-name">Event Id</span><span class="debug-stat-description">Expected In</span></li>')
+			for expectedEvent, time of timersStatus.expectedEvents
+				debugEventsList.append('<li><span class="debug-stat-name">' + expectedEvent + '</span><span class="debug-stat-output">' + (time.atFireTime - currentTime) + '</span></li>')
+			debugPlaylistTimerList = $('#debug-playlist-timer-list')
+			debugPlaylistTimerList.empty().prepend('<li><span class="debug-stat-name">Playlist Id</span><span class="debug-stat-description">Elapsed Time</span></li>')
+			for playlistTimer, values of timersStatus.playlistTimers
+				debugPlaylistTimerList.append('<li><span class="debug-stat-name">' + playlistTimer + '</span><span class="debug-stat-output">' + values.elapsedTimeSeconds + '</span></li>')
+			debugActivityTimers = $('#activity-list-debug-activity-timers')
+			debugActivityTimers.empty().prepend('<h6>Activity Timers</h6>')
+			timerList = $('<ul id="' + activityTimer + '" class="debug-stats-list"></ul>')
+			for activityTimer, values of timersStatus.activityTimers
+				timerList.prepend('<li><span class="debug-stat-name">Timer For</span><span class="debug-stat-description">' + activityTimer + '</span></li>')
+				for property, value of values
+					timerList.append('<li><span class="debug-stat-name">' + property + '</span><span class="debug-stat-output">' + value + '</span></li>')
+			debugActivityTimers.append(timerList)
+			debugActivity = $('#activity-list-debug-activity')
+			debugActivity.empty().prepend('<h6>Current Activity</h6>')
+			currentActivityData = Breeze.Activities.Model.getActivityById(activityStatus.currentActivityId)
+			activityList = $('<ul id="' + activityStatus.currentActivityId + '" class="debug-stats-list"></ul>')
+			for property, value of currentActivityData
+				activityList.append('<li><span class="debug-stat-name">' + property + '</span><span class="debug-stat-output">' + value + '</span></li>')
+			debugActivity.append(activityList)
+
 	@showPauseControlls: () ->
-		$('#activity-control-left').html('<span id="activity-control-rewind">Rewind</span>')
-		$('#activity-control-center').html('<span id="activity-control-pause">Pause</span>')
-		$('#activity-control-right').html('<span id="activity-control-complete">Complete</span>')
-		pauseControllsVisible = true
+		if !pauseControllsVisible
+			$('#activity-control-left').html('<span id="activity-control-rewind">Rewind</span>')
+			$('#activity-control-center').html('<span id="activity-control-pause">Pause</span>')
+			$('#activity-control-right').html('<span id="activity-control-complete">Complete</span>')
+			pauseControllsVisible = true
 
 	@showPlayControlls: () ->
-		$('#activity-control-left').html('<span id="activity-control-playlists">Playlists</span>')
-		$('#activity-control-center').html('<span id="activity-control-play">Play</span>')
-		$('#activity-control-right').html('<span id="activity-control-stop">Stop</span>')
-		pauseControllsVisible = false
+		if pauseControllsVisible
+			$('#activity-control-left').html('<span id="activity-control-playlists">Playlists</span>')
+			$('#activity-control-center').html('<span id="activity-control-play">Play</span>')
+			$('#activity-control-right').html('<span id="activity-control-stop">Stop</span>')
+			pauseControllsVisible = false
 
 	@togglePlayPauseControlls: () ->
 		if pauseControllsVisible
 			Breeze.Views.showPlayControlls()
 		else
 			Breeze.Views.showPauseControlls()
-		pauseControllsVisible != pauseControllsVisible
+
+	@showDebugView: () ->
+		if !debugVisible
+			$('#activity-list-debug-info').show()
+			debugVisible = true
+
+	@hideDebugView: () ->
+		if debugVisible
+			$('#activity-list-debug-info').hide()
+			debugVisible = false
+
+	@toggleDebugView: () ->
+		if debugVisible
+			Breeze.Views.hideDebugView()
+		else
+			Breeze.Views.showDebugView()
 
 	@showPrompt: (message = 'Message Missing', controls = [['No Control', "Breeze.DebugCenter.message('Missing Function', 'caution')"]]) ->
 		$('#activity-prompt-message').html(message)

@@ -4,6 +4,7 @@ class Breeze.Activities
 	currentPlaylist = ''
 	currentActivityId = ''
 	nextActivity = ''
+	activitiesServed = 0
 	chunckTimeSmall = 5
 	chunckTimeMedium = 25
 	chunckTimeLarge = 50
@@ -21,9 +22,10 @@ class Breeze.Activities
 			currentPlaylist: currentPlaylist
 			currentActivityId: currentActivityId
 			nextActivity: nextActivity
+			activitiesServed: activitiesServed
 			chunckTimeSmall: chunckTimeSmall
 			chunckTimeMedium: chunckTimeMedium
-			chunckTimeLarge: chunckTimeSmall
+			chunckTimeLarge: chunckTimeLarge
 		}
 		return reportData
 
@@ -54,6 +56,7 @@ class Breeze.Activities
 		Breeze.Timers.stopActivityTimer(currentActivityId)
 
 	@serveNextActivity: () ->
+		activitiesServed++
 		nextActivity = Breeze.Activities.Model.getNextActivity()
 		Breeze.Views.showPrompt('Want to start: ' + nextActivity.text + '?', [
 			['Accept', "Breeze.Activities.startActivity('" + nextActivity.id + "');"]

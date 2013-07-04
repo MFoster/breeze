@@ -1,19 +1,23 @@
 class Breeze.Activities.Model
 	# Establish internal variables
 	_init = false
+	displayListData = []
+	sortedListData = []
 	# Temporary Activities Data, will need to be replaced with real data.
 	activityList = [
 		{
 			id: 'an_id_001'
 			text: 'Task Item One'
 			type: 'create'
-			duration: 'large'
+			originalDuration: 50
+			currentDuration: 50
+			currentComplete: 0
+			remainingDuration: 50
 			description: ''
 			log: []
-			remainingTime: ''
-			createdDateTime: ''
-			availableDateTime: ''
-			dueDateTime: ''
+			createdDateTime: '2013-07-03T12:12:00.000Z'
+			availableDateTime: '2013-07-03T12:12:10.000Z'
+			dueDateTime: '2013-07-06T00:10:00.000Z'
 			completedDateTime: ''
 			scheduled: false
 		},
@@ -21,13 +25,15 @@ class Breeze.Activities.Model
 			id: 'an_id_002'
 			text: 'Task Item Two'
 			type: 'create'
-			duration: '1'
+			originalDuration: 1
+			currentDuration: 1
+			currentComplete: 0
+			remainingDuration: 1
 			description: ''
 			log: []
-			remainingTime: ''
-			createdDateTime: ''
-			availableDateTime: ''
-			dueDateTime: ''
+			createdDateTime: '2013-07-03T12:12:00.000Z'
+			availableDateTime: '2013-07-03T12:12:10.000Z'
+			dueDateTime: '2013-07-13T00:10:00.000Z'
 			completedDateTime: ''
 			scheduled: true
 		},
@@ -35,13 +41,15 @@ class Breeze.Activities.Model
 			id: 'an_id_003'
 			text: 'Task Item Three'
 			type: 'create'
-			duration: 'small'
+			originalDuration: 5
+			currentDuration: 5
+			currentComplete: 0
+			remainingDuration: 5
 			description: ''
 			log: []
-			remainingTime: ''
-			createdDateTime: ''
-			availableDateTime: ''
-			dueDateTime: ''
+			createdDateTime: '2013-07-03T12:12:00.000Z'
+			availableDateTime: '2013-07-03T12:12:10.000Z'
+			dueDateTime: '2013-07-06T00:10:00.000Z'
 			completedDateTime: ''
 			scheduled: false
 		},
@@ -49,13 +57,15 @@ class Breeze.Activities.Model
 			id: 'an_id_004'
 			text: 'Task Item Four'
 			type: 'create'
-			duration: '90'
+			originalDuration: 90
+			currentDuration: 90
+			currentComplete: 0
+			remainingDuration: 90
 			description: ''
 			log: []
-			remainingTime: ''
-			createdDateTime: ''
-			availableDateTime: ''
-			dueDateTime: ''
+			createdDateTime: '2013-07-03T12:12:00.000Z'
+			availableDateTime: '2013-07-03T12:12:10.000Z'
+			dueDateTime: '2013-06-06T00:10:00.000Z'
 			completedDateTime: ''
 			scheduled: false
 		},
@@ -63,13 +73,15 @@ class Breeze.Activities.Model
 			id: 'an_id_005'
 			text: 'Task Item Five'
 			type: 'create'
-			duration: 'large'
+			originalDuration: 50
+			currentDuration: 50
+			currentComplete: 0
+			remainingDuration: 50
 			description: ''
 			log: []
-			remainingTime: ''
-			createdDateTime: ''
-			availableDateTime: ''
-			dueDateTime: ''
+			createdDateTime: '2013-07-03T12:12:00.000Z'
+			availableDateTime: '2013-07-03T12:12:10.000Z'
+			dueDateTime: '2013-07-06T00:10:00.000Z'
 			completedDateTime: ''
 			scheduled: false
 		},
@@ -77,13 +89,15 @@ class Breeze.Activities.Model
 			id: 'an_id_006'
 			text: 'Task Item Six'
 			type: 'create'
-			duration: 'medium'
+			originalDuration: 25
+			currentDuration: 25
+			currentComplete: 0
+			remainingDuration: 25
 			description: ''
 			log: []
-			remainingTime: ''
-			createdDateTime: ''
-			availableDateTime: ''
-			dueDateTime: ''
+			createdDateTime: '2013-07-03T12:12:00.000Z'
+			availableDateTime: '2013-07-03T12:12:10.000Z'
+			dueDateTime: '2013-07-06T00:10:00.000Z'
 			completedDateTime: ''
 			scheduled: false
 		},
@@ -99,42 +113,49 @@ class Breeze.Activities.Model
 	@statusReport: () ->
 		reportData = {
 			_init: _init
-			activityList: activityList
+			displayListData: displayListData
+			sortedListData: sortedListData
 		}
 		return reportData
 
 	@getActivities: (selectedPlaylist) ->
 		# Add Getting JSON stuff here.
-		Breeze.Views.showActivitiesList(activityList)
+		displayListData = []
+		for activity in activityList
+			displayListData.push(processActivityData(activity))
+		sortedListData = processActivityPriority(displayListData)
+		Breeze.Views.showActivitiesList(sortedListData)
 
 	@getNextActivity: () ->
-		return activityList[0]
+		return displayListData[0]
 
 	@getActivityById: (activityId) ->
-		for activity in activityList
+		for activity in displayListData
 			if activity.id is activityId
 				return activity
 		return false
 
 	@archiveActivityById: (activityId) ->
-		for activity in activityList
+		for activity in displayListData
 			if activity.id is activityId
-				activityList.splice(_i, 1)
+				displayListData.splice(_i, 1)
 				return true
 		return false
 
-	@addActivity = (sentData) ->
+	@addActivity: (sentData) ->
 		defaultData = {
 			id: 'an_temp_id_001'
 			text: 'Text Missing'
 			type: 'create'
-			duration: 'medium'
-			description: 'No description'
+			originalDuration: 25
+			currentDuration: 25
+			currentComplete: 0
+			remainingDuration: 25
+			description: ''
 			log: []
-			remainingTime: ''
-			createdDateTime: ''
-			availableDateTime: ''
-			dueDateTime: ''
+			createdDateTime: '2013-07-03T12:12:00.000Z'
+			availableDateTime: '2013-07-03T12:12:10.000Z'
+			dueDateTime: '2013-07-06T00:10:00.000Z'
 			completedDateTime: ''
 			scheduled: false
 		}
@@ -144,8 +165,45 @@ class Breeze.Activities.Model
 				saveData[property] = sentData[property]
 			else
 				saveData[property] = value
-		activityList.push(saveData)
-		Breeze.Views.addToActivitiesList(activityList)
+		displayListData.push(saveData)
+		Breeze.Views.addToActivitiesList(displayListData)
 
-	@updateActivity = (activityIndex, sentData) ->
+	@updateActivity: (activityIndex, sentData) ->
 		return false
+
+	processActivityData = (data) ->
+		personPreferences = Breeze.People.statusReport().personObject.personsPreferences
+		durationType = 'small'
+		if data.currentDuration > personPreferences.chunckTimeSmall then durationType = 'medium'
+		if data.currentDuration > personPreferences.chunckTimeMedium then durationType = 'large'
+		if data.currentDuration > personPreferences.chunckTimeLarge then durationType = 'custom'
+		createdDateTime = Breeze.Timers.convertStringToDate(data.createdDateTime)
+		availableDateTime = Breeze.Timers.convertStringToDate(data.availableDateTime)
+		dueDateTime = Breeze.Timers.convertStringToDate(data.dueDateTime)
+		completedDateTime = Breeze.Timers.convertStringToDate(data.completedDateTime)
+		returnObject = {
+			id: data.id
+			text: data.text
+			type: data.type
+			originalDuration: data.originalDuration
+			currentDuration: data.currentDuration
+			currentComplete: data.currentComplete
+			remainingDuration: data.remainingDuration
+			durationType: durationType
+			description: data.description
+			log: data.log
+			createdDateTime: createdDateTime
+			availableDateTime: availableDateTime
+			dueDateTime: dueDateTime
+			completedDateTime: completedDateTime
+			scheduled: data.scheduled
+		}
+
+	processActivityPriority = (data) ->
+		priorityList = []
+		dateSort = (a, b) ->
+			a.dueDateTime - b.dueDateTime
+		data = data.sort(dateSort)
+		for activity in data
+			priorityList.push(activity.id)
+		return priorityList

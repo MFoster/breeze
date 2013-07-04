@@ -166,6 +166,23 @@ class Breeze.Timers
 		delete activityTimers[activity]
 		return activityTimers
 
+	@convertStringToDate = (string) ->
+		return new Date(string)
+
+	@convertMillisecondToString = (milliseconds) ->
+		return new Date(milliseconds)
+
+	@convertMillisecondToUTC = (milliseconds) ->
+		return new Date(milliseconds).toISOString();
+
+	@addTimeToMillisecondTime = (start, quantity, type) ->
+		return convertToMillisecondTime(start, quantity, type)
+
+	@addTimeToStringTime = (string, quantity, type) ->
+		startTime = Breeze.Timers.convertStringToDate(string)
+		newTime = convertToMillisecondTime(startTime, quantity, type)
+		return convertMillisecondToString(newTime)
+
 	convertToMillisecondTime = (start, quantity, type) ->
 		switch type
 			when 'milliseconds' then return start + quantity

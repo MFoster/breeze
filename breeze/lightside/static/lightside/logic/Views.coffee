@@ -40,7 +40,7 @@ class Breeze.Views
 			currentTime = new Date().getTime()
 			timersStatus = Breeze.Timers.statusReport()
 			activityStatus = Breeze.Activities.statusReport()
-			$('#debug-current-time').html(currentTime)
+			$('#debug-current-time').html(Breeze.Timers.convertMillisecondToString(currentTime))
 			$('#debug-activities-presented').html(activityStatus.activitiesServed)
 			$('#debug-large-chunck').html(activityStatus.chunckTimeLarge)
 			$('#debug-medium-chunck').html(activityStatus.chunckTimeMedium)
@@ -137,21 +137,20 @@ class Breeze.Views
 	@makeActivityActive: (activityId) ->
 		$('ul#activity-list > #' + activityId).addClass('active-item')
 
-	@showActivitiesList: (activityList) ->
+	@showActivitiesList: (sortedList) ->
 		$('ul#activity-list').empty()
-		for activity in activityList
+		for activityId in sortedList
+			activity = Breeze.Activities.Model.getActivityById(activityId)
 			activityDuration = activity.duration
-			if activityDuration not in ['large', 'medium', 'small']
-				activityDuration = 'custom'
 			listItem = '<li id="' + activity.id + '" class="activity-list-item" data-activity_index="' + _i + '">'
-			listItem += '<div class="activity-duration-' + activityDuration + '">&nbsp;</div>'
+			listItem += '<div class="activity-duration-' + activity.durationType + '">&nbsp;</div>'
 			listItem += '<span class="activity-title">' + activity.text + '</span>'
 			listItem += '<div class="activity-reorder">&Ecirc;</div>'
 			listItem += '</li>'
 			$('ul#activity-list').append($(listItem))
 
-	@addToActivitiesList: (activityList) ->
-		Breeze.Views.showActivitiesList(activityList)
+	@addToActivitiesList: (sortedList) ->
+		Breeze.Views.showActivitiesList(sortedList)
 
 	@removeActivity: (activityId) ->
 		$('ul#activity-list > #' + activityId).remove()

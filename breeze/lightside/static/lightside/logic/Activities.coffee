@@ -5,9 +5,6 @@ class Breeze.Activities
 	currentActivityId = ''
 	nextActivity = ''
 	activitiesServed = 0
-	chunckTimeSmall = 5
-	chunckTimeMedium = 25
-	chunckTimeLarge = 50
 
 	constructor: (@attributes) ->
 		if !_init
@@ -23,9 +20,6 @@ class Breeze.Activities
 			currentActivityId: currentActivityId
 			nextActivity: nextActivity
 			activitiesServed: activitiesServed
-			chunckTimeSmall: chunckTimeSmall
-			chunckTimeMedium: chunckTimeMedium
-			chunckTimeLarge: chunckTimeLarge
 		}
 		return reportData
 
@@ -68,12 +62,7 @@ class Breeze.Activities
 		if currentActivityId is activityId
 			Breeze.Timers.startActivityTimer(activityId)
 		else
-			activityDuration = 0
-			switch nextActivity.duration
-				when 'large' then activityDuration = chunckTimeLarge
-				when 'medium' then activityDuration = chunckTimeMedium
-				when 'small' then activityDuration = chunckTimeSmall
-				else activityDuration = nextActivity.duration
+			activityDuration = nextActivity.duration
 			currentActivityId = activityId
 			Breeze.Timers.startActivityTimer(activityId, [activityDuration, 'minutes'])
 			Breeze.Views.hidePrompt()

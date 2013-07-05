@@ -16,13 +16,18 @@ class Breeze.Timers
 	years = 365
 
 	constructor: (@attributes) ->
-		_init = true
-		registeredEventLoop = setInterval( ->
-			loopingTimerTasks()
-		, eventLoopInterval * seconds)
+		if !_init
+			registeredEventLoop = setInterval( ->
+				loopingTimerTasks()
+			, eventLoopInterval * seconds)
+			_init = true
+			return Breeze.Timers.statusReport()
+		else
+			Breeze.DebugCenter.message('Timers class was already initialized.', 'caution')
 
 	@statusReport: () ->
-		reportObject = {
+		reportData = {
+			_init: _init
 			playlistTimers: playlistTimers
 			activityTimers: activityTimers
 			expectedEvents: expectedEvents
@@ -37,7 +42,7 @@ class Breeze.Timers
 				years: years
 			}
 		}
-		return reportObject
+		return reportData
 
 	playlistTimerTasks = (playlist) ->
 		if playlist
@@ -51,6 +56,14 @@ class Breeze.Timers
 			$('#activity-time').html('Total: ' + activityTimers[activity].totalTime + ' sec - Elapsed: ' + activityTimers[activity].elapsedTimeSeconds + ' sec - Remaining: ' + activityTimers[activity].remainingTimeSeconds + ' sec')
 			Breeze.Views.placeProgressMarker(activityTimers[activity].elapsedTimeSeconds/activityTimers[activity].totalTime)
 			$('#activity-minutes-remaining').html(convertToMinutes(activityTimers[activity].remainingTimeSeconds, 'seconds') + 'min')
+
+	activityTimerExpiredTasks = (activity) ->
+		Breeze.Timers.pauseActivityTimer(activity)
+		Breeze.Views.showPrompt('Time is up on: ' + activity + '.', [
+			['Complete', "Breeze.Activities.completeActivity('" + activity + "');"]
+			['Rewind', "Breeze.Activities.rewindActivity('" + activity + "');"]
+			['Add Time', "Breeze.Activities.addTimeToActivity('" + activity + "');"]
+		])
 
 	loopingTimerTasks = () ->
 		nowTime = getCurrentTime()
@@ -70,7 +83,7 @@ class Breeze.Timers
 			id: nowTime
 			fireAt: ['1', 'minutes']
 			fireCall: ->
-				console.log('default function')
+				Breeze.DebugCenter.message('Event Fire with NO Message', 'caution')
 		}
 		for property, value of eventDefaults
 			if eventObject.hasOwnProperty(property)
@@ -116,8 +129,7 @@ class Breeze.Timers
 			convertedTimeLength = convertToSeconds(rawTimeLength[0], rawTimeLength[1])
 			registerEvent = Breeze.Timers.registerEvent({
 				fireAt: rawTimeLength
-				fireCall: ->
-					Breeze.Timers.pauseActivityTimer(activity)
+				fireCall: -> activityTimerExpiredTasks(activity)
 			})
 			activityTimers[activity] = {
 				startTime: nowTime
@@ -134,8 +146,7 @@ class Breeze.Timers
 			remainingSecondsAtRestart = activityTimers[activity].remainingTimeSeconds
 			registerEvent = Breeze.Timers.registerEvent({
 				fireAt: [remainingSecondsAtRestart, 'seconds']
-				fireCall: ->
-					Breeze.Timers.pauseActivityTimer(activity)
+				fireCall: -> activityTimerExpiredTasks(activity)
 			})
 			activityTimers[activity].registeredEvent = registerEvent
 			activityTimers[activity].expectedStopTime = nowTime + convertToMilliseconds(remainingSecondsAtRestart, 'seconds')

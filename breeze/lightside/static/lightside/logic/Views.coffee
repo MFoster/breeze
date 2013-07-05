@@ -1,11 +1,22 @@
 class Breeze.Views
 	# View Status Variables
+	_init = false
 	pauseControllsVisible = false
 	addEditForm = "form not loaded"
+	bindingsActive = false
 
 	constructor: (@attributes) ->
-		$('#activity-list-debug-info').hide()
-		$('#activity-prompt').hide()
+		if !_init
+			$('#activity-list-debug-info').hide()
+			$('#activity-prompt').hide()
+			bindingsActive = activateBindings()
+			Breeze.Views.showPlayControlls()
+			_init = true
+			return Breeze.Views.statusReport()
+		else
+			Breeze.DebugCenter.message('Views class was already initialized.', 'caution')
+
+	activateBindings = () ->
 		$(document).on('click', '#activity-list-debug-toggle', -> $('#activity-list-debug-info').toggle())
 		$(document).on('click', '#activity-control-rewind', -> Breeze.Activities.rewindActivity())
 		$(document).on('click', '#activity-control-pause', -> Breeze.Activities.pausePlaylist())
@@ -19,8 +30,10 @@ class Breeze.Views
 
 	@statusReport: () ->
 		reportData = {
+			_init: _init
 			pauseControllsVisible: pauseControllsVisible
 			addEditForm: addEditForm
+			bindingsActive: bindingsActive
 		}
 		return reportData
 
@@ -49,12 +62,12 @@ class Breeze.Views
 			$('#add-edit-form-container').html(addEditForm).show()
 			addEditFormVisible = true
 
-	@showPrompt: (message = 'Message Missing', controls = [['No Control', "console.log('Missing Function')"]]) ->
+	@showPrompt: (message = 'Message Missing', controls = [['No Control', "Breeze.DebugCenter.message('Missing Function', 'caution')"]]) ->
 		$('#activity-prompt-message').html(message)
 		$('#activity-prompt-controlls').html( ->
 			returnHtml = ''
 			for control in controls
-				returnHtml += '<button onclick="' + control[1] + '">' + control[0] + '</button>'
+				returnHtml += '<button class="button-base" onclick="' + control[1] + '">' + control[0] + '</button>'
 			return returnHtml
 		)
 		$('#activity-prompt').show()
@@ -72,3 +85,30 @@ class Breeze.Views
 			top: xPos
 			left: yPos
 		}, 1000, 'linear')
+
+	@showPersonalInfo: (personObject) ->
+		$('#person-name').html(personObject.personsName)
+		$('#activity-completed-month').html(personObject.personsStats.chuncksCompletedMonth + ' Mo')
+		$('#activity-completed-today').html('Day ' + personObject.personsStats.chuncksCompletedDay)
+
+	@makeActivityActive: (activityId) ->
+		$('ul#activity-list > #' + activityId).addClass('active-item')
+
+	@showActivitiesList: (activityList) ->
+		$('ul#activity-list').empty()
+		for activity in activityList
+			activityDuration = activity.duration
+			if activityDuration not in ['large', 'medium', 'small']
+				activityDuration = 'custom'
+			listItem = '<li id="' + activity.id + '" class="activity-list-item" data-activity_index="' + _i + '">'
+			listItem += '<div class="activity-duration-' + activityDuration + '">&nbsp;</div>'
+			listItem += '<span class="activity-title">' + activity.text + '</span>'
+			listItem += '<div class="activity-reorder">&Ecirc;</div>'
+			listItem += '</li>'
+			$('ul#activity-list').append($(listItem))
+
+	@addToActivitiesList: (activityList) ->
+		Breeze.Views.showActivitiesList(activityList)
+
+	@removeActivity: (activityId) ->
+		$('ul#activity-list > #' + activityId).remove()

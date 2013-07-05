@@ -9,8 +9,5 @@ def style_samples(request):
 def run_tests(request):
 	return render_to_response('lightside/tools/SpecRunner.html')
 
-def task_form_proto(request):
-	return render_to_response('lightside/views/task_form_proto.html')
-
-def task_play_proto(request):
-	return render_to_response('lightside/views/task_play_proto.html')
+def activity_center(request):
+	return render_to_response('lightside/views/activity_center.html')

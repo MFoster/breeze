@@ -26,6 +26,7 @@ class Breeze.Views
 		$(document).on('click', '#activity-control-play', -> Breeze.Activities.startPlaylist())
 		$(document).on('click', '#activity-control-stop', -> Breeze.Activities.stopPlaylist())
 		$(document).on('click', '#activity-add-edit-open', -> Breeze.Views.showAddEditForm())
+		$(document).on('click', '#activity-add-edit-close', -> Breeze.Views.hideAddEditForm())
 		Breeze.Views.showPlayControlls()
 		return true
 
@@ -111,10 +112,14 @@ class Breeze.Views
 			Breeze.Views.showDebugView()
 
 	@showAddEditForm: () ->
-		$.get "task_form_proto", (data) ->
+		$.get "/task/add/", (data) ->
 			addEditForm = data
 			$('#add-edit-form-container').html(addEditForm).show()
 			addEditFormVisible = true
+
+	@hideAddEditForm: () ->
+			$('#add-edit-form-container').hide()
+			addEditFormVisible = false
 
 	@showPrompt: (message = 'Message Missing', controls = [['No Control', "Breeze.DebugCenter.message('Missing Function', 'caution')"]]) ->
 		$('#activity-prompt-message').html(message)

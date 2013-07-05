@@ -10,6 +10,7 @@ class TaskCreate(CreateView):
     model = Task
     fields = ['name']
     template_name_suffix = '_add_form'
+    success_url = reverse_lazy('task_play')
 
 class TaskUpdate(UpdateView):
     model = Task

@@ -46,16 +46,14 @@ class Breeze.Timers
 
 	playlistTimerTasks = (playlist) ->
 		if playlist
-			playlistTimers[playlist].elapsedTimeSeconds++
-			$('#playlist-time').html(playlistTimers[playlist].elapsedTimeSeconds)
+			playlistTimers[playlist].elapsedTime += seconds
 
 	activityTimerTasks = (activity) ->
 		if activity
-			activityTimers[activity].elapsedTimeSeconds++
-			activityTimers[activity].remainingTimeSeconds--
-			$('#activity-time').html('Total: ' + activityTimers[activity].totalTime + ' sec - Elapsed: ' + activityTimers[activity].elapsedTimeSeconds + ' sec - Remaining: ' + activityTimers[activity].remainingTimeSeconds + ' sec')
-			Breeze.Views.placeProgressMarker(activityTimers[activity].elapsedTimeSeconds/activityTimers[activity].totalTime)
-			$('#activity-minutes-remaining').html(convertToMinutes(activityTimers[activity].remainingTimeSeconds, 'seconds') + 'min')
+			activityTimers[activity].elapsedTime += seconds
+			activityTimers[activity].remainingTime -= seconds
+			Breeze.Views.placeProgressMarker(activityTimers[activity].elapsedTime/activityTimers[activity].totalTime)
+			$('#activity-minutes-remaining').html(convertToMinutes(activityTimers[activity].remainingTime, 'milliseconds') + 'min')
 
 	activityTimerExpiredTasks = (activity) ->
 		Breeze.Timers.pauseActivityTimer(activity)
@@ -67,6 +65,7 @@ class Breeze.Timers
 
 	loopingTimerTasks = () ->
 		nowTime = getCurrentTime()
+		Breeze.Views.updateDebugView()
 		# TODO: Check Timer accuracy
 		# TODO: activate/deactivate looper based on number of events
 		for eventId, eventData of expectedEvents
@@ -89,7 +88,7 @@ class Breeze.Timers
 			if eventObject.hasOwnProperty(property)
 				eventDefaults[property] = eventObject[property]
 		expectedEvents[eventDefaults.id] = {
-			atFireTime: convertToMillisecondTime(nowTime, eventDefaults.fireAt[0], eventDefaults.fireAt[1])
+			atFireTime: convertToMillisecondTime(nowTime, eventDefaults.fireAt, 'milliseconds')
 			onFireCall: eventDefaults.fireCall
 		}
 		return eventDefaults.id
@@ -102,7 +101,7 @@ class Breeze.Timers
 		if not playlistTimers.hasOwnProperty(playlist)
 			playlistTimers[playlist] = {
 				startTime: nowTime
-				elapsedTimeSeconds: 0
+				elapsedTime: 0
 				timer: setInterval( ->
 					playlistTimerTasks(playlist)
 				, seconds)
@@ -123,33 +122,32 @@ class Breeze.Timers
 		delete playlistTimers[playlist]
 		return playlistTimers
 
-	@startActivityTimer: (activity, rawTimeLength = ['5', 'minutes']) ->
+	@startActivityTimer: (activity, duration) ->
 		nowTime = getCurrentTime()
 		if not activityTimers.hasOwnProperty(activity)
-			convertedTimeLength = convertToSeconds(rawTimeLength[0], rawTimeLength[1])
 			registerEvent = Breeze.Timers.registerEvent({
-				fireAt: rawTimeLength
+				fireAt: duration
 				fireCall: -> activityTimerExpiredTasks(activity)
 			})
 			activityTimers[activity] = {
 				startTime: nowTime
-				totalTime: convertedTimeLength
+				totalTime: duration
 				registeredEvent: registerEvent
-				expectedStopTime: nowTime + convertToMilliseconds(convertedTimeLength, 'seconds')
-				elapsedTimeSeconds: 0
-				remainingTimeSeconds: convertedTimeLength
+				expectedStopTime: nowTime + duration
+				elapsedTime: 0
+				remainingTime: duration
 				timer: setInterval( ->
 					activityTimerTasks(activity)
 				, seconds)
 			}
 		else
-			remainingSecondsAtRestart = activityTimers[activity].remainingTimeSeconds
+			remainingTime = activityTimers[activity].remainingTime
 			registerEvent = Breeze.Timers.registerEvent({
-				fireAt: [remainingSecondsAtRestart, 'seconds']
+				fireAt: remainingTime
 				fireCall: -> activityTimerExpiredTasks(activity)
 			})
 			activityTimers[activity].registeredEvent = registerEvent
-			activityTimers[activity].expectedStopTime = nowTime + convertToMilliseconds(remainingSecondsAtRestart, 'seconds')
+			activityTimers[activity].expectedStopTime = nowTime + remainingTime
 			activityTimers[activity].timer = setInterval( ->
 				activityTimerTasks(activity)
 			, seconds)
@@ -165,6 +163,26 @@ class Breeze.Timers
 		$('#activity-time').html(0)
 		delete activityTimers[activity]
 		return activityTimers
+
+	@convertStringToDate: (string) ->
+		return new Date(string)
+
+	@convertMinutesToMilliseconds: (quantity) ->
+		return convertToMilliseconds(quantity, 'minutes')
+
+	@convertMillisecondToString: (milliseconds) ->
+		return new Date(milliseconds)
+
+	@convertMillisecondToUTC: (milliseconds) ->
+		return new Date(milliseconds).toISOString();
+
+	@addTimeToMillisecondTime: (start, quantity, type) ->
+		return convertToMillisecondTime(start, quantity, type)
+
+	@addTimeToStringTime: (string, quantity, type) ->
+		startTime = Breeze.Timers.convertStringToDate(string)
+		newTime = convertToMillisecondTime(startTime, quantity, type)
+		return convertMillisecondToString(newTime)
 
 	convertToMillisecondTime = (start, quantity, type) ->
 		switch type

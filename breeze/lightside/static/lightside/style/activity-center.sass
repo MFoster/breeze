@@ -1,8 +1,3 @@
-div#activity-list-debug-view
-	position: fixed
-	top: 120px
-	right: 40px
-
 div#activity-prompt
 	position: absolute
 	top: 390px
@@ -12,7 +7,7 @@ div#activity-prompt
 	z-index: 100
 
 div#activity-center
-	position: fixed
+	position: absolute
 	top: 120px
 	left: 40px
 	width: 320px
@@ -126,3 +121,37 @@ div#activity-center
 				float: right
 				padding-top: 12px
 				padding-right: 6px
+
+div#activity-list-debug-view
+	position: absolute
+	top: 20px
+	left: 516px
+	max-width: 420px
+	font-size: 0.8em
+	line-height: 0.9em
+	overflow-y: scroll
+	div#activity-list-debug-info
+		width: 100%
+		ul.debug-stats-list
+			list-style: none
+			padding: 0
+			margin: 0
+			clear: both
+			li
+				list-style-type: none
+				min-height: 20px
+				clear: both
+				span.debug-stat-name, span.debug-stat-description, span.debug-stat-output
+					padding: 4px 14px 4px 14px
+				span.debug-stat-name
+					float: left
+				span.debug-stat-description
+					float: right
+				span.debug-stat-output
+					float: right
+					background-color: rgba(0,0,0,0.15)
+					border: 1px solid $color-text-information
+		div#activity-list-debug-general, div#activity-list-debug-events, div#activity-list-debug-playlist-timers, div#activity-list-debug-activity-timers, div#activity-list-debug-activity
+			display: block
+			width: 100%
+			margin-bottom: 20px

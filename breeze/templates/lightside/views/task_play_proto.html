@@ -63,8 +63,36 @@
 			<div id="activity-list-debug-view">
 				<div id="activity-list-debug-toggle">=</div>
 				<div id="activity-list-debug-info">
-					<p>Playlist Timer - <span id="playlist-time">0</span> sec</p>
-					<p>Activity Timer - <span id="activity-time">0</span></p>
+					<h3>Debug Panel</h3>
+					<p class="text-subtle">Official use only!</p>
+					<div id="activity-list-debug-general">
+						<h6>General</h6>
+						<ul class="debug-stats-list">
+							<li><span class="debug-stat-name">Current Time</span><span id="debug-current-time" class="debug-stat-output">&nbsp;</span></li>
+							<li><span class="debug-stat-name">Activities Presented</span><span id="debug-activities-presented" class="debug-stat-output">&nbsp;</span></li>
+							<li><span class="debug-stat-name">Large Chunck</span><span id="debug-large-chunck" class="debug-stat-output">&nbsp;</span></li>
+							<li><span class="debug-stat-name">Medium Chunck</span><span id="debug-medium-chunck" class="debug-stat-output">&nbsp;</span></li>
+							<li><span class="debug-stat-name">Small Chunck</span><span id="debug-small-chunck" class="debug-stat-output">&nbsp;</span></li>
+						</ul>
+					</div>
+					<div id="activity-list-debug-events" style="clear: both;">
+						<h6>Registered Events</h6>
+						<ul id="debug-events-list" class="debug-stats-list">
+							<li><span class="debug-stat-name">Event Id</span><span class="debug-stat-description">Expected Time</span></li>
+						</ul>
+					</div>
+					<div id="activity-list-debug-playlist-timers" style="clear: both;">
+						<h6>Playlist Timers</h6>
+						<ul id="debug-playlist-timer-list" class="debug-stats-list">
+							<li><span class="debug-stat-name">Playlist Id</span><span class="debug-stat-description">Elapsed Time</span></li>
+						</ul>
+					</div>
+					<div id="activity-list-debug-activity-timers" style="clear: both;">
+						<h6>Activity Timers</h6>
+					</div>
+					<div id="activity-list-debug-activity" style="clear: both;">
+						<h6>Current Activity</h6>
+					</div>
 				</div>
 			</div>
 			<div id="add-edit-form-container">

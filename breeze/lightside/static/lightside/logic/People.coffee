@@ -9,6 +9,11 @@ class Breeze.People
 			chuncksCompletedDay: 0
 			activitiesTopCategory: ''
 		}
+		personsPreferences: {
+			chunckTimeSmall: 0
+			chunckTimeMedium: 0
+			chunckTimeLarge: 0
+		}
 		personsActionLog: []
 	}
 
@@ -35,6 +40,11 @@ class Breeze.People
 				chuncksCompletedMonth: 53
 				chuncksCompletedDay: 0
 				activitiesTopCategory: 'create'
+			}
+			personsPreferences: {
+				chunckTimeSmall: 5
+				chunckTimeMedium: 25
+				chunckTimeLarge: 50
 			}
 			personsRecentActionLog: [{
 				type: 'general'

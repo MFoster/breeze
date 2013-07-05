@@ -61,3 +61,9 @@ class Breeze.People
 		personObject.personsStats.chuncksCompletedDay++
 		personObject.personsStats.chuncksCompletedMonth++
 		Breeze.Views.showPersonalInfo(personObject)
+
+	@getPersonsPlaylists: () ->
+		return personObject.personsPlaylists
+
+	@getPersonsPreferences: () ->
+		return personObject.personsPreferences

@@ -52,10 +52,7 @@ class Breeze.Activities
 	@serveNextActivity: () ->
 		activitiesServed++
 		nextActivity = Breeze.Activities.Model.getNextActivity()
-		Breeze.Views.showPrompt('Want to start: ' + nextActivity.text + '?', [
-			['Accept', "Breeze.Activities.startActivity('" + nextActivity.id + "');"]
-			['Snooze', "Breeze.Activities.snoozeActivity('" + nextActivity.id + "');"]
-		])
+		Breeze.Interactions.displayPersonPrompt('startActivity', nextActivity)
 
 	@startActivity: (activityId) ->
 		Breeze.Views.makeActivityActive(activityId)
@@ -65,27 +62,33 @@ class Breeze.Activities
 			activityDuration = nextActivity.remainingDuration
 			currentActivityId = activityId
 			Breeze.Timers.startActivityTimer(activityId, activityDuration)
-			Breeze.Views.hidePrompt()
+			Breeze.Views.hidePromptBox()
 
 	@snoozeActivity: (activityId) ->
-		Breeze.Views.showPrompt('How Long Would you like to snooze for?', [
-			['1 Hour', "Breeze.Activities.setSnoozeOnActivity('" + activityId + "', [1, 'hour']);"]
-			['1 Day', "Breeze.Activities.setSnoozeOnActivity('" + activityId + "', [1, 'day']);"]
-			['1 Week', "Breeze.Activities.setSnoozeOnActivity('" + activityId + "', [1, 'week']);"]
-		])
+		activity = Breeze.Activities.Model.getActivityById(activityId)
+		Breeze.Interactions.displayPersonPrompt('snoozeTime', activity)
 
 	@setSnoozeOnActivity: (activityId, amountOfSnooze) ->
-		Breeze.DebugCenter.message('Snoozed for ' + amountOfSnooze[0] + ' ' + amountOfSnooze[1])
-		Breeze.Views.hidePrompt()
+		newAvailableTime = Breeze.Timers.addTimeToMillisecondTime(Breeze.Timers.getTime(), amountOfSnooze[0], amountOfSnooze[1])
+		Breeze.Activities.Model.updateActivityAvailableTimeById(activityId, newAvailableTime)
+		Breeze.Views.hidePromptBox()
+		Breeze.DebugCenter.message('Updated activity ' + activityId + ' available date to ' + newAvailableTime.toString())
+
+	@activityTimeExpired: (activityId) ->
+		activity = Breeze.Activities.Model.getActivityById(activityId)
+		Breeze.Interactions.displayPersonPrompt('completeActivity', activity)
 
 	@completeActivity: () ->
 		if currentActivityId != ''
-			Breeze.Timers.stopActivityTimer(currentActivityId)
-			Breeze.Activities.Model.archiveActivityById(currentActivityId)
-			Breeze.Views.removeActivity(currentActivityId)
-			Breeze.People.addOneToPersonsChunckStats()
-			currentActivityId = ''
-			Breeze.Activities.serveNextActivity()
+			activity = Breeze.Activities.Model.getActivityById(currentActivityId)
+			Breeze.Interactions.displayPersonPrompt('completeActivity', activity)
+
+	@setCompleteOnActivity: (activityId) ->
+		Breeze.Timers.stopActivityTimer(activityId)
+		Breeze.Activities.Model.archiveActivityById(activityId)
+		Breeze.Views.removeActivity(activityId)
+		Breeze.People.addOneToPersonsChunckStats()
+		Breeze.Activities.serveNextActivity()
 
 	@rewindActivity: (activityId, amountOfRewind) ->
 		return true

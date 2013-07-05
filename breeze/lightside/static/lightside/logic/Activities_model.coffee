@@ -168,7 +168,22 @@ class Breeze.Activities.Model
 		displayListData.push(saveData)
 		Breeze.Views.addToActivitiesList(displayListData)
 
-	@updateActivity: (activityIndex, sentData) ->
+	@updateActivity: (activityId, sentData) ->
+		return false
+
+	@updateActivityDurationsById: (activityId, completedTime, remainingTime) ->
+		for activity in displayListData
+			if activity.id is activityId
+				activity.currentComplete = completedTime
+				activity.remainingDuration = remainingTime
+				return true
+		return false
+
+	@updateActivityAvailableTimeById: (activityId, availableTime) ->
+		for activity in displayListData
+			if activity.id is activityId
+				activity.availableDateTime = availableTime
+				return true
 		return false
 
 	processActivityData = (data) ->

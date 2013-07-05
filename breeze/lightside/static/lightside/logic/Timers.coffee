@@ -57,21 +57,21 @@ class Breeze.Timers
 
 	activityTimerExpiredTasks = (activity) ->
 		Breeze.Timers.pauseActivityTimer(activity)
-		Breeze.Views.showPrompt('Time is up on: ' + activity + '.', [
-			['Complete', "Breeze.Activities.completeActivity('" + activity + "');"]
-			['Rewind', "Breeze.Activities.rewindActivity('" + activity + "');"]
-			['Add Time', "Breeze.Activities.addTimeToActivity('" + activity + "');"]
-		])
+		Breeze.Activities.timeExpired(activity)
 
 	loopingTimerTasks = () ->
 		nowTime = getCurrentTime()
 		Breeze.Views.updateDebugView()
 		# TODO: Check Timer accuracy
-		# TODO: activate/deactivate looper based on number of events
 		for eventId, eventData of expectedEvents
 			if eventData.atFireTime < nowTime
 				eventData.onFireCall()
 				Breeze.Timers.deRegisterEvent(eventId)
+		for activityId, timerData of activityTimers
+			Breeze.Activities.Model.updateActivityDurationsById(activityId, timerData.elapsedTime, timerData.remainingTime)
+
+	@getTime: () ->
+		return getCurrentTime()
 
 	getCurrentTime = () ->
 		return new Date().getTime()
@@ -185,16 +185,18 @@ class Breeze.Timers
 		return convertMillisecondToString(newTime)
 
 	convertToMillisecondTime = (start, quantity, type) ->
+		millisecondTime = 0
 		switch type
-			when 'milliseconds' then return start + quantity
-			when 'seconds' then return start + (quantity * seconds)
-			when 'minutes' then return start + (quantity * seconds * minutes)
-			when 'hours' then return start + (quantity * seconds * minutes * hours)
-			when 'days' then return start + (quantity * seconds * minutes * hours * days)
-			when 'weeks' then return start + (quantity * seconds * minutes * hours * days * weeks)
-			when 'months' then return start + (quantity * seconds * minutes * hours * days * months)
-			when 'years' then return start + (quantity * seconds * minutes * hours * days * years)
+			when 'milliseconds' then millisecondTime = start + quantity
+			when 'seconds' then millisecondTime = start + (quantity * seconds)
+			when 'minutes' then millisecondTime = start + (quantity * seconds * minutes)
+			when 'hours' then millisecondTime = start + (quantity * seconds * minutes * hours)
+			when 'days' then millisecondTime = start + (quantity * seconds * minutes * hours * days)
+			when 'weeks' then millisecondTime = start + (quantity * seconds * minutes * hours * days * weeks)
+			when 'months' then millisecondTime = start + (quantity * seconds * minutes * hours * days * months)
+			when 'years' then millisecondTime = start + (quantity * seconds * minutes * hours * days * years)
 			else return false
+		return new Date(millisecondTime)
 
 	convertToMilliseconds = (quantity, type) ->
 		switch type

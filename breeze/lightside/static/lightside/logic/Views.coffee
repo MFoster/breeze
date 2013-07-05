@@ -2,36 +2,25 @@ class Breeze.Views
 	# View Status Variables
 	_init = false
 	pauseControllsVisible = true
-	debugVisible = false
-	bindingsActive = false
+	promptBoxVisible = true
+	debugVisible = true
 
 	constructor: (@attributes) ->
 		if !_init
-			$('#activity-list-debug-info').hide()
-			$('#activity-prompt').hide()
-			bindingsActive = activateBindings()
+			Breeze.Views.hideDebugView()
+			Breeze.Views.hidePromptBox()
 			Breeze.Views.showPlayControlls()
 			_init = true
 			return Breeze.Views.statusReport()
 		else
 			Breeze.DebugCenter.message('Views class was already initialized.', 'caution')
-
-	activateBindings = () ->
-		$(document).on('click', '#activity-list-debug-toggle', -> Breeze.Views.toggleDebugView())
-		$(document).on('click', '#activity-control-rewind', -> Breeze.Activities.rewindActivity())
-		$(document).on('click', '#activity-control-pause', -> Breeze.Activities.pausePlaylist())
-		$(document).on('click', '#activity-control-complete', -> Breeze.Activities.completeActivity())
-		$(document).on('click', '#activity-control-playlists', -> Breeze.Activities.selectPlaylist())
-		$(document).on('click', '#activity-control-play', -> Breeze.Activities.startPlaylist())
-		$(document).on('click', '#activity-control-stop', -> Breeze.Activities.stopPlaylist())
-		return true
+			return false
 
 	@statusReport: () ->
 		reportData = {
 			_init: _init
 			pauseControllsVisible: pauseControllsVisible
 			debugVisible: debugVisible
-			bindingsActive: bindingsActive
 		}
 		return reportData
 
@@ -106,18 +95,32 @@ class Breeze.Views
 		else
 			Breeze.Views.showDebugView()
 
-	@showPrompt: (message = 'Message Missing', controls = [['No Control', "Breeze.DebugCenter.message('Missing Function', 'caution')"]]) ->
+	@showPromptBox: () ->
+		if !promptBoxVisible
+			$('#activity-prompt').show()
+			promptBoxVisible = true
+
+	@hidePromptBox: () ->
+		if promptBoxVisible
+			$('#activity-prompt').hide()
+			promptBoxVisible = false
+
+	@togglePromptBox: () ->
+		if promptBoxVisible
+			Breeze.Views.hidePromptBox()
+		else
+			Breeze.Views.showPromptBox()
+
+	@buildPromptBox: (prompt, message, controls) ->
+		$('#activity-prompt-header').html(prompt)
 		$('#activity-prompt-message').html(message)
 		$('#activity-prompt-controlls').html( ->
 			returnHtml = ''
 			for control in controls
-				returnHtml += '<button class="button-base" onclick="' + control[1] + '">' + control[0] + '</button>'
+				returnHtml += '<button class="button-base" onclick="' + control.action + '">' + control.label + '</button>'
 			return returnHtml
 		)
-		$('#activity-prompt').show()
-
-	@hidePrompt: () ->
-		$('#activity-prompt').hide()
+		Breeze.Views.showPromptBox()
 
 	@placeProgressMarker: (percentage) ->
 		# Angle negative for clockwise rotation

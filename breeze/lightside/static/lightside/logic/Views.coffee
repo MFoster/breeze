@@ -3,6 +3,7 @@ class Breeze.Views
 	_init = false
 	pauseControllsVisible = true
 	promptBoxVisible = true
+	addEditForm = "form not loaded"
 	debugVisible = true
 
 	constructor: (@attributes) ->
@@ -20,6 +21,8 @@ class Breeze.Views
 		reportData = {
 			_init: _init
 			pauseControllsVisible: pauseControllsVisible
+			promptBoxVisible: promptBoxVisible
+			addEditForm: addEditForm
 			debugVisible: debugVisible
 		}
 		return reportData
@@ -94,6 +97,16 @@ class Breeze.Views
 			Breeze.Views.hideDebugView()
 		else
 			Breeze.Views.showDebugView()
+
+	@showAddEditForm: () ->
+		$.get "/task/add/", (data) ->
+			addEditForm = data
+			$('#add-edit-form-container').html(addEditForm).show()
+			addEditFormVisible = true
+
+	@hideAddEditForm: () ->
+		$('#add-edit-form-container').hide()
+		addEditFormVisible = false
 
 	@showPromptBox: () ->
 		if !promptBoxVisible

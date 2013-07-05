@@ -40,11 +40,12 @@ class Breeze.Views
 			currentTime = new Date().getTime()
 			timersStatus = Breeze.Timers.statusReport()
 			activityStatus = Breeze.Activities.statusReport()
+			peopleStatus = Breeze.People.statusReport().personObject.personsPreferences
 			$('#debug-current-time').html(Breeze.Timers.convertMillisecondToString(currentTime))
 			$('#debug-activities-presented').html(activityStatus.activitiesServed)
-			$('#debug-large-chunck').html(activityStatus.chunckTimeLarge)
-			$('#debug-medium-chunck').html(activityStatus.chunckTimeMedium)
-			$('#debug-small-chunck').html(activityStatus.chunckTimeSmall)
+			$('#debug-large-chunck').html(peopleStatus.chunckTimeLarge)
+			$('#debug-medium-chunck').html(peopleStatus.chunckTimeMedium)
+			$('#debug-small-chunck').html(peopleStatus.chunckTimeSmall)
 			debugEventsList = $('#debug-events-list')
 			debugEventsList.empty().prepend('<li><span class="debug-stat-name">Event Id</span><span class="debug-stat-description">Expected In</span></li>')
 			for expectedEvent, time of timersStatus.expectedEvents
@@ -52,7 +53,7 @@ class Breeze.Views
 			debugPlaylistTimerList = $('#debug-playlist-timer-list')
 			debugPlaylistTimerList.empty().prepend('<li><span class="debug-stat-name">Playlist Id</span><span class="debug-stat-description">Elapsed Time</span></li>')
 			for playlistTimer, values of timersStatus.playlistTimers
-				debugPlaylistTimerList.append('<li><span class="debug-stat-name">' + playlistTimer + '</span><span class="debug-stat-output">' + values.elapsedTimeSeconds + '</span></li>')
+				debugPlaylistTimerList.append('<li><span class="debug-stat-name">' + playlistTimer + '</span><span class="debug-stat-output">' + values.elapsedTime + '</span></li>')
 			debugActivityTimers = $('#activity-list-debug-activity-timers')
 			debugActivityTimers.empty().prepend('<h6>Activity Timers</h6>')
 			timerList = $('<ul id="' + activityTimer + '" class="debug-stats-list"></ul>')

@@ -172,6 +172,10 @@ class Breeze.Activities.Model
 		return false
 
 	processActivityData = (data) ->
+		originalDuration = Breeze.Timers.convertMinutesToMilliseconds(data.originalDuration)
+		currentDuration = Breeze.Timers.convertMinutesToMilliseconds(data.currentDuration)
+		currentComplete = Breeze.Timers.convertMinutesToMilliseconds(data.currentComplete)
+		remainingDuration = Breeze.Timers.convertMinutesToMilliseconds(data.remainingDuration)
 		personPreferences = Breeze.People.statusReport().personObject.personsPreferences
 		durationType = 'small'
 		if data.currentDuration > personPreferences.chunckTimeSmall then durationType = 'medium'
@@ -185,10 +189,10 @@ class Breeze.Activities.Model
 			id: data.id
 			text: data.text
 			type: data.type
-			originalDuration: data.originalDuration
-			currentDuration: data.currentDuration
-			currentComplete: data.currentComplete
-			remainingDuration: data.remainingDuration
+			originalDuration: originalDuration
+			currentDuration: currentDuration
+			currentComplete: currentComplete
+			remainingDuration: remainingDuration
 			durationType: durationType
 			description: data.description
 			log: data.log

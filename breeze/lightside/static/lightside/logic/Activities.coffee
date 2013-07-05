@@ -62,9 +62,9 @@ class Breeze.Activities
 		if currentActivityId is activityId
 			Breeze.Timers.startActivityTimer(activityId)
 		else
-			activityDuration = nextActivity.duration
+			activityDuration = nextActivity.remainingDuration
 			currentActivityId = activityId
-			Breeze.Timers.startActivityTimer(activityId, [activityDuration, 'minutes'])
+			Breeze.Timers.startActivityTimer(activityId, activityDuration)
 			Breeze.Views.hidePrompt()
 
 	@snoozeActivity: (activityId) ->

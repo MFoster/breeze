@@ -2,6 +2,7 @@ class Breeze.Activities.Model
 	# Establish internal variables
 	_init = false
 	displayListData = []
+	archivedListData = []
 	sortedListData = []
 	# Temporary Activities Data, will need to be replaced with real data.
 	activityList = [
@@ -114,6 +115,7 @@ class Breeze.Activities.Model
 		reportData = {
 			_init: _init
 			displayListData: displayListData
+			archivedListData: archivedListData
 			sortedListData: sortedListData
 		}
 		return reportData
@@ -126,8 +128,8 @@ class Breeze.Activities.Model
 		sortedListData = processActivityPriority(displayListData)
 		Breeze.Views.showActivitiesList(sortedListData)
 
-	@getNextActivity: () ->
-		return displayListData[0]
+	@getNextActivity: (activityIndex = 0) ->
+		return displayListData[activityIndex]
 
 	@getActivityById: (activityId) ->
 		for activity in displayListData
@@ -135,10 +137,11 @@ class Breeze.Activities.Model
 				return activity
 		return false
 
-	@archiveActivityById: (activityId) ->
+	@archiveActivityById: (activityId, archiveTime) ->
 		for activity in displayListData
 			if activity.id is activityId
-				displayListData.splice(_i, 1)
+				activity.completedDateTime = archiveTime
+				archivedListData.push(displayListData.splice(_i, 1))
 				return true
 		return false
 
@@ -171,6 +174,12 @@ class Breeze.Activities.Model
 	@updateActivity: (activityId, sentData) ->
 		return false
 
+	@addTimeToDurationsById: (activityId, addMillisecondTime) ->
+		for activity in displayListData
+			if activity.id is activityId
+				activity.currentDuration += addMillisecondTime
+				activity.remainingDuration += addMillisecondTime
+
 	@updateActivityDurationsById: (activityId, completedTime, remainingTime) ->
 		for activity in displayListData
 			if activity.id is activityId
@@ -185,6 +194,10 @@ class Breeze.Activities.Model
 				activity.availableDateTime = availableTime
 				return true
 		return false
+
+	@updateActivityPriority: () ->
+		processActivityPriority()
+		Breeze.Views.updateActivitiesList(sortedListData)
 
 	processActivityData = (data) ->
 		originalDuration = Breeze.Timers.convertMinutesToMilliseconds(data.originalDuration)

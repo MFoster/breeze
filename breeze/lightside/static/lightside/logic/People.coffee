@@ -3,7 +3,9 @@ class Breeze.People
 	_init = false
 	personObject = {
 		personsName: ''
-		personsPlaylists: []
+		personsPlaylists: [
+			{ id: '', name: '' }
+		]
 		personsStats: {
 			chuncksCompletedMonth: 0
 			chuncksCompletedDay: 0
@@ -13,6 +15,8 @@ class Breeze.People
 			chunckTimeSmall: 0
 			chunckTimeMedium: 0
 			chunckTimeLarge: 0
+			defaultPlaylist: ''
+			theme: ''
 		}
 		personsActionLog: []
 	}
@@ -35,7 +39,10 @@ class Breeze.People
 	getPersonData = () ->
 		testData = {
 			personsName: 'The Creator'
-			personsPlaylists: ['main']
+			personsPlaylists: [
+				{ id: 'an_id_001', name: 'primary' }
+				{ id: 'an_id_002', name: 'secondary' }
+			]
 			personsStats: {
 				chuncksCompletedMonth: 53
 				chuncksCompletedDay: 0
@@ -45,6 +52,8 @@ class Breeze.People
 				chunckTimeSmall: 5
 				chunckTimeMedium: 25
 				chunckTimeLarge: 50
+				defaultPlaylist: 'an_id_001'
+				theme: 'darkside'
 			}
 			personsRecentActionLog: [{
 				type: 'general'
@@ -64,6 +73,15 @@ class Breeze.People
 
 	@getPersonsPlaylists: () ->
 		return personObject.personsPlaylists
+
+	@getPersonsPlaylistsById: (playlistId) ->
+		for playlist in personObject.personsPlaylists
+			if playlist.id is playlistId
+				return playlist
+		return false
+
+	@getPersonsDefaultPlaylist: () ->
+		return personObject.personsPreferences.defaultPlaylist
 
 	@getPersonsPreferences: () ->
 		return personObject.personsPreferences

@@ -57,7 +57,7 @@ class Breeze.Timers
 
 	activityTimerExpiredTasks = (activity) ->
 		Breeze.Timers.pauseActivityTimer(activity)
-		Breeze.Activities.timeExpired(activity)
+		Breeze.Activities.activityTimeExpired(activity)
 
 	loopingTimerTasks = () ->
 		nowTime = getCurrentTime()
@@ -116,6 +116,17 @@ class Breeze.Timers
 		clearInterval(playlistTimers[playlist].timer)
 		return playlistTimers[playlist]
 
+	@rewindPlaylistTimer: (playlist, quantity, type) ->
+		if playlistTimers.hasOwnProperty(playlist)
+			currentElapsed = playlistTimers[playlist].elapsedTime
+			currentElapsed -= convertToMilliseconds(quantity, type)
+			playlistTimers[playlist].elapsedTime = currentElapsed
+			if currentElapsed < 0
+				playlistTimers[playlist].elapsedTime = 0
+			return true
+		else
+			return false
+
 	@stopPlaylistTimer: (playlist) ->
 		clearInterval(playlistTimers[playlist].timer)
 		$('#playlist-time').html(0)
@@ -157,6 +168,36 @@ class Breeze.Timers
 		clearInterval(activityTimers[activity].timer)
 		return activityTimers[activity]
 
+	@rewindActivityTimer: (activity, quantity, type) ->
+		if activityTimers.hasOwnProperty(activity)
+			nowTime = getCurrentTime()
+			millisecondChange = convertToMilliseconds(quantity, type)
+			currentElapsed = activityTimers[activity].elapsedTime
+			currentRemaining = activityTimers[activity].remainingTime
+			currentExpectedStop = activityTimers[activity].expectedStopTime
+			currentElapsed -= millisecondChange
+			currentRemaining += millisecondChange
+			currentExpectedStop += millisecondChange
+			activityTimers[activity].elapsedTime = currentElapsed
+			if currentElapsed < 0
+				activityTimers[activity].elapsedTime = 0
+				currentRemaining = activityTimers[activity].totalTime
+				currentExpectedStop = nowTime + currentRemaining
+			activityTimers[activity].remainingTime = currentRemaining
+			activityTimers[activity].expectedStopTime = currentExpectedStop
+			return true
+		else
+			return false
+
+	@addTimeToActivityTimer: (activity, millisecondChange) ->
+		if activityTimers.hasOwnProperty(activity)
+			activityTimers[activity].totalTime += millisecondChange
+			activityTimers[activity].remainingTime += millisecondChange
+			activityTimers[activity].expectedStopTime += millisecondChange
+			return true
+		else
+			return false
+
 	@stopActivityTimer: (activity) ->
 		delete expectedEvents[activityTimers[activity].registeredEvent]
 		clearInterval(activityTimers[activity].timer)
@@ -174,7 +215,10 @@ class Breeze.Timers
 		return new Date(milliseconds)
 
 	@convertMillisecondToUTC: (milliseconds) ->
-		return new Date(milliseconds).toISOString();
+		return new Date(milliseconds).toISOString()
+
+	@convertTimeToMilliseconds: (quantity, type) ->
+		return convertToMilliseconds(quantity, type)
 
 	@addTimeToMillisecondTime: (start, quantity, type) ->
 		return convertToMillisecondTime(start, quantity, type)

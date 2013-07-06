@@ -25,7 +25,7 @@ class Breeze.Interactions
 
 	activateBindings = () ->
 		$(document).on('click', '#activity-list-debug-toggle', -> Breeze.Views.toggleDebugView())
-		$(document).on('click', '#activity-control-rewind', -> Breeze.Activities.rewindActivity())
+		$(document).on('click', '#activity-control-rewind', -> Breeze.Activities.rewindPlaylist())
 		$(document).on('click', '#activity-control-pause', -> Breeze.Activities.pausePlaylist())
 		$(document).on('click', '#activity-control-complete', -> Breeze.Activities.completeActivity())
 		$(document).on('click', '#activity-control-playlists', -> Breeze.Activities.selectPlaylist())
@@ -43,7 +43,7 @@ class Breeze.Interactions
 			when 'stopPlaylist' then promptProccessed = promptStopPlaylist()
 			when 'addTime' then promptProccessed = promptAddTime(activity)
 			when 'snoozeTime' then promptProccessed = promptSnoozeTime(activity)
-			when 'rewindTime' then promptProccessed = promptRewindTime(activity)
+			when 'rewindTime' then promptProccessed = promptRewindTime()
 			when 'completeActivity' then promptProccessed = promptCompleteActivity(activity)
 			else return false
 		return promptProccessed
@@ -53,8 +53,8 @@ class Breeze.Interactions
 		personsPlaylists = Breeze.People.getPersonsPlaylists()
 		for playlist in personsPlaylists
 			playlistControl = {
-				label: playlist
-				action: "Breeze.Activities.selectPlaylist('" + playlist + "');"
+				label: playlist.name
+				action: "Breeze.Activities.setSelectedPlaylist('" + playlist.id + "');"
 			}
 			promptControls.push(playlistControl)
 		promptObject =
@@ -128,14 +128,14 @@ class Breeze.Interactions
 		if promptProccessed then Breeze.DebugCenter.message('Display Snooze Time Prompt.')
 		return promptProccessed
 
-	promptRewindTime = (activity) ->
+	promptRewindTime = () ->
 		promptObject =
 			prompt: 'How long doy you need to rewind for'
 			message: ''
 			controls: [
-				{ label: '5 Minutes', action: "Breeze.Activities.setRewind('" + activity.id + "', 5, 'minutes');" }
-				{ label: '15 Minutes', action: "Breeze.Activities.setRewind('" + activity.id + "', 15, 'minutes');" }
-				{ label: '1 Hour', action: "Breeze.Activities.setRewind('" + activity.id + "', 1, 'hours');" }
+				{ label: '5 Minutes', action: "Breeze.Activities.setPlaylistRewind(5, 'minutes');" }
+				{ label: '15 Minutes', action: "Breeze.Activities.setPlaylistRewind(15, 'minutes');" }
+				{ label: '1 Hour', action: "Breeze.Activities.setPlaylistRewind(1, 'hours');" }
 			]
 		promptProccessed = createPrompt(promptObject)
 		if promptProccessed then Breeze.DebugCenter.message('Display Rewind Time Prompt.')

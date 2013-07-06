@@ -1,13 +1,15 @@
 class Breeze.Activities
 	# Activities Status Variables
 	_init = false
-	currentPlaylist = ''
-	currentActivityId = ''
-	nextActivity = ''
+	currentPlaylist = {}
+	currentActivity = {}
+	nextActivity = {}
 	activitiesServed = 0
 
 	constructor: (@attributes) ->
 		if !_init
+			personsDefaultPlaylist = Breeze.People.getPersonsDefaultPlaylist()
+			Breeze.Activities.setSelectedPlaylist(personsDefaultPlaylist)
 			_init = true
 			return Breeze.Activities.statusReport()
 		else
@@ -17,37 +19,49 @@ class Breeze.Activities
 		reportData = {
 			_init: _init
 			currentPlaylist: currentPlaylist
-			currentActivityId: currentActivityId
+			currentActivity: currentActivity
 			nextActivity: nextActivity
 			activitiesServed: activitiesServed
 		}
 		return reportData
 
-	@selectPlaylist: (selectedPlaylist) ->
-		currentPlaylist = selectedPlaylist
-		Breeze.Activities.Model.getActivities(currentPlaylist)
-		Breeze.DebugCenter.message('Playlist Selected: ' + selectedPlaylist)
+	@selectPlaylist: () ->
+		Breeze.Interactions.displayPersonPrompt('selectPlaylist')
+		return true
+
+	@setSelectedPlaylist: (selectedPlaylistId) ->
+		currentPlaylist = Breeze.People.getPersonsPlaylistsById(selectedPlaylistId)
+		Breeze.DebugCenter.message('Playlist Selected: ' + currentPlaylist.name)
+		Breeze.Activities.updateActivitiesList()
+		Breeze.Views.hidePromptBox()
 		return currentPlaylist
 
 	@updateActivitiesList: () ->
-		Breeze.ActivitiesModel.getActivities(currentPlaylist)
+		Breeze.Activities.Model.getActivities(currentPlaylist.id)
+		Breeze.DebugCenter.message('Getting Activities for Playlist: ' + currentPlaylist.name)
 
 	@startPlaylist: () ->
-		Breeze.Timers.startPlaylistTimer(currentPlaylist)
-		Breeze.Views.showPauseControlls()
-		if currentActivityId is ''
-			Breeze.Activities.serveNextActivity()
+		if $.isEmptyObject(currentPlaylist)
+			Breeze.Activities.selectPlaylist()
 		else
-			Breeze.Activities.startActivity(currentActivityId)
+			Breeze.Timers.startPlaylistTimer(currentPlaylist.id)
+			Breeze.Views.showPauseControlls()
+			if $.isEmptyObject(currentActivity)
+				Breeze.Activities.serveNextActivity()
+			else
+				Breeze.Activities.startActivity(currentActivity.id)
+		Breeze.DebugCenter.message('Started Playlist: ' + currentPlaylist.name)
 
 	@pausePlaylist: () ->
-		Breeze.Timers.pausePlaylistTimer(currentPlaylist)
-		Breeze.Timers.pauseActivityTimer(currentActivityId)
+		Breeze.Timers.pausePlaylistTimer(currentPlaylist.id)
+		Breeze.Timers.pauseActivityTimer(currentActivity.id)
 		Breeze.Views.showPlayControlls()
+		Breeze.DebugCenter.message('Paused Playlist: ' + currentPlaylist.name)
 
 	@stopPlaylist: () ->
-		Breeze.Timers.stopPlaylistTimer(currentPlaylist)
-		Breeze.Timers.stopActivityTimer(currentActivityId)
+		Breeze.Timers.stopPlaylistTimer(currentPlaylist.id)
+		Breeze.Timers.stopActivityTimer(currentActivity.id)
+		Breeze.DebugCenter.message('Stopped Playlist: ' + currentPlaylist.name)
 
 	@serveNextActivity: () ->
 		activitiesServed++
@@ -55,46 +69,76 @@ class Breeze.Activities
 		Breeze.Interactions.displayPersonPrompt('startActivity', nextActivity)
 
 	@startActivity: (activityId) ->
-		Breeze.Views.makeActivityActive(activityId)
-		if currentActivityId is activityId
-			Breeze.Timers.startActivityTimer(activityId)
+		if activityId is ''
+			if $.isEmptyObject(currentActivity)
+				currentActivity = Breeze.Activities.Model.getNextActivity(0)
+				nextActivity = Breeze.Activities.Model.getNextActivity(1)
+			Breeze.Timers.startActivityTimer(currentActivity.id)
 		else
-			activityDuration = nextActivity.remainingDuration
-			currentActivityId = activityId
-			Breeze.Timers.startActivityTimer(activityId, activityDuration)
+			currentActivity = Breeze.Activities.Model.getActivityById(activityId)
+			Breeze.Timers.startActivityTimer(currentActivity.id, currentActivity.remainingDuration)
 			Breeze.Views.hidePromptBox()
+		Breeze.Views.makeActivityActive(currentActivity.id)
+		Breeze.DebugCenter.message('Started Activity: ' + currentActivity.text)
 
 	@snoozeActivity: (activityId) ->
-		activity = Breeze.Activities.Model.getActivityById(activityId)
+		activity = currentActivity
+		if activityId != ''
+			activity = Breeze.Activities.Model.getActivityById(activityId)
 		Breeze.Interactions.displayPersonPrompt('snoozeTime', activity)
 
-	@setSnoozeOnActivity: (activityId, amountOfSnooze) ->
-		newAvailableTime = Breeze.Timers.addTimeToMillisecondTime(Breeze.Timers.getTime(), amountOfSnooze[0], amountOfSnooze[1])
+	@setSnoozeOnActivity: (activityId, quantity, type) ->
+		newAvailableTime = Breeze.Timers.addTimeToMillisecondTime(Breeze.Timers.getTime(), quantity, type)
 		Breeze.Activities.Model.updateActivityAvailableTimeById(activityId, newAvailableTime)
-		Breeze.Views.hidePromptBox()
+		Breeze.Activities.Model.updateActivitySort()
+		Breeze.Activities.serveNextActivity()
 		Breeze.DebugCenter.message('Updated activity ' + activityId + ' available date to ' + newAvailableTime.toString())
 
 	@activityTimeExpired: (activityId) ->
-		activity = Breeze.Activities.Model.getActivityById(activityId)
+		activity = currentActivity
+		if activityId != ''
+			activity = Breeze.Activities.Model.getActivityById(activityId)
 		Breeze.Interactions.displayPersonPrompt('completeActivity', activity)
+		Breeze.DebugCenter.message('Time expired on: ' + activity.text)
 
 	@completeActivity: () ->
-		if currentActivityId != ''
-			activity = Breeze.Activities.Model.getActivityById(currentActivityId)
-			Breeze.Interactions.displayPersonPrompt('completeActivity', activity)
+		Breeze.Timers.pauseActivityTimer(currentActivity.id)
+		Breeze.Interactions.displayPersonPrompt('completeActivity', currentActivity)
 
 	@setCompleteOnActivity: (activityId) ->
+		currentActivity = {}
+		currentTime = Breeze.Timers.getTime()
 		Breeze.Timers.stopActivityTimer(activityId)
-		Breeze.Activities.Model.archiveActivityById(activityId)
+		Breeze.Activities.Model.archiveActivityById(activityId, currentTime)
 		Breeze.Views.removeActivity(activityId)
 		Breeze.People.addOneToPersonsChunckStats()
 		Breeze.Activities.serveNextActivity()
+		Breeze.DebugCenter.message('Completed Activity: ' + activity.id)
 
-	@rewindActivity: (activityId, amountOfRewind) ->
-		return true
+	@rewindPlaylist: () ->
+		Breeze.Timers.pausePlaylistTimer(currentPlaylist.id)
+		Breeze.Timers.pauseActivityTimer(currentActivity.id)
+		Breeze.Interactions.displayPersonPrompt('rewindTime')
 
-	@addTimeToActivity: (activityId, amountOfAdd) ->
-		return true
+	@setPlaylistRewind: (timeQuantity, timeType) ->
+		Breeze.Timers.rewindPlaylistTimer(currentPlaylist.id, timeQuantity, timeType)
+		Breeze.Timers.rewindActivityTimer(currentActivity.id, timeQuantity, timeType)
+		Breeze.Activities.startPlaylist()
+		Breeze.DebugCenter.message('Reset current playlist and activity by ' + timeQuantity + ' ' + timeType)
+
+	@addTimeToActivity: (activityId) ->
+		activity = currentActivity
+		if activityId != '' then activity = Breeze.Activities.Model.getActivityById(activityId)
+		Breeze.Interactions.displayPersonPrompt('addTime', activity)
+
+	@setAddTimeToActivity: (activityId = '', timeQuantity, timeType) ->
+		if activityId is '' then activityId = currentActivity.id
+		millisecondChange = Breeze.Timers.convertTimeToMilliseconds(timeQuantity, timeType)
+		Breeze.Timers.addTimeToActivityTimer(activityId, millisecondChange)
+		Breeze.Activities.Model.addTimeToDurationsById(activityId, millisecondChange)
+		Breeze.Views.hidePromptBox()
+		Breeze.Timers.startActivityTimer(activityId)
+		Breeze.DebugCenter.message('Added ' + timeQuantity + ' ' + timeType + ' to ' + activityId)
 
 	@logToActivity: (activityId, logType, logMessage) ->
 		return true

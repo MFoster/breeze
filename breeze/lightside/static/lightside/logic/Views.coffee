@@ -56,7 +56,7 @@ class Breeze.Views
 			debugActivityTimers.append(timerList)
 			debugActivity = $('#activity-list-debug-activity')
 			debugActivity.empty().prepend('<h6>Current Activity</h6>')
-			currentActivityData = Breeze.Activities.Model.getActivityById(activityStatus.currentActivityId)
+			currentActivityData = Breeze.Activities.Model.getActivityById(activityStatus.currentActivity.id)
 			activityList = $('<ul id="' + activityStatus.currentActivityId + '" class="debug-stats-list"></ul>')
 			for property, value of currentActivityData
 				activityList.append('<li><span class="debug-stat-name">' + property + '</span><span class="debug-stat-output">' + value + '</span></li>')
@@ -167,6 +167,9 @@ class Breeze.Views
 			$('ul#activity-list').append($(listItem))
 
 	@addToActivitiesList: (sortedList) ->
+		Breeze.Views.showActivitiesList(sortedList)
+
+	@updateActivitiesList: (sortedList) ->
 		Breeze.Views.showActivitiesList(sortedList)
 
 	@removeActivity: (activityId) ->

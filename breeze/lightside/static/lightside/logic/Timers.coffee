@@ -113,8 +113,11 @@ class Breeze.Timers
 		return playlistTimers[playlist]
 
 	@pausePlaylistTimer: (playlist) ->
-		clearInterval(playlistTimers[playlist].timer)
-		return playlistTimers[playlist]
+		if playlistTimers.hasOwnProperty(playlist)
+			clearInterval(playlistTimers[playlist].timer)
+			return playlistTimers[playlist]
+		else
+			return false
 
 	@rewindPlaylistTimer: (playlist, quantity, type) ->
 		if playlistTimers.hasOwnProperty(playlist)
@@ -128,10 +131,13 @@ class Breeze.Timers
 			return false
 
 	@stopPlaylistTimer: (playlist) ->
-		clearInterval(playlistTimers[playlist].timer)
-		$('#playlist-time').html(0)
-		delete playlistTimers[playlist]
-		return playlistTimers
+		if playlistTimers.hasOwnProperty(playlist)
+			clearInterval(playlistTimers[playlist].timer)
+			$('#playlist-time').html(0)
+			delete playlistTimers[playlist]
+			return playlistTimers
+		else
+			return false
 
 	@startActivityTimer: (activity, duration) ->
 		nowTime = getCurrentTime()
@@ -164,9 +170,12 @@ class Breeze.Timers
 			, seconds)
 
 	@pauseActivityTimer: (activity) ->
-		delete expectedEvents[activityTimers[activity].registeredEvent]
-		clearInterval(activityTimers[activity].timer)
-		return activityTimers[activity]
+		if activityTimers.hasOwnProperty(activity)
+			delete expectedEvents[activityTimers[activity].registeredEvent]
+			clearInterval(activityTimers[activity].timer)
+			return activityTimers[activity]
+		else
+			return false
 
 	@rewindActivityTimer: (activity, quantity, type) ->
 		if activityTimers.hasOwnProperty(activity)
@@ -199,11 +208,14 @@ class Breeze.Timers
 			return false
 
 	@stopActivityTimer: (activity) ->
-		delete expectedEvents[activityTimers[activity].registeredEvent]
-		clearInterval(activityTimers[activity].timer)
-		$('#activity-time').html(0)
-		delete activityTimers[activity]
-		return activityTimers
+		if activityTimers.hasOwnProperty(activity)
+			delete expectedEvents[activityTimers[activity].registeredEvent]
+			clearInterval(activityTimers[activity].timer)
+			$('#activity-time').html(0)
+			delete activityTimers[activity]
+			return activityTimers
+		else
+			return false
 
 	@convertStringToDate: (string) ->
 		return new Date(string)

@@ -65,22 +65,39 @@ class Breeze.Activities
 
 	@serveNextActivity: () ->
 		activitiesServed++
-		nextActivity = Breeze.Activities.Model.getNextActivity()
-		Breeze.Interactions.displayPersonPrompt('startActivity', nextActivity)
+		if $.isEmptyObject(currentActivity)
+			currentActivity = Breeze.Activities.Model.getNextActivity(0)
+			nextActivity = Breeze.Activities.Model.getNextActivity(1)
+			Breeze.DebugCenter.message('Got Next Activities from Model')
+		Breeze.Interactions.displayPersonPrompt('startActivity', currentActivity)
 
 	@startActivity: (activityId) ->
-		# Model move activity ID to top and refresh view
 		if activityId is ''
 			if $.isEmptyObject(currentActivity)
 				currentActivity = Breeze.Activities.Model.getNextActivity(0)
 				nextActivity = Breeze.Activities.Model.getNextActivity(1)
-			Breeze.Timers.startActivityTimer(currentActivity.id)
+				Breeze.Timers.startActivityTimer(currentActivity.id, currentActivity.remainingDuration)
 		else
 			currentActivity = Breeze.Activities.Model.getActivityById(activityId)
 			Breeze.Timers.startActivityTimer(currentActivity.id, currentActivity.remainingDuration)
 			Breeze.Views.hidePromptBox()
 		Breeze.Views.makeActivityActive(currentActivity.id)
 		Breeze.DebugCenter.message('Started Activity: ' + currentActivity.text)
+
+	@manualStartActivity: (activityId) ->
+		if activityId != ''
+			Breeze.Views.showPauseControlls()
+			Breeze.Timers.pausePlaylistTimer(currentPlaylist.id)
+			Breeze.Timers.stopActivityTimer(currentActivity.id)
+			currentActivity = Breeze.Activities.Model.getActivityById(activityId)
+			nextActivity = Breeze.Activities.Model.getNextActivity(1)
+			Breeze.Activities.Model.moveActivityToTop(currentActivity.id)
+			Breeze.Timers.startActivityTimer(currentActivity.id, currentActivity.remainingDuration)
+			Breeze.Timers.startPlaylistTimer(currentPlaylist.id)
+			Breeze.Views.makeActivityActive(currentActivity.id)
+			Breeze.DebugCenter.message('Manually started: ' + currentActivity.text + '.')
+		else
+			return false
 
 	@snoozeActivity: (activityId) ->
 		activity = currentActivity
@@ -112,8 +129,8 @@ class Breeze.Activities
 		Breeze.Activities.Model.archiveActivityById(activityId, currentTime)
 		Breeze.Views.removeActivity(activityId)
 		Breeze.People.addOneToPersonsChunckStats()
+		currentActivity = nextActivity
 		Breeze.Activities.serveNextActivity()
-		currentActivity = {}
 		Breeze.DebugCenter.message('Completed Activity: ' + activityId)
 
 	@rewindPlaylist: () ->

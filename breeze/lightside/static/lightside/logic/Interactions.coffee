@@ -34,6 +34,7 @@ class Breeze.Interactions
 		$(document).on('click', '#activity-add-edit-open', -> Breeze.Views.showAddEditForm())
 		$(document).on('click', '#activity-add-edit-close', -> Breeze.Views.hideAddEditForm())
 		$(document).on('click', '.activity-list-item', -> Breeze.Views.showActivityButton($(this).attr('id')))
+		$(document).on('click', 'button.activity-start', -> Breeze.Activities.manualStartActivity($(this).attr('id')))
 		return true
 
 	@displayPersonPrompt: (type, activity = {}) ->

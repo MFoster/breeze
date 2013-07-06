@@ -142,8 +142,21 @@ class Breeze.Activities.Model
 			if activity.id is activityId
 				activity.completedDateTime = archiveTime
 				archivedListData.push(displayListData.splice(_i, 1))
-				return true
+				activityIndex = sortedListData.indexOf(activityId)
+				if activityIndex > -1
+					sortedListData.splice(activityIndex, 1)
+					return true
 		return false
+
+	@moveActivityToTop: (activityId) ->
+		activityIndex = sortedListData.indexOf(activityId)
+		if activityIndex > -1
+			sortedListData.splice(activityIndex, 1)
+			sortedListData.unshift(activityId)
+			Breeze.Views.updateActivitiesList(sortedListData)
+			return true
+		else
+			return false
 
 	@addActivity: (sentData) ->
 		defaultData = {

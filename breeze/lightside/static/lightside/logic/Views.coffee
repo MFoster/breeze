@@ -11,7 +11,6 @@ class Breeze.Views
 			Breeze.Views.hideDebugView()
 			Breeze.Views.hidePromptBox()
 			Breeze.Views.showPlayControlls()
-			Breeze.Views.hideActivityButtons()
 			_init = true
 			return Breeze.Views.statusReport()
 		else
@@ -168,6 +167,7 @@ class Breeze.Views
 			listItem += '<button id="' + activity.id + '" class="activity-start">Play</button>'
 			listItem += '</li>'
 			$('ul#activity-list').append($(listItem))
+		Breeze.Views.hideActivityButtons()
 
 	@addToActivitiesList: (sortedList) ->
 		Breeze.Views.showActivitiesList(sortedList)

@@ -33,6 +33,7 @@ class Breeze.Interactions
 		$(document).on('click', '#activity-control-stop', -> Breeze.Activities.stopPlaylist())
 		$(document).on('click', '#activity-add-edit-open', -> Breeze.Views.showAddEditForm())
 		$(document).on('click', '#activity-add-edit-close', -> Breeze.Views.hideAddEditForm())
+		$(document).on('click', '.activity-list-item', -> Breeze.Views.showActivityButton($(this).attr('id')))
 		return true
 
 	@displayPersonPrompt: (type, activity = {}) ->
@@ -148,7 +149,7 @@ class Breeze.Interactions
 			controls: [
 				{ label: 'Yes', action: "Breeze.Activities.setCompleteOnActivity('" + activity.id + "');" }
 				{ label: 'Add Time', action: "Breeze.Activities.addTimeToActivity('" + activity.id + "');" }
-				{ label: 'Rewind Time', action: "Breeze.Activities.rewindActivity('" + activity.id + "');" }
+				{ label: 'Rewind Time', action: "Breeze.Activities.rewindPlaylist('" + activity.id + "');" }
 			]
 		promptProccessed = createPrompt(promptObject)
 		if promptProccessed then Breeze.DebugCenter.message('Display Complete Activity Prompt.')

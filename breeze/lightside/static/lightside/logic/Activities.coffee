@@ -69,6 +69,7 @@ class Breeze.Activities
 		Breeze.Interactions.displayPersonPrompt('startActivity', nextActivity)
 
 	@startActivity: (activityId) ->
+		# Model move activity ID to top and refresh view
 		if activityId is ''
 			if $.isEmptyObject(currentActivity)
 				currentActivity = Breeze.Activities.Model.getNextActivity(0)
@@ -106,14 +107,14 @@ class Breeze.Activities
 		Breeze.Interactions.displayPersonPrompt('completeActivity', currentActivity)
 
 	@setCompleteOnActivity: (activityId) ->
-		currentActivity = {}
 		currentTime = Breeze.Timers.getTime()
 		Breeze.Timers.stopActivityTimer(activityId)
 		Breeze.Activities.Model.archiveActivityById(activityId, currentTime)
 		Breeze.Views.removeActivity(activityId)
 		Breeze.People.addOneToPersonsChunckStats()
 		Breeze.Activities.serveNextActivity()
-		Breeze.DebugCenter.message('Completed Activity: ' + activity.id)
+		currentActivity = {}
+		Breeze.DebugCenter.message('Completed Activity: ' + activityId)
 
 	@rewindPlaylist: () ->
 		Breeze.Timers.pausePlaylistTimer(currentPlaylist.id)

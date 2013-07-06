@@ -26,10 +26,10 @@ class Breeze.Activities.Model
 			id: 'an_id_002'
 			text: 'Task Item Two'
 			type: 'create'
-			originalDuration: 1
-			currentDuration: 1
+			originalDuration: 90
+			currentDuration: 90
 			currentComplete: 0
-			remainingDuration: 1
+			remainingDuration: 90
 			description: ''
 			log: []
 			createdDateTime: '2013-07-03T12:12:00.000Z'
@@ -58,10 +58,10 @@ class Breeze.Activities.Model
 			id: 'an_id_004'
 			text: 'Task Item Four'
 			type: 'create'
-			originalDuration: 90
-			currentDuration: 90
+			originalDuration: 1
+			currentDuration: 1
 			currentComplete: 0
-			remainingDuration: 90
+			remainingDuration: 1
 			description: ''
 			log: []
 			createdDateTime: '2013-07-03T12:12:00.000Z'

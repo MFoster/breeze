@@ -11,6 +11,7 @@ class Breeze.Views
 			Breeze.Views.hideDebugView()
 			Breeze.Views.hidePromptBox()
 			Breeze.Views.showPlayControlls()
+			Breeze.Views.hideActivityButtons()
 			_init = true
 			return Breeze.Views.statusReport()
 		else
@@ -138,9 +139,9 @@ class Breeze.Views
 	@placeProgressMarker: (percentage) ->
 		# Angle negative for clockwise rotation
 		angle = 2 * Math.PI * (-percentage)
-		# Minus from center for 12 o'clock starting position
-		xPos = 153 - 151 * Math.cos(angle)
-		yPos = 155 - 151 * Math.sin(angle)
+		# Positive from center for 6 o'clock starting position
+		xPos = 18 + 6 * Math.cos(angle)
+		yPos = 18 + 6 * Math.sin(angle)
 		$('#activity-progress-marker').animate({
 			top: xPos
 			left: yPos
@@ -163,6 +164,8 @@ class Breeze.Views
 			listItem += '<div class="activity-duration-' + activity.durationType + '">&nbsp;</div>'
 			listItem += '<span class="activity-title">' + activity.text + '</span>'
 			listItem += '<div class="activity-reorder">&Ecirc;</div>'
+			listItem += '<button id="' + activity.id + '" class="activity-edit">Edit</button>'
+			listItem += '<button id="' + activity.id + '" class="activity-start">Play</button>'
 			listItem += '</li>'
 			$('ul#activity-list').append($(listItem))
 
@@ -174,3 +177,11 @@ class Breeze.Views
 
 	@removeActivity: (activityId) ->
 		$('ul#activity-list > #' + activityId).remove()
+
+	@showActivityButton: (activityId) ->
+		$('#' + activityId + '.activity-start').show()
+		$('#' + activityId + '.activity-edit').show()
+
+	@hideActivityButtons: () ->
+		$('.activity-start').hide()
+		$('.activity-edit').hide()

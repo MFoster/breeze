@@ -3,6 +3,7 @@ class Breeze.Views
 	_init = false
 	pauseControllsVisible = true
 	promptBoxVisible = true
+	addEditFormVisible = true
 	addEditForm = "form not loaded"
 	debugVisible = true
 
@@ -11,6 +12,7 @@ class Breeze.Views
 			Breeze.Views.hideDebugView()
 			Breeze.Views.hidePromptBox()
 			Breeze.Views.showPlayControlls()
+			Breeze.Views.hideAddEditForm()
 			_init = true
 			return Breeze.Views.statusReport()
 		else
@@ -99,14 +101,20 @@ class Breeze.Views
 			Breeze.Views.showDebugView()
 
 	@showAddEditForm: () ->
-		$.get "/task/add/", (data) ->
-			addEditForm = data
-			$('#add-edit-form-container').html(addEditForm).show()
+		if !addEditFormVisible
+			$('#activity-add-edit').show()
 			addEditFormVisible = true
 
 	@hideAddEditForm: () ->
-		$('#add-edit-form-container').hide()
-		addEditFormVisible = false
+		if addEditFormVisible
+			$('#activity-add-edit').hide()
+			addEditFormVisible = false
+
+	@toggleAddEditForm: () ->
+		if addEditFormVisible
+			Breeze.Views.hideAddEditForm()
+		else
+			Breeze.Views.showAddEditForm()
 
 	@showPromptBox: () ->
 		if !promptBoxVisible

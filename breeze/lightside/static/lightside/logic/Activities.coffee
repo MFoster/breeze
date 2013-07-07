@@ -31,8 +31,8 @@ class Breeze.Activities
 
 	@setSelectedPlaylist: (selectedPlaylistId) ->
 		currentPlaylist = Breeze.People.getPersonsPlaylistsById(selectedPlaylistId)
-		Breeze.DebugCenter.message('Playlist Selected: ' + currentPlaylist.name)
 		Breeze.Activities.updateActivitiesList()
+		Breeze.DebugCenter.message('Playlist Selected: ' + currentPlaylist.name)
 		Breeze.Views.hidePromptBox()
 		return currentPlaylist
 

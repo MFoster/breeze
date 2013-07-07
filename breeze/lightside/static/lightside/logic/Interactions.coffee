@@ -31,8 +31,7 @@ class Breeze.Interactions
 		$(document).on('click', '#activity-control-playlists', -> Breeze.Activities.selectPlaylist())
 		$(document).on('click', '#activity-control-play', -> Breeze.Activities.startPlaylist())
 		$(document).on('click', '#activity-control-stop', -> Breeze.Activities.stopPlaylist())
-		$(document).on('click', '#activity-add-edit-open', -> Breeze.Views.showAddEditForm())
-		$(document).on('click', '#activity-add-edit-close', -> Breeze.Views.hideAddEditForm())
+		$(document).on('click', '#activity-add-edit-control', -> Breeze.Views.toggleAddEditForm())
 		$(document).on('click', '.activity-list-item', -> Breeze.Views.showActivityButton($(this).attr('id')))
 		$(document).on('click', 'button.activity-start', -> Breeze.Activities.manualStartActivity($(this).attr('id')))
 		return true

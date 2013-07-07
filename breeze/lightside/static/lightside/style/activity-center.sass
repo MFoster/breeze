@@ -1,18 +1,9 @@
-div#activity-prompt
-	position: absolute
-	top: 390px
-	left: 0
-	width: 320px
-	background-color: rgba(0,0,0,0.9)
-	z-index: 100
-
 div#activity-center
-	position: absolute
-	top: 120px
+	position: relative
 	left: 40px
 	width: 320px
 	div#activity-status-bar
-		position: absolute
+		position: relative
 		top: 0
 		left: 0
 		width: 100%
@@ -83,18 +74,18 @@ div#activity-center
 		top: 340px
 		left: 0
 		width: 320px
-		div#activity-manager-open
+		div#activity-manager-control
 			position: absolute
 			top: 0
 			left: 0
 			text-align: left
-		div#activity-add-edit-open
+		div#activity-add-edit-control
 			position: absolute
 			top: 0
 			right: 0
 			text-align: right
 	ul#activity-list
-		position: absolute
+		position: relative
 		top: 390px
 		left: 0
 		width: 320px
@@ -136,6 +127,14 @@ div#activity-center
 				padding-top: 12px
 				padding-right: 6px
 
+div#activity-prompt
+	position: absolute
+	top: 390px
+	left: 0
+	width: 320px
+	background-color: rgba(0,0,0,0.9)
+	z-index: 100
+
 div#activity-list-debug-view
 	position: absolute
 	top: 20px
@@ -143,7 +142,6 @@ div#activity-list-debug-view
 	max-width: 420px
 	font-size: 0.8em
 	line-height: 0.9em
-	overflow-y: scroll
 	div#activity-list-debug-info
 		width: 100%
 		ul.debug-stats-list

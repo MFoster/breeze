@@ -5,6 +5,11 @@
 html, button, input, select, textarea
 	color: #222
 
+html, body
+	height: 100%
+	margin: 0
+	padding: 0
+
 // Selection Highlighting
 
 ::-moz-selection
@@ -51,8 +56,8 @@ textarea
 @import url("http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900")
 @import url("http://fonts.googleapis.com/css?family=Orbitron:400,500,700,900")
 
-@import 'wireframe_theme_variables.sass'
-@import 'helpers_vertical_rhythm.sass'
+@import "wireframe_theme_variables.sass"
+@import "helpers_vertical_rhythm.sass"
 
 @include establish-baseline
 
@@ -64,22 +69,22 @@ body
 	background-size: 255px 255px
 
 div#primary-container
-	position: absolute
-	top: 0
-	left: 0
-	min-width: 100%
+	width: 100%
 	min-height: 100%
-	max-width: 100%
-	padding: 0 2em 0 2em
+	height: 100%
+	overflow: scroll
 	-webkit-box-shadow: inset 0px 0px 160px 0px rgba(0, 0, 0, 1)
 	box-shadow: inset 0px 0px 160px 0px rgba(0, 0, 0, 1)
 
+div#primary-header
+	margin: 40px
+
 // Includes GO here
-@import 'wireframe_text.sass'
-@import 'wireframe_divs.sass'
-@import 'wireframe_forms.sass'
-@import 'activity-center.sass'
-@import 'add-edit-form.sass'
+@import "wireframe_text.sass"
+@import "wireframe_divs.sass"
+@import "wireframe_forms.sass"
+@import "activity-center.sass"
+@import "activity-add-edit.sass"
 
 // **************************
 // *** Additional Helpers ***

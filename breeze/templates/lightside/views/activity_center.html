@@ -34,8 +34,10 @@
 	<body>
 		<!-- Add site or application content here -->
 		<div id="primary-container">
-			<h1>Breeze Prototype</h1>
-			<h3 id="person-name"></h3>
+			<div id="primary-header">
+				<h1>Breeze Prototype</h1>
+				<h3 id="person-name"></h3>
+			</div>
 			<div id="activity-center">
 				<div id="activity-status-bar">
 					<div id="activity-completed-month"></div>
@@ -50,8 +52,8 @@
 					<div id="activity-control-right"></div>
 				</div>
 				<div id="activity-management">
-					<div id="activity-manager-open">Menu</div>
-					<div id="activity-add-edit-open">Add</div>
+					<div id="activity-manager-control">Menu</div>
+					<div id="activity-add-edit-control">Add</div>
 				</div>
 				<div id="activity-prompt">
 					<div id="activity-prompt-header"></div>
@@ -61,6 +63,42 @@
 				<ul id="activity-list">
 					<li>Data Loading</li>
 				</ul>
+			</div>
+			<div id="activity-add-edit">
+				<form name="activity_form" id="activity-form">
+					<fieldset name="activity_title" id="activity-title">
+						<legend>Activity</legend>
+						<input type="text" name="activity_text" id="activity-text" placeholder="Activity..." autofocus required>
+					</fieldset>
+					<fieldset name="activity_time" id="activity-time">
+						<legend>Time Activity</legend>
+						<input type="number" name="activity_duration" id="activity-duration" value="25">
+						<input type="datetime" name="activity_available_datetime" id="activity-available-datetime">
+						<input type="datetime" name="activity_due_datetime" id="activity-due-datetime">
+						<input type="checkbox" name="activity_scheduled" id="activity-scheduled"><label for="activity_scheduled">Scheduled</label>
+					</fieldset>
+					<fieldset name="activity_define" id="activity-define">
+						<legend>Define Activity</legend>
+						<input list="activity_types_list" name="activity_types" id="activity-types" value="create">
+						<datalist id="activity_types_list">
+							<option value="appointment">
+							<option value="communicate">
+							<option value="create">
+							<option value="decide">
+							<option value="improve">
+							<option value="maintain">
+							<option value="obtain">
+							<option value="organize">
+							<option value="plan">
+							<option value="research">
+							<option value="resolve">
+							<option value="social">
+						</datalist>
+						<textarea id="activity-description" name="activity_description" placeholder="Describe Activity"></textarea>
+					</fieldset>
+					<button type="submit" name="activity_submit_accept" id="activity-submit-accept">Accept</button>
+					<button type="submit" name="activity_submit_decline" id="activity-submit-decline">Decline</button>
+				</form>
 			</div>
 			<div id="activity-list-debug-view">
 				<div id="activity-list-debug-toggle">=</div>
@@ -96,8 +134,6 @@
 						<h6>Current Activity</h6>
 					</div>
 				</div>
-			</div>
-			<div id="add-edit-form-container">
 			</div>
 		</div>
 	</body>

@@ -7,7 +7,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'breeze.views.home', name='home'),
+    
+    url(r'^$', 'breeze.views.home', name='home'),
     # url(r'^breeze/', include('breeze.foo.urls')),
 
     url(r'^task/add/$', TaskCreate.as_view(), name='task_add'),
@@ -16,6 +17,8 @@ urlpatterns = patterns('',
 
     # URLs for the main person viewable pages
     url(r'^lightside/', include('lightside.urls')),
+    
+    url(r'^api/', include('api.urls')),
 
     #url(r'task/delete/(?P<slug>[-_\w]+)/$$', TaskDelete.as_view(), name='task_delete'),
 

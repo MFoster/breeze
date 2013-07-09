@@ -1,0 +1,192 @@
+Downloading/unpacking pyyaml
+  Getting page http://pypi.python.org/simple/pyyaml
+  URLs to search for versions for pyyaml:
+  * http://pypi.python.org/simple/pyyaml
+  Analyzing links from page https://pypi.python.org/simple/PyYAML/
+    Skipping link https://pypi.python.org/packages/2.6/P/PyYAML/PyYAML-3.10.win32-py2.6.exe#md5=4c1a374cb89fa0ff43f3b94b5692edd9 (from https://pypi.python.org/simple/PyYAML/); unknown archive format: .exe
+    Skipping link https://pypi.python.org/packages/2.5/P/PyYAML/PyYAML-3.10.win32-py2.5.exe#md5=dfb573ab41cdfee1b2794b7a155e72e6 (from https://pypi.python.org/simple/PyYAML/); unknown archive format: .exe
+    Skipping link https://pypi.python.org/packages/3.2/P/PyYAML/PyYAML-3.10.win32-py3.2.exe#md5=fc582f2f46f6494a97c9cae938a19f59 (from https://pypi.python.org/simple/PyYAML/); unknown archive format: .exe
+    Skipping link https://pypi.python.org/packages/3.0/P/PyYAML/PyYAML-3.10.win32-py3.0.exe#md5=0360710722fdc58e519d6a76324aa1d7 (from https://pypi.python.org/simple/PyYAML/); unknown archive format: .exe
+    Skipping link https://pypi.python.org/packages/2.7/P/PyYAML/PyYAML-3.10.win32-py2.7.exe#md5=73309e5fe73d7d84e0af3213b2c957ff (from https://pypi.python.org/simple/PyYAML/); unknown archive format: .exe
+    Skipping link https://pypi.python.org/packages/3.1/P/PyYAML/PyYAML-3.10.win32-py3.1.exe#md5=6c830441d9df703458e2f34c2e6a413a (from https://pypi.python.org/simple/PyYAML/); unknown archive format: .exe
+    Found link https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz#md5=74c94a383886519e9e7b3dd1ee540247 (from https://pypi.python.org/simple/PyYAML/), version: 3.10
+    Found link https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.zip#md5=b1a2b30cdf481da4249c917c3307f129 (from https://pypi.python.org/simple/PyYAML/), version: 3.10
+  Using version 3.10 (newest of versions: 3.10, 3.10)
+  Downloading from URL https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.zip#md5=b1a2b30cdf481da4249c917c3307f129 (from https://pypi.python.org/simple/PyYAML/)
+  Running setup.py egg_info for package pyyaml
+    running egg_info
+    creating pip-egg-info/PyYAML.egg-info
+    writing pip-egg-info/PyYAML.egg-info/PKG-INFO
+    writing top-level names to pip-egg-info/PyYAML.egg-info/top_level.txt
+    writing dependency_links to pip-egg-info/PyYAML.egg-info/dependency_links.txt
+    writing manifest file 'pip-egg-info/PyYAML.egg-info/SOURCES.txt'
+    warning: manifest_maker: standard file '-c' not found
+    reading manifest file 'pip-egg-info/PyYAML.egg-info/SOURCES.txt'
+    writing manifest file 'pip-egg-info/PyYAML.egg-info/SOURCES.txt'
+  Source in ./build/pyyaml has version 3.10, which satisfies requirement pyyaml
+Installing collected packages: pyyaml
+  Running setup.py install for pyyaml
+    Running command /usr/bin/python -c "import setuptools; __file__='/var/www/breeze_host/breeze/build/pyyaml/setup.py'; execfile('/var/www/breeze_host/breeze/build/pyyaml/setup.py')" install --single-version-externally-managed --record /tmp/pip-69m693-record/install-record.txt --install-headers /var/www/breeze_host/breeze/lib/include
+    running install
+    running build
+    running build_py
+    creating build
+    creating build/lib.linux-x86_64-2.6
+    creating build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/__init__.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/composer.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/constructor.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/cyaml.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/dumper.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/emitter.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/error.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/events.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/loader.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/nodes.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/parser.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/reader.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/representer.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/resolver.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/scanner.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/serializer.py -> build/lib.linux-x86_64-2.6/yaml
+    copying lib/yaml/tokens.py -> build/lib.linux-x86_64-2.6/yaml
+    running build_ext
+    creating build/temp.linux-x86_64-2.6
+    checking if libyaml is compilable
+    gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.6 -c build/temp.linux-x86_64-2.6/check_libyaml.c -o build/temp.linux-x86_64-2.6/check_libyaml.o
+    build/temp.linux-x86_64-2.6/check_libyaml.c:2:18: error: yaml.h: No such file or directory
+    build/temp.linux-x86_64-2.6/check_libyaml.c: In function 'main':
+    build/temp.linux-x86_64-2.6/check_libyaml.c:5: error: 'yaml_parser_t' undeclared (first use in this function)
+    build/temp.linux-x86_64-2.6/check_libyaml.c:5: error: (Each undeclared identifier is reported only once
+    build/temp.linux-x86_64-2.6/check_libyaml.c:5: error: for each function it appears in.)
+    build/temp.linux-x86_64-2.6/check_libyaml.c:5: error: expected ';' before 'parser'
+    build/temp.linux-x86_64-2.6/check_libyaml.c:6: error: 'yaml_emitter_t' undeclared (first use in this function)
+    build/temp.linux-x86_64-2.6/check_libyaml.c:6: error: expected ';' before 'emitter'
+    build/temp.linux-x86_64-2.6/check_libyaml.c:8: warning: implicit declaration of function 'yaml_parser_initialize'
+    build/temp.linux-x86_64-2.6/check_libyaml.c:8: error: 'parser' undeclared (first use in this function)
+    build/temp.linux-x86_64-2.6/check_libyaml.c:9: warning: implicit declaration of function 'yaml_parser_delete'
+    build/temp.linux-x86_64-2.6/check_libyaml.c:11: warning: implicit declaration of function 'yaml_emitter_initialize'
+    build/temp.linux-x86_64-2.6/check_libyaml.c:11: error: 'emitter' undeclared (first use in this function)
+    build/temp.linux-x86_64-2.6/check_libyaml.c:12: warning: implicit declaration of function 'yaml_emitter_delete'
+    
+    libyaml is not found or a compiler error: forcing --without-libyaml
+    (if libyaml is installed correctly, you may need to
+     specify the option --include-dirs or uncomment and
+     modify the parameter include_dirs in setup.cfg)
+    running install_lib
+    creating /usr/local/lib/python2.6/dist-packages/yaml
+    error: could not create '/usr/local/lib/python2.6/dist-packages/yaml': Permission denied
+    Complete output from command /usr/bin/python -c "import setuptools; __file__='/var/www/breeze_host/breeze/build/pyyaml/setup.py'; execfile('/var/www/breeze_host/breeze/build/pyyaml/setup.py')" install --single-version-externally-managed --record /tmp/pip-69m693-record/install-record.txt --install-headers /var/www/breeze_host/breeze/lib/include:
+    running install
+
+running build
+
+running build_py
+
+creating build
+
+creating build/lib.linux-x86_64-2.6
+
+creating build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/__init__.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/composer.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/constructor.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/cyaml.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/dumper.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/emitter.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/error.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/events.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/loader.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/nodes.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/parser.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/reader.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/representer.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/resolver.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/scanner.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/serializer.py -> build/lib.linux-x86_64-2.6/yaml
+
+copying lib/yaml/tokens.py -> build/lib.linux-x86_64-2.6/yaml
+
+running build_ext
+
+creating build/temp.linux-x86_64-2.6
+
+checking if libyaml is compilable
+
+gcc -pthread -fno-strict-aliasing -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fPIC -I/usr/include/python2.6 -c build/temp.linux-x86_64-2.6/check_libyaml.c -o build/temp.linux-x86_64-2.6/check_libyaml.o
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:2:18: error: yaml.h: No such file or directory
+
+build/temp.linux-x86_64-2.6/check_libyaml.c: In function 'main':
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:5: error: 'yaml_parser_t' undeclared (first use in this function)
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:5: error: (Each undeclared identifier is reported only once
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:5: error: for each function it appears in.)
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:5: error: expected ';' before 'parser'
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:6: error: 'yaml_emitter_t' undeclared (first use in this function)
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:6: error: expected ';' before 'emitter'
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:8: warning: implicit declaration of function 'yaml_parser_initialize'
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:8: error: 'parser' undeclared (first use in this function)
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:9: warning: implicit declaration of function 'yaml_parser_delete'
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:11: warning: implicit declaration of function 'yaml_emitter_initialize'
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:11: error: 'emitter' undeclared (first use in this function)
+
+build/temp.linux-x86_64-2.6/check_libyaml.c:12: warning: implicit declaration of function 'yaml_emitter_delete'
+
+
+
+libyaml is not found or a compiler error: forcing --without-libyaml
+
+(if libyaml is installed correctly, you may need to
+
+ specify the option --include-dirs or uncomment and
+
+ modify the parameter include_dirs in setup.cfg)
+
+running install_lib
+
+creating /usr/local/lib/python2.6/dist-packages/yaml
+
+error: could not create '/usr/local/lib/python2.6/dist-packages/yaml': Permission denied
+
+----------------------------------------
+Command /usr/bin/python -c "import setuptools; __file__='/var/www/breeze_host/breeze/build/pyyaml/setup.py'; execfile('/var/www/breeze_host/breeze/build/pyyaml/setup.py')" install --single-version-externally-managed --record /tmp/pip-69m693-record/install-record.txt --install-headers /var/www/breeze_host/breeze/lib/include failed with error code 1
+Exception information:
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/dist-packages/pip.py", line 252, in main
+    self.run(options, args)
+  File "/usr/lib/python2.6/dist-packages/pip.py", line 410, in run
+    requirement_set.install(install_options)
+  File "/usr/lib/python2.6/dist-packages/pip.py", line 2017, in install
+    requirement.install(install_options)
+  File "/usr/lib/python2.6/dist-packages/pip.py", line 1515, in install
+    cwd=self.source_dir, filter_stdout=self._filter_install, show_stdout=False)
+  File "/usr/lib/python2.6/dist-packages/pip.py", line 3543, in call_subprocess
+    % (command_desc, proc.returncode))
+InstallationError: Command /usr/bin/python -c "import setuptools; __file__='/var/www/breeze_host/breeze/build/pyyaml/setup.py'; execfile('/var/www/breeze_host/breeze/build/pyyaml/setup.py')" install --single-version-externally-managed --record /tmp/pip-69m693-record/install-record.txt --install-headers /var/www/breeze_host/breeze/lib/include failed with error code 1

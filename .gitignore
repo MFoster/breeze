@@ -7,3 +7,4 @@ CACHE/
 .DS_Store
 */breeze/breeze/settings.py
 *.sqlite
+vagrant/.vagrant

@@ -5,13 +5,13 @@ exec { 'update':
 package { ["apache2", 
            "python", 
            "python-pip", 
-           "python-pgsql",
+           "python-mysqldb",
            "python-software-properties", 
-           "postgresql", 
+           "mysql-server", 
            "vim", 
            "git-core"]:
   ensure => present,
-  before => [Exec["setup"], Exec["unipath"], Exec["compressor"], Exec["git"]],
+  before => [Exec["setup"], Exec["unipath"], Exec["compressor"], Exec["git"], Exec["pyyaml"]],
   require=> Exec["update"]
 }
 
@@ -59,6 +59,11 @@ exec {'setup':
 }
 exec {'unipath':
   command => '/usr/bin/pip install unipath',
+  cwd => '/var/www/breeze'
+}
+
+exec {'pyyaml':
+  command => '/usr/bin/pip install pyyaml',
   cwd => '/var/www/breeze'
 }
 

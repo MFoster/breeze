@@ -1,0 +1,95 @@
+- model: api.Activity
+  pk: 1
+  fields:
+    text: 'Task Item One'
+    type: 'create'
+    originalDuration: 50
+    currentDuration: 50
+    currentComplete: 0
+    remainingDuration: 50
+    description: ''    
+    created: '2013-07-10 2:12:00'
+    available: '2013-07-01 2:12:10'
+    due: '2013-07-01 10:10:00'
+    completed: '2013-07-01 10:10:00'
+    scheduled: false
+    
+- model: api.Activity
+  pk: 2
+  fields:
+    text: 'Task Item Two'
+    type: 'create'
+    originalDuration: 50
+    currentDuration: 50
+    currentComplete: 0
+    remainingDuration: 50
+    description: ''    
+    created: '2013-07-10 2:12:00'
+    available: '2013-07-01 2:12:10'
+    due: '2013-07-01 10:10:00'
+    completed: '2013-07-01 10:10:00'
+    scheduled: false
+    
+- model: api.Activity
+  pk: 3
+  fields:   
+    text: 'Task Item Three'
+    type: 'create'
+    originalDuration: 50
+    currentDuration: 50
+    currentComplete: 0
+    remainingDuration: 50
+    description: ''    
+    created: '2013-07-10 2:12:00'
+    available: '2013-07-01 2:12:10'
+    due: '2013-07-01 10:10:00'
+    completed: '2013-07-01 10:10:00'
+    scheduled: false
+    
+- model: api.Activity
+  pk: 4
+  fields:
+    text: 'Task Item Four'
+    type: 'create'
+    originalDuration: 50
+    currentDuration: 50
+    currentComplete: 0
+    remainingDuration: 50
+    description: ''    
+    created: '2013-07-10 2:12:00'
+    available: '2013-07-01 2:12:10'
+    due: '2013-07-01 10:10:00'
+    completed: '2013-07-01 10:10:00'
+    scheduled: false
+    
+- model: api.Activity
+  pk: 5
+  fields:
+    text: 'Task Item Five'
+    type: 'create'
+    originalDuration: 50
+    currentDuration: 50
+    currentComplete: 0
+    remainingDuration: 50
+    description: ''    
+    created: '2013-07-10 2:12:00'
+    available: '2013-07-01 2:12:10'
+    due: '2013-07-01 10:10:00'
+    completed: '2013-07-01 10:10:00'
+    scheduled: false
+    
+- model: api.Activity
+  pk: 6
+  fields:
+    text: 'Task Item Six'
+    type: 'create'
+    originalDuration: 50
+    currentDuration: 50
+    currentComplete: 0
+    remainingDuration: 50
+    description: ''    
+    created: '2013-07-10 2:12:00'
+    available: '2013-07-01 2:12:10'
+    due: '2013-07-01 10:10:00'
+    completed: '2013-07-01 10:10:00'
+    scheduled: false

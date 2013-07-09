@@ -8,8 +8,9 @@ class Activity(models.Model):
     originalDuration  = models.PositiveIntegerField()
     currentDuration   = models.PositiveIntegerField()
     remainingDuration = models.PositiveIntegerField()
-    created           = models.DateField()
-    available         = models.DateField()
-    due               = models.DateField()
-    completed         = models.DateField()
+    currentComplete   = models.PositiveIntegerField()
+    created           = models.DateTimeField()
+    available         = models.DateTimeField()
+    due               = models.DateTimeField()
+    completed         = models.DateTimeField()
     

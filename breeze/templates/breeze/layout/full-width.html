@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block title %}Breeze Activity - {{ section.title }}{% endblock %}</title>
+	<link rel="stylesheet" href="/static/breeze/css/cerulean.css" type="text/css"/>
+	<link rel="stylesheet" href="/static/breeze/css/breeze.css" type="text/css"/>
+	<!-- include source files here... -->
+	{% load compress %}
+	{% compress css %}
+
+	{% endcompress %}
+</head>
+<body>
+
+    <!-- Page Header -->
+    <header id="masthead">
+      <nav class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+              <a href="/" class="brand">
+                Breeze Activity
+              </a>
+            <div class="nav-collapse collapse">
+              <ul class="nav pull-right">
+                <li><a href="/">Home</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Register</a></li>              
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="clearfix"></div>
+    </header>
+    <section class="section">
+        <div id="content" class="container">
+        {% block content %}
+    	   {{ section.content }}
+        {% endblock %}
+        
+        </div>
+        
+        
+        
+    </section>
+
+    <footer class="section">
+        <div class="container-fluid">
+            
+            <div class="row-fluid">
+                <div class="span3">
+                    <h3>Contact Us</h3>
+                    <p>Call us or don't who cares?</p>    
+                </div>
+                <div class="span3">
+                    <h3>Twitter</h3>
+                    <p>Famous people use it, why don't you!?</p>    
+                </div>
+                <div class="span3">
+                    <h3>Sign up for Crap</h3>
+                    <p>The boredom stops when you leave the site? Not with our email list!</p>    
+                </div>
+                <div class="span3">
+                    <h3>Tumblr</h3>
+                    <p>
+                        Pictures of people looking at our app, then pictures of people taking pictures of people using our app.
+                        We'll be Sofa King Meta, ruler of the hipsters.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+</body>
+</html>

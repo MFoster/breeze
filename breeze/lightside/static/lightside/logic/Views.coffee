@@ -116,6 +116,19 @@ class Breeze.Views
 		else
 			Breeze.Views.showAddEditForm()
 
+	@resetAddEditForm: () ->
+		formDefaults = Breeze.Activities.Model.getActivityDefaults()
+		formValues = {}
+		$('#activity-form :input').each( ->
+			formValues[$(this).attr('name')] = $(this).val()
+		)
+		for property, value of formValues
+			if formDefaults.hasOwnProperty(property)
+				$('#activity-form input[name="' + property + '"]').val(formDefaults[property])
+			else
+				$('#activity-form input[name="' + property + '"]').val('')
+		return true
+
 	@showPromptBox: () ->
 		if !promptBoxVisible
 			$('#activity-prompt').show()

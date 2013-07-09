@@ -34,7 +34,33 @@ class Breeze.Interactions
 		$(document).on('click', '#activity-add-edit-control', -> Breeze.Views.toggleAddEditForm())
 		$(document).on('click', '.activity-list-item', -> Breeze.Views.showActivityButton($(this).attr('id')))
 		$(document).on('click', 'button.activity-start', -> Breeze.Activities.manualStartActivity($(this).attr('id')))
+		$(document).on('click', 'button#activity-submit-accept', (event) ->
+			event.preventDefault()
+			Breeze.Interactions.processActivityFormSubmit()
+		)
+		$(document).on('click', 'button#activity-submit-decline', (event) ->
+			event.preventDefault()
+			Breeze.Views.resetAddEditForm()
+			Breeze.Views.hideAddEditForm()
+		)
 		return true
+
+	@processActivityFormSubmit: () ->
+		formValues = {}
+		$('#activity-form :input').each( ->
+			formValues[$(this).attr('name')] = $(this).val()
+		)
+		validatedData = Breeze.Activities.Model.validateActivityData(formValues)
+		if validatedData.hasOwnProperty('error')
+			# Display Validation Errors
+		else
+			currentPlaylist = Breeze.Activities.statusReport().currentPlaylist.id
+			saveData = Breeze.Activities.Model.addActivity(currentPlaylist, validatedData)
+			if saveData
+				Breeze.Views.resetAddEditForm()
+				Breeze.Views.hideAddEditForm()
+			else
+				Breeze.DebugCenter.message('Form save failed.', 'error')
 
 	@displayPersonPrompt: (type, activity = {}) ->
 		promptProccessed = false

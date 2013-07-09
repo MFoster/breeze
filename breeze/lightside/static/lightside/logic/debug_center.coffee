@@ -31,9 +31,12 @@ class Breeze.DebugCenter
 		messagePrefix = 'informational: '
 		messageTimeStamp = ''
 		messageColor = 'green'
-		switch type
-			when 'caution' then messagePrefix = 'Caution: ' and messageColor = 'orange'
-			when 'error' then messagePrefix = 'ERROR: ' and messageColor = 'red'
+		if type is 'caution'
+			messagePrefix = 'Caution: '
+			messageColor = 'orange'
+		if type is 'error'
+			messagePrefix = 'ERROR: '
+			messageColor = 'red'
 		messageToLog = messagePrefix + message
 		nowTime = new Date().getTime()
 		timeStamp = new Date(nowTime)

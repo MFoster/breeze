@@ -31,8 +31,8 @@ class Breeze.Activities
 
 	@setSelectedPlaylist: (selectedPlaylistId) ->
 		currentPlaylist = Breeze.People.getPersonsPlaylistsById(selectedPlaylistId)
-		Breeze.DebugCenter.message('Playlist Selected: ' + currentPlaylist.name)
 		Breeze.Activities.updateActivitiesList()
+		Breeze.DebugCenter.message('Playlist Selected: ' + currentPlaylist.name)
 		Breeze.Views.hidePromptBox()
 		return currentPlaylist
 
@@ -68,7 +68,11 @@ class Breeze.Activities
 		if $.isEmptyObject(currentActivity)
 			currentActivity = Breeze.Activities.Model.getNextActivity(0)
 			nextActivity = Breeze.Activities.Model.getNextActivity(1)
-			Breeze.DebugCenter.message('Got Next Activities from Model')
+			Breeze.DebugCenter.message('Got Current and Next Activity from Model')
+		else
+			currentActivity = nextActivity
+			nextActivity = Breeze.Activities.Model.getNextActivity(1)
+			Breeze.DebugCenter.message('Got Next Activity from Model')
 		Breeze.Interactions.displayPersonPrompt('startActivity', currentActivity)
 
 	@startActivity: (activityId) ->
@@ -129,7 +133,6 @@ class Breeze.Activities
 		Breeze.Activities.Model.archiveActivityById(activityId, currentTime)
 		Breeze.Views.removeActivity(activityId)
 		Breeze.People.addOneToPersonsChunckStats()
-		currentActivity = nextActivity
 		Breeze.Activities.serveNextActivity()
 		Breeze.DebugCenter.message('Completed Activity: ' + activityId)
 

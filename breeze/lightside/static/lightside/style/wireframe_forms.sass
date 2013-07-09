@@ -11,7 +11,7 @@ form.form-base
 	margin-left: 1em
 
 input.input-base, input.input-subtle, input.input-warning, input.input-caution, input.input-confirmation, input.input-information, input.input-disabled, textarea.textarea-base
-	width: 98%
+	width: 95%
 	display: block
 	padding: 0 0 0 2%
 	margin: 0
@@ -23,7 +23,7 @@ input.input-base, input.input-subtle, input.input-warning, input.input-caution, 
 	background: transparent
 	outline: none
 	&:active, &:focus
-		width: 100%
+		width: 97%
 		border-width: 2px
 		background-color: rgba(70,100,130,0.2)
 
@@ -59,3 +59,27 @@ button.button-base
 	color: $color-text-base
 	border: 2px solid $border-color-base
 	background-color: rgba(70,100,130,0.5)
+
+input[type=checkbox]
+	display: none
+input[type=checkbox] + label span
+	display: inline-block
+	width: 18px
+	height: 18px
+	margin: 7px
+	vertical-align: middle
+	background-color: rgba(0,0,0,0.2)
+	border: 2px solid $color-text-subtle
+	color: $color-text-link
+	cursor: pointer
+	&:after
+		content: ""
+input[type=checkbox]:checked + label span
+	width: 22px
+	height: 22px
+	border: 0 solid $color-text-subtle
+	background-color: rgba(0,0,0,0.5)
+	&:after
+		font-size: 2em
+		padding-left: 2px
+		content: "\2714"

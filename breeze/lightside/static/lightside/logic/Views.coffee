@@ -3,6 +3,7 @@ class Breeze.Views
 	_init = false
 	pauseControllsVisible = true
 	promptBoxVisible = true
+	addEditFormVisible = true
 	addEditForm = "form not loaded"
 	debugVisible = true
 
@@ -11,6 +12,8 @@ class Breeze.Views
 			Breeze.Views.hideDebugView()
 			Breeze.Views.hidePromptBox()
 			Breeze.Views.showPlayControlls()
+			Breeze.Views.hideAddEditForm()
+			Breeze.Views.resetAddEditForm()
 			_init = true
 			return Breeze.Views.statusReport()
 		else
@@ -99,14 +102,41 @@ class Breeze.Views
 			Breeze.Views.showDebugView()
 
 	@showAddEditForm: () ->
-		$.get "/task/add/", (data) ->
-			addEditForm = data
-			$('#add-edit-form-container').html(addEditForm).show()
+		if !addEditFormVisible
+			$('#activity-add-edit').show()
 			addEditFormVisible = true
 
 	@hideAddEditForm: () ->
-		$('#add-edit-form-container').hide()
-		addEditFormVisible = false
+		if addEditFormVisible
+			$('#activity-add-edit').hide()
+			addEditFormVisible = false
+
+	@toggleAddEditForm: () ->
+		if addEditFormVisible
+			Breeze.Views.hideAddEditForm()
+		else
+			Breeze.Views.showAddEditForm()
+
+	@resetAddEditForm: () ->
+		$('#activity-time-fields').css('height', '0px')
+		$('#activity-define').css('height', '0px')
+		formDefaults = Breeze.Activities.Model.getActivityDefaults()
+		formValues = {}
+		$('#activity-form :input').each( ->
+			formValues[$(this).attr('name')] = $(this).val()
+		)
+		for property, value of formValues
+			if formDefaults.hasOwnProperty(property)
+				$('#activity-form input[name="' + property + '"]').val(formDefaults[property])
+			else
+				$('#activity-form input[name="' + property + '"]').val('')
+		return true
+
+	@showFormTimeFields: () ->
+		$('#activity-time-fields').css('height', '270px')
+
+	@showFormDefineFields: () ->
+		$('#activity-define').css('height', '200px')
 
 	@showPromptBox: () ->
 		if !promptBoxVisible

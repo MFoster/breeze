@@ -65,21 +65,21 @@
 				</ul>
 			</div>
 			<div id="activity-add-edit">
-				<form name="activity_form" id="activity-form">
+				<form name="activity_form" id="activity-form" class="form-base">
 					<fieldset name="activity_title" id="activity-title">
 						<legend>Activity</legend>
-						<input type="text" name="activity_text" id="activity-text" placeholder="Activity..." autofocus required>
+						<input type="text" name="activity_text" id="activity-text" class="input-base" placeholder="Activity..." autofocus required>
 					</fieldset>
-					<fieldset name="activity_time" id="activity-time">
+					<fieldset name="activity_time_fields" id="activity-time-fields">
 						<legend>Time Activity</legend>
-						<input type="number" name="activity_duration" id="activity-duration" value="25">
-						<input type="datetime" name="activity_available_datetime" id="activity-available-datetime">
-						<input type="datetime" name="activity_due_datetime" id="activity-due-datetime">
-						<input type="checkbox" name="activity_scheduled" id="activity-scheduled"><label for="activity_scheduled">Scheduled</label>
+						<input type="number" name="activity_duration" id="activity-duration" class="input-base" value="25">
+						<input type="datetime" name="activity_available_datetime" id="activity-available-datetime" class="input-base">
+						<input type="datetime" name="activity_due_datetime" id="activity-due-datetime" class="input-base">
+						<input type="checkbox" name="activity_scheduled"  id="activity-scheduled"><label for="activity-scheduled"><span></span>Scheduled</label>
 					</fieldset>
 					<fieldset name="activity_define" id="activity-define">
 						<legend>Define Activity</legend>
-						<input list="activity_types_list" name="activity_type" id="activity-type" value="create">
+						<input list="activity_types_list" name="activity_type" id="activity-type" value="create" class="input-base">
 						<datalist id="activity_types_list">
 							<option value="appointment">
 							<option value="communicate">
@@ -94,10 +94,10 @@
 							<option value="resolve">
 							<option value="social">
 						</datalist>
-						<textarea id="activity-description" name="activity_description" placeholder="Describe Activity"></textarea>
+						<textarea id="activity-description" name="activity_description" placeholder="Describe Activity" class="textarea-base"></textarea>
 					</fieldset>
-					<button type="submit" name="activity_submit_accept" id="activity-submit-accept">Accept</button>
-					<button type="submit" name="activity_submit_decline" id="activity-submit-decline">Decline</button>
+					<button type="submit" name="activity_submit_accept" id="activity-submit-accept" class="button-base">Accept</button>
+					<button type="submit" name="activity_submit_decline" id="activity-submit-decline" class="button-base">Decline</button>
 				</form>
 			</div>
 			<div id="activity-list-debug-view">

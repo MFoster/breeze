@@ -13,6 +13,7 @@ class Breeze.Views
 			Breeze.Views.hidePromptBox()
 			Breeze.Views.showPlayControlls()
 			Breeze.Views.hideAddEditForm()
+			Breeze.Views.resetAddEditForm()
 			_init = true
 			return Breeze.Views.statusReport()
 		else
@@ -117,6 +118,8 @@ class Breeze.Views
 			Breeze.Views.showAddEditForm()
 
 	@resetAddEditForm: () ->
+		$('#activity-time-fields').css('height', '0px')
+		$('#activity-define').css('height', '0px')
 		formDefaults = Breeze.Activities.Model.getActivityDefaults()
 		formValues = {}
 		$('#activity-form :input').each( ->
@@ -128,6 +131,12 @@ class Breeze.Views
 			else
 				$('#activity-form input[name="' + property + '"]').val('')
 		return true
+
+	@showFormTimeFields: () ->
+		$('#activity-time-fields').css('height', '270px')
+
+	@showFormDefineFields: () ->
+		$('#activity-define').css('height', '200px')
 
 	@showPromptBox: () ->
 		if !promptBoxVisible

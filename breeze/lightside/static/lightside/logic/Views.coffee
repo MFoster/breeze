@@ -5,6 +5,12 @@ class Breeze.Views
 	promptBoxVisible = true
 	addEditFormVisible = true
 	addEditForm = "form not loaded"
+	formTimeFieldsVisible = false
+	formDefineFieldsVisible = false
+	availableDateControlsVisible = true
+	availableTimeControlsVisible = true
+	dueDateControlsVisible = true
+	dueTimeControlsVisible = true
 	debugVisible = true
 
 	constructor: (@attributes) ->
@@ -12,8 +18,6 @@ class Breeze.Views
 			Breeze.Views.hideDebugView()
 			Breeze.Views.hidePromptBox()
 			Breeze.Views.showPlayControlls()
-			Breeze.Views.hideAddEditForm()
-			Breeze.Views.resetAddEditForm()
 			_init = true
 			return Breeze.Views.statusReport()
 		else
@@ -26,6 +30,12 @@ class Breeze.Views
 			pauseControllsVisible: pauseControllsVisible
 			promptBoxVisible: promptBoxVisible
 			addEditForm: addEditForm
+			formTimeFieldsVisible: formTimeFieldsVisible
+			formDefineFieldsVisible: formDefineFieldsVisible
+			availableDateControlsVisible: availableDateControlsVisible
+			availableTimeControlsVisible: availableTimeControlsVisible
+			dueDateControlsVisible: dueDateControlsVisible
+			dueTimeControlsVisible: dueTimeControlsVisible
 			debugVisible: debugVisible
 		}
 		return reportData
@@ -64,6 +74,22 @@ class Breeze.Views
 			for property, value of currentActivityData
 				activityList.append('<li><span class="debug-stat-name">' + property + '</span><span class="debug-stat-output">' + value + '</span></li>')
 			debugActivity.append(activityList)
+
+	@cycleVisible: () ->
+		if not addEditFormVisible
+			Breeze.Views.showAddEditForm()
+			return
+		if not formTimeFieldsVisible
+			Breeze.Views.showFormTimeFields()
+			return
+		if not formDefineFieldsVisible
+			Breeze.Views.showFormDefineFields()
+			return
+		Breeze.Views.hideAddEditForm()
+		$('#activity-time-fields').css('height', '0px')
+		$('#activity-define').css('height', '0px')
+		formTimeFieldsVisible = false
+		formDefineFieldsVisible = false
 
 	@showPauseControlls: () ->
 		if !pauseControllsVisible
@@ -120,6 +146,8 @@ class Breeze.Views
 	@resetAddEditForm: () ->
 		$('#activity-time-fields').css('height', '0px')
 		$('#activity-define').css('height', '0px')
+		formTimeFieldsVisible = false
+		formDefineFieldsVisible = false
 		formDefaults = Breeze.Activities.Model.getActivityDefaults()
 		formValues = {}
 		$('#activity-form :input').each( ->
@@ -133,10 +161,99 @@ class Breeze.Views
 		return true
 
 	@showFormTimeFields: () ->
-		$('#activity-time-fields').css('height', '270px')
+		if not formTimeFieldsVisible
+			$('#activity-time-fields').css('height', '310px')
+			$('#activity-form-show-time-fields').hide()
+			formTimeFieldsVisible = true
 
 	@showFormDefineFields: () ->
-		$('#activity-define').css('height', '200px')
+		if not formDefineFieldsVisible
+			$('#activity-define').css('height', '200px')
+			$('#activity-form-show-define-fields').hide()
+			formDefineFieldsVisible = true
+
+	@updateFormDuration: (amount) ->
+		$('#activity-duration-display').html(amount + 'min')
+		$('activity-duration').val(amount)
+
+	@updateFormDateTime: (targetField, formDate, formTime, displayDate, displayTime) ->
+		$('#activity-' + targetField + '-date-selected').html(displayDate)
+		$('#activity-' + targetField + '-time-selected').html(displayTime)
+		$('#activity-' + targetField + '-datetime').val(formDate + formTime)
+
+	@showAvailableDateControls: () ->
+		if not availableDateControlsVisible
+			Breeze.Views.hideAllDateTimeControls()
+			$('#activity-available-date-select').show()
+			availableDateControlsVisible = true
+
+	@hideAvailableDateControls: () ->
+		if availableDateControlsVisible
+			$('#activity-available-date-select').hide()
+			availableDateControlsVisible = false
+
+	@toggleAvailableDateControls: () ->
+		if availableDateControlsVisible
+			Breeze.Views.hideAvailableDateControls()
+		else
+			Breeze.Views.showAvailableDateControls()
+
+	@showAvailableTimeControls: () ->
+		if not availableTimeControlsVisible
+			Breeze.Views.hideAllDateTimeControls()
+			$('#activity-available-time-select').show()
+			availableTimeControlsVisible = true
+
+	@hideAvailableTimeControls: () ->
+		if availableTimeControlsVisible
+			$('#activity-available-time-select').hide()
+			availableTimeControlsVisible = false
+
+	@toggleAvailableTimeControls: () ->
+		if availableTimeControlsVisible
+			Breeze.Views.hideAvailableTimeControls()
+		else
+			Breeze.Views.showAvailableTimeControls()
+
+	@showDueDateControls: () ->
+		if not dueDateControlsVisible
+			Breeze.Views.hideAllDateTimeControls()
+			$('#activity-due-date-select').show()
+			dueDateControlsVisible = true
+
+	@hideDueDateControls: () ->
+		if dueDateControlsVisible
+			$('#activity-due-date-select').hide()
+			dueDateControlsVisible = false
+
+	@toggleDueDateControls: () ->
+		if dueDateControlsVisible
+			Breeze.Views.hideDueDateControls()
+		else
+			Breeze.Views.showDueDateControls()
+
+	@showDueTimeControls: () ->
+		if not dueTimeControlsVisible
+			Breeze.Views.hideAllDateTimeControls()
+			$('#activity-due-time-select').show()
+			dueTimeControlsVisible = true
+
+	@hideDueTimeControls: () ->
+		if dueTimeControlsVisible
+			$('#activity-due-time-select').hide()
+			dueTimeControlsVisible = false
+
+	@toggleDueTimeControls: () ->
+		if dueTimeControlsVisible
+			Breeze.Views.hideDueTimeControls()
+		else
+			Breeze.Views.showDueTimeControls()
+
+	@hideAllDateTimeControls: () ->
+		Breeze.Views.hideAvailableDateControls()
+		Breeze.Views.hideAvailableTimeControls()
+		Breeze.Views.hideDueDateControls()
+		Breeze.Views.hideDueTimeControls()
 
 	@showPromptBox: () ->
 		if !promptBoxVisible

@@ -10,7 +10,109 @@ div#activity-add-edit
 	box-shadow: inset 0px 0px 150px 0px rgba(0, 0, 0, 1)
 	form#activity-form
 		fieldset#activity-time-fields, fieldset#activity-define
-			overflow-x: hidden
+			overflow: hidden
+		fieldset#activity-time-fields
+			div#activity-duration-section
+				position: relative
+				top: 0
+				left: 0
+				width: 280px
+				height: 60px
+				margin: 10px 0 18px 0
+				div#activity-duration-custom-side, button#activity-duration-small, button#activity-duration-medium, button#activity-duration-large
+					position: absolute
+					top: 0
+					width: 22%
+					height: 100%
+				div#activity-duration-custom-side
+					left: 0
+					button#activity-duration-reset, button#activity-duration-custom
+						width: 100%
+						height: 48%
+						background-color: rgba(70,100,130,0.6)
+						color: $color-text-base
+						border: 0
+						-webkit-border-radius: 5px
+						border-radius: 5px
+					div#activity-duration-display
+						margin-top: 7%
+						padding-top: 2px
+						width: 100%
+						height: 40%
+						background-color: rgba(0,0,0,0.5)
+						border: 1px solid $color-text-base
+						text-align: center
+				button#activity-duration-small, button#activity-duration-medium, button#activity-duration-large
+					background-color: rgba(70,100,130,0.6)
+					color: $color-text-base
+					border: 1px solid $color-text-base
+					-webkit-border-radius: 10px
+					border-radius: 10px
+				button#activity-duration-small
+					left: 25%
+				button#activity-duration-medium
+					left: 50%
+				button#activity-duration-large
+					left: 75%
+			div.date-time-select
+				position: relative
+				top: 0
+				left: 0
+				width: 280px
+				height: 40px
+				margin-bottom: 12px
+				button.date-time-column-plus, button.date-time-column-minus
+					width: 100%
+					height: 40px
+					margin: 2px
+					background-color: rgba(70,100,130,0.6)
+					color: $color-text-base
+					border: 0
+					-webkit-border-radius: 10px
+					border-radius: 10px
+				div.date-select, div.time-select
+					position: absolute
+					left: 0
+					top: -91px
+					width: 100%
+					height: 90px
+					background: url('imgs/Blueprint_Pattern.png')
+					background-size: 255px 255px
+					-webkit-box-shadow: inset 0px 0px 150px 0px rgba(0, 0, 0, 1)
+					box-shadow: inset 0px 0px 150px 0px rgba(0, 0, 0, 1)
+				div.date-time-column1of2, div.date-time-column2of2, div.date-time-column1of3, div.date-time-column2of3, div.date-time-column3of3
+					position: absolute
+					top: 0
+				div.date-time-column1of2, div.date-time-column2of2
+					width: 48%
+				div.date-time-column1of2
+					left: 0
+				div.date-time-column2of2
+					left: 50%
+				div.date-time-column1of3, div.date-time-column2of3, div.date-time-column3of3
+					width: 32%
+				div.date-time-column1of3
+					left: 0
+				div.date-time-column2of3
+					left: 33%
+				div.date-time-column3of3
+					left: 66%
+				div.date-selected, div.time-selected
+					position: absolute
+					top: 0
+					height: 32px
+					padding-top: 8px
+					background-color: rgba(0,0,0,0.5)
+					border: 1px solid $color-text-base
+					text-align: center
+				div.date-selected
+					left: 0
+					width: 175px
+				div.time-selected
+					right: 0
+					width: 95px
+			#activity-scheduled
+				margin-top: -8px
 		button#activity-submit-accept
 			width: 48%
 			display: inline

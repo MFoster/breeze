@@ -2,11 +2,18 @@ class Breeze.Interactions
 	# Interactions internal variables
 	_init = false
 	bindingsActive = false
+	useStandardChunck = true
+	currentCustomChunck = 0
+	currentAvailableDateTime = new Date().getTime()
+	currentDueDateTime = new Date().getTime()
+	defaultDueDateTimeWeeks = 2
 
 	constructor: (@attributes) ->
 		if !_init
+			Breeze.Interactions.initActivityForm()
 			bindingsActive = activateBindings()
-			if bindingsActive
+			keyBindingsActive = activateKeyBindings()
+			if bindingsActive and keyBindingsActive
 				_init = true
 				return Breeze.Interactions.statusReport()
 			else
@@ -17,11 +24,13 @@ class Breeze.Interactions
 			return false
 
 	@statusReport: () ->
-		reportData = {
-			_init: _init
-			bindingsActive: bindingsActive
-		}
-		return reportData
+		_init: _init
+		bindingsActive: bindingsActive
+		useStandardChunck: useStandardChunck
+		currentCustomChunck: currentCustomChunck
+		currentAvailableDateTime: currentAvailableDateTime
+		currentDueDateTime: currentDueDateTime
+		defaultDueDateTimeWeeks: defaultDueDateTimeWeeks
 
 	activateBindings = () ->
 		$(document).on('click', '#activity-list-debug-toggle', -> Breeze.Views.toggleDebugView())
@@ -44,6 +53,14 @@ class Breeze.Interactions
 			Breeze.Views.hideAddEditForm()
 		)
 		return true
+
+	activateKeyBindings = () ->
+		$('body').keypress((event) ->
+			code = event.keyCode || event.which
+			console.log(code)
+			if code is 13 and event.shiftKey
+				Breeze.Views.cycleVisible()
+		)
 
 	@processActivityFormSubmit: () ->
 		formValues = {}
@@ -74,6 +91,132 @@ class Breeze.Interactions
 			when 'completeActivity' then promptProccessed = promptCompleteActivity(activity)
 			else return false
 		return promptProccessed
+
+	@initActivityForm: () ->
+		personsPreferences = Breeze.People.getPersonsPreferences()
+		chunckTimeLarge = personsPreferences.chunckTimeLarge
+		chunckTimeMedium = personsPreferences.chunckTimeMedium
+		chunckTimeSmall = personsPreferences.chunckTimeSmall
+		currentFormDateTime = Breeze.Timers.getTime()
+		$('#activity-duration-large').data('duration', chunckTimeLarge).html(chunckTimeLarge + 'min')
+		$('#activity-duration-medium').data('duration', chunckTimeMedium).html(chunckTimeMedium + 'min')
+		$('#activity-duration-small').data('duration', chunckTimeSmall).html(chunckTimeSmall + 'min')
+		$('#activity-duration-display').html(chunckTimeMedium + 'min')
+		$('#activity-duration-reset').hide()
+		$('#activity-duration').hide()
+		Breeze.Views.hideAllDateTimeControls()
+		$('#activity-available-datetime').hide()
+		$('#activity-due-datetime').hide()
+		$(document).on('click', '.duration-select', (event) ->
+			event.preventDefault()
+			amount = $(this).data('duration')
+			Breeze.Interactions.adjustFormDuration(amount)
+		)
+		$(document).on('click', '#activity-duration-custom', (event) ->
+			event.preventDefault()
+			$('#activity-duration-custom').hide()
+			$('#activity-duration-reset').show()
+			useStandardChunck = false
+		)
+		$(document).on('click', '#activity-duration-reset', (event) ->
+			event.preventDefault()
+			$('#activity-duration-reset').hide()
+			$('#activity-duration-custom').show()
+			useStandardChunck = true
+			Breeze.Interactions.adjustFormDuration(chunckTimeMedium)
+		)
+		$(document).on('click', '#activity-available-date-selected', -> Breeze.Views.toggleAvailableDateControls())
+		$(document).on('click', '#activity-available-time-selected', -> Breeze.Views.toggleAvailableTimeControls())
+		$(document).on('click', '#activity-due-date-selected', -> Breeze.Views.toggleDueDateControls())
+		$(document).on('click', '#activity-due-time-selected', -> Breeze.Views.toggleDueTimeControls())
+		$(document).on('click', '.date-time-column-plus, .date-time-column-minus', (event) ->
+			event.preventDefault()
+			targetField = $(this).data('targetfield')
+			amount = $(this).data('amount')
+			type = $(this).data('type')
+			Breeze.Interactions.adjustFormDateTime(targetField, amount, type)
+		)
+		Breeze.Views.hideAddEditForm()
+		Breeze.Views.resetAddEditForm()
+		Breeze.Interactions.adjustFormDateTime('available')
+
+	@adjustFormDuration: (amount) ->
+		if useStandardChunck
+			currentCustomChunck = amount
+			Breeze.Views.updateFormDuration(amount)
+		else
+			currentCustomChunck += amount
+			Breeze.Views.updateFormDuration(currentCustomChunck)
+
+	@adjustFormDateTime: (targetField, amount = 0, type = 'none') ->
+		currentFormDateTime = currentAvailableDateTime
+		if targetField is 'due' then currentFormDateTime = currentDueDateTime
+		seconds = 1000
+		minutes = 60
+		hours = 60
+		days = 24
+		weeks = 7
+		switch type
+			when 'none' then currentFormDateTime = currentFormDateTime
+			when 'second' then currentFormDateTime += amount * seconds
+			when 'minute' then currentFormDateTime += amount * minutes * seconds
+			when 'hour' then currentFormDateTime += amount * hours * minutes * seconds
+			when 'day' then currentFormDateTime += amount * days * hours * minutes * seconds
+			when 'week' then currentFormDateTime += amount * weeks * days * hours * minutes * seconds
+		if targetField is 'available'
+			currentAvailableDateTime = currentFormDateTime
+			currentDueDateTime = currentFormDateTime
+			Breeze.Interactions.adjustFormDateTime('due', 2, 'week')
+		if targetField is 'due' then currentDueDateTime = currentFormDateTime
+		adjustedDate = new Date(currentFormDateTime)
+		formYear = adjustedDate.getFullYear()
+		formMonth = adjustedDate.getMonth() + 1
+		displayMonth = switch adjustedDate.getMonth()
+			when 0 then 'Jan'
+			when 1 then 'Feb'
+			when 2 then 'Mar'
+			when 3 then 'Apr'
+			when 4 then 'May'
+			when 5 then 'Jun'
+			when 6 then 'Jul'
+			when 7 then 'Aug'
+			when 8 then 'Sep'
+			when 9 then 'Oct'
+			when 10 then 'Nov'
+			else 'Dec'
+		formMonth = ('0' + formMonth).slice(-2)
+		formDay = adjustedDate.getDate()
+		displayDay = formDay
+		formDay = ('0' + formDay).slice(-2)
+		displayWeekday = switch adjustedDate.getDay()
+			when 0 then 'Sunday'
+			when 1 then 'Monday'
+			when 2 then 'Tuesday'
+			when 3 then 'Wednesday'
+			when 4 then 'Thursday'
+			when 5 then 'Friday'
+			else 'Saturday'
+		formHours = adjustedDate.getHours()
+		formMinutes = adjustedDate.getMinutes()
+		formMinutes = formMinutes + (15 - formMinutes%15)
+		if formMinutes is 60
+			formMinutes = 0
+			formHours = if formHours is 23 then 0 else formHours += 1
+		formMinutes = ('0' + formMinutes).slice(-2)
+		formAmPm = 'AM'
+		if formHours >= 12
+			formAmPm = 'PM'
+			formHours %= 12
+		if formHours is 0 then formHours = 12
+		displayHours = formHours
+		displayAmPm = formAmPm.toLowerCase()
+		formHours = ('0' + formHours).slice(-2)
+		formDate = formYear + '-' + formMonth + '-' + formDay
+		formTime = formHours + ':' + formMinutes + ' ' + formAmPm
+		displayDate = displayWeekday + ' ' + displayMonth + ' ' + displayDay + ', ' + formYear
+		displayTime = displayHours + ':' + formMinutes + displayAmPm
+		Breeze.Views.updateFormDateTime(targetField, formDate, formTime, displayDate, displayTime)
+		return displayDate + ' ' + displayTime
 
 	promptSelectPlaylist = () ->
 		promptControls = []

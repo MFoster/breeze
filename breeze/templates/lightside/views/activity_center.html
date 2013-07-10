@@ -69,14 +69,87 @@
 					<fieldset name="activity_title" id="activity-title">
 						<legend>Activity</legend>
 						<input type="text" name="activity_text" id="activity-text" class="input-base" placeholder="Activity..." autofocus required>
+						<div id="activity-form-show-time-fields" onclick="Breeze.Views.showFormTimeFields()" style="margin: -10px 10px 10px 0; width: 100%; text-align: right;">more</div>
 					</fieldset>
 					<fieldset name="activity_time_fields" id="activity-time-fields">
 						<legend>Time Activity</legend>
-						<input type="number" name="activity_duration" id="activity-duration" class="input-base" value="25">
-						<input type="datetime" name="activity_available_datetime" id="activity-available-datetime" class="input-base">
-						<input type="datetime" name="activity_due_datetime" id="activity-due-datetime" class="input-base">
+						<div id="activity-duration-section">
+							<div id="activity-duration-custom-side">
+								<button id="activity-duration-reset">Reset</button>
+								<button id="activity-duration-custom">Other</button>
+								<div id="activity-duration-display">25</div>
+							</div>
+							<button id="activity-duration-small" class="duration-select" data-duration="5">Small</button>
+							<button id="activity-duration-medium" class="duration-select" data-duration="25">Medium</button>
+							<button id="activity-duration-large" class="duration-select" data-duration="50">Large</button>
+							<input type="number" name="activity_duration" id="activity-duration" class="input-base" value="25">
+						</div>
+						<div id="activity-available-section">
+							Available Date and Time
+							<div class="date-time-select">
+								<div id="activity-available-date-select" class="date-select">
+									<div class="date-time-column1of2">
+										<button class="date-time-column-plus" data-targetfield="available" data-amount="1" data-type="week">Week After</button>
+										<button class="date-time-column-minus" data-targetfield="available" data-amount="-1" data-type="week">Week Before</button>
+									</div>
+									<div class="date-time-column2of2">
+										<button class="date-time-column-plus" data-targetfield="available" data-amount="1" data-type="day">Day After</button>
+										<button class="date-time-column-minus" data-targetfield="available" data-amount="-1" data-type="day">Day Before</button>
+									</div>
+								</div>
+								<div id="activity-available-date-selected" class="date-selected"></div>
+								<div id="activity-available-time-select" class="time-select">
+									<div class="date-time-column1of3">
+										<button class="date-time-column-plus" data-targetfield="available" data-amount="6" data-type="hour">+6hrs</button>
+										<button class="date-time-column-minus" data-targetfield="available" data-amount="-6" data-type="hour">-6hrs</button>
+									</div>
+									<div class="date-time-column2of3">
+										<button class="date-time-column-plus" data-targetfield="available" data-amount="1" data-type="hour">+1hr</button>
+										<button class="date-time-column-minus" data-targetfield="available" data-amount="-1" data-type="hour">-1hr</button>
+									</div>
+									<div class="date-time-column3of3">
+										<button class="date-time-column-plus" data-targetfield="available" data-amount="15" data-type="minute">+15min</button>
+										<button class="date-time-column-minus" data-targetfield="available" data-amount="-15" data-type="minute">-15min</button>
+									</div>
+								</div>
+								<div id="activity-available-time-selected" class="time-selected"></div>
+							</div>
+							<input type="datetime" name="activity_available_datetime" id="activity-available-datetime" class="input-base">
+						</div>
+						<div id="activity-due-section">
+							Due Date and Time
+							<div class="date-time-select">
+								<div id="activity-due-date-select" class="date-select">
+									<div class="date-time-column1of2">
+										<button class="date-time-column-plus" data-targetfield="due" data-amount="1" data-type="week">Week After</button>
+										<button class="date-time-column-minus" data-targetfield="due" data-amount="-1" data-type="week">Week Before</button>
+									</div>
+									<div class="date-time-column2of2">
+										<button class="date-time-column-plus" data-targetfield="due" data-amount="1" data-type="day">Day After</button>
+										<button class="date-time-column-minus" data-targetfield="due" data-amount="-1" data-type="day">Day Before</button>
+									</div>
+								</div>
+								<div id="activity-due-date-selected" class="date-selected"></div>
+								<div id="activity-due-time-select" class="time-select">
+									<div class="date-time-column1of3">
+										<button class="date-time-column-plus" data-targetfield="due" data-amount="6" data-type="hour">+6hrs</button>
+										<button class="date-time-column-minus" data-targetfield="due" data-amount="-6" data-type="hour">-6hrs</button>
+									</div>
+									<div class="date-time-column2of3">
+										<button class="date-time-column-plus" data-targetfield="due" data-amount="1" data-type="hour">+1hr</button>
+										<button class="date-time-column-minus" data-targetfield="due" data-amount="-1" data-type="hour">-1hr</button>
+									</div>
+									<div class="date-time-column3of3">
+										<button class="date-time-column-plus" data-targetfield="due" data-amount="15" data-type="minute">+15min</button>
+										<button class="date-time-column-minus" data-targetfield="due" data-amount="-15" data-type="minute">-15min</button>
+									</div>
+								</div>
+								<div id="activity-due-time-selected" class="time-selected"></div>
+							</div>
+							<input type="datetime" name="activity_due_datetime" id="activity-due-datetime" class="input-base">
+						</div>
 						<input type="checkbox" name="activity_scheduled"  id="activity-scheduled"><label for="activity-scheduled"><span></span>Scheduled</label>
-					</fieldset>
+						<div id="activity-form-show-define-fields" onclick="Breeze.Views.showFormDefineFields()" style="margin: -10px 10px 10px 0; width: 100%; text-align: right;">more</div> </fieldset>
 					<fieldset name="activity_define" id="activity-define">
 						<legend>Define Activity</legend>
 						<input list="activity_types_list" name="activity_type" id="activity-type" value="create" class="input-base">
@@ -96,8 +169,8 @@
 						</datalist>
 						<textarea id="activity-description" name="activity_description" placeholder="Describe Activity" class="textarea-base"></textarea>
 					</fieldset>
-					<button type="submit" name="activity_submit_accept" id="activity-submit-accept" class="button-base">Accept</button>
 					<button type="submit" name="activity_submit_decline" id="activity-submit-decline" class="button-base">Decline</button>
+					<button type="submit" name="activity_submit_accept" id="activity-submit-accept" class="button-base">Accept</button>
 				</form>
 			</div>
 			<div id="activity-list-debug-view">

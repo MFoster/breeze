@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Breeze - UX - Prototyping</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+		{% load compress %}
+		{% compress css %}
+		<link rel="stylesheet" href="/static/lightside/vendor/css/normalize.css" type="text/css">
+		<link rel="stylesheet" href="/static/lightside/style/style_init.sass" type="text/x-sass">
+		{% endcompress %}
+		<script src="/static/lightside/vendor/js/jquery.js"></script>
+		<script src="/static/lightside/vendor/js/lo-dash-1.3.1.js"></script>
+		<script src="/static/lightside/vendor/js/backbone-1.0.0.js"></script>
+	</head>
+	<body>
+		  <div id="gobbles"></div>
+		  
+		  
+		  <script type="text/javascript">
+		      
+		      var Activity = Backbone.Model.extend({
+    		      url : function(){
+    		          return '/api/v1/activity/' + (this.has("id") ? this.get("id") : '');
+    		      }
+		      });
+		      
+		      
+		      var ActivityCollection = Backbone.Collection.extend({
+    		      model : Activity,
+    		      url   : '/api/v1/activity',     
+    		      set : function(models, options){
+        		      
+        		      var map = _.map(models, this.djangoMap);
+        		      
+        		      return Backbone.Collection.prototype.set.call(this, map, options);    
+    		      },
+    		      
+    		      reset : function(models, options){
+    		      
+        		      var map = _.map(models, this.djangoMap);
+        		      
+        		      return Backbone.Collection.protoype.reset.call(this, map, options);
+    		      },
+    		      
+    		      djangoMap : function(itr){
+        		      return _.merge({
+                    		      id : itr.pk
+                		      }, itr.fields);
+    		      }
+		      })
+		      
+		      
+		      var token = "{{csrf_token}}";
+		      		      
+		      function addToken(xhr){
+    		      xhr.setRequestHeader('X-CSRFToken', token);
+		      }
+		      
+		      var ogSync = Backbone.sync;
+		      
+		      Backbone.sync = function(method, model, options){
+		          var bfrSend = options.beforeSend;
+		          
+    		      options.beforeSend = function(xhr){
+        		      addToken(xhr);
+
+    		      }
+    		      return ogSync.call(this, method, model, options);
+		      }
+		      
+		      
+		      var collection = new ActivityCollection();
+		      
+		      collection.fetch({ success : handleSuccess });
+		      
+		      
+		      
+              function handleSuccess(response){
+                  var activity = collection.find(function(model){ return model.get("text").search(/six/i) > -1 });
+                
+                  console.log("Activity %o", activity);
+                
+                  activity.set("scheduled", !activity.get("scheduled"));
+                        
+                  activity.save();
+                  
+                  
+              }
+		      collection.on('sync', function(funcCollection, response, options){
+                    collection.each(function(activity){
+                    
+                        console.log(activity.get("text")); 
+                    
+                    });
+                        		      
+		      });
+		      
+		      
+		      
+		      
+		  
+		  </script>
+	</body>
+</html>
